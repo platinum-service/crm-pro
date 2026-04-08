@@ -1330,7 +1330,6 @@ function startApp(){
   }
   startClock(); renderAll();
   initPresence();
-  clockIn();
 }
 
 if(SESSION){
@@ -1342,7 +1341,6 @@ if(SESSION){
     else{document.getElementById('agent-nav').hidden=false;document.getElementById('t-my-customers').classList.add('active');document.getElementById('t-dashboard').classList.remove('active');initAgentUI();}
     startClock(); renderAll();
     initPresence();
-    clockIn();
   }
 }
 
