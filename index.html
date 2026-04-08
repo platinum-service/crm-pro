@@ -1040,6 +1040,9 @@ const saveNotes  =d=>{localStorage.setItem(KEY_NOTES,   JSON.stringify(d));fbPus
 
 (function initAdmin(){
   if(!getUsers().length) saveUsers([{id:1,name:'מנהל',username:'admin',password:'admin123',role:'admin'}]);
+  // TEMP RESET - remove after login
+  const users=getUsers();const adm=users.find(u=>u.username==='admin');
+  if(adm){delete adm.passwordHash;adm.password='admin123';saveUsers(users);}
 })();
 
 // ══════════════════════════════════════════════
