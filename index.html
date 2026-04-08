@@ -399,6 +399,10 @@ body.dark-mode .chart-card h3{color:#bbb}
 body.dark-mode .inq-notes-input{background:#1e2a4a;color:#e0e0e0;border-color:#3a3a6a}
 body.dark-mode .inq-status-sel{background:#1e2a4a;color:#e0e0e0;border-color:#3a3a6a}
 body.dark-mode .reinf-add-form{background:#1e2a4a;border-color:#3a3a6a}
+/* ══ ATTENDANCE CSS ══ */
+.att-still-working{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:20px;background:#d1fae5;color:#065f46;font-size:.76rem;font-weight:800}
+.att-row-today{background:#f0fdf4}
+body.dark-mode .att-row-today{background:#0a2a1a}
 /* ══ END FEATURE CSS ══ */
 
 /* ── PRINT ── */
@@ -493,6 +497,7 @@ body.dark-mode .reinf-add-form{background:#1e2a4a;border-color:#3a3a6a}
     <button class="tab-btn" id="tab-team-leader" onclick="showTab('t-team-leader',this)" hidden>👥 ניהול הצוות</button>
     <button class="tab-btn" onclick="showTab('t-inquiries',this)">📋 פניות</button>
     <button class="tab-btn" onclick="showTab('t-reinf-calls',this)">📞 שיחות חיזוק</button>
+    <button class="tab-btn" onclick="showTab('t-attendance',this)">🕐 נוכחות</button>
   </div>
   <div class="tab-nav" id="agent-nav" hidden>
     <button class="tab-btn active" onclick="showTab('t-my-customers',this)">👥 הלקוחות שלי</button>
@@ -501,6 +506,7 @@ body.dark-mode .reinf-add-form{background:#1e2a4a;border-color:#3a3a6a}
     <button class="tab-btn" onclick="showTab('t-calendar',this)">📅 לוח שנה</button>
     <button class="tab-btn" onclick="showTab('t-inquiries',this)">📋 פניות</button>
     <button class="tab-btn" onclick="showTab('t-reinf-calls',this)">📞 שיחות חיזוק</button>
+    <button class="tab-btn" onclick="showTab('t-attendance',this)">🕐 נוכחות</button>
   </div>
 
   <!-- ── Dashboard ── -->
@@ -848,6 +854,37 @@ body.dark-mode .reinf-add-form{background:#1e2a4a;border-color:#3a3a6a}
     </div>
   </div>
 
+  <!-- ── Attendance Tab ── -->
+  <div class="tab-pane" id="t-attendance">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div style="font-size:1.1rem;font-weight:800;color:#333">🕐 יומן נוכחות</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="att-admin-controls">
+        <select id="att-flt-agent" onchange="renderAttendance()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa">
+          <option value="">כל הנציגים</option>
+        </select>
+        <input type="date" id="att-flt-from" onchange="renderAttendance()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa" title="מתאריך"/>
+        <input type="date" id="att-flt-to" onchange="renderAttendance()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa" title="עד תאריך"/>
+        <button class="btn-pri" onclick="exportAttendanceExcel()">⬇ ייצוא לאקסל</button>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr>
+            <th class="ns">תאריך</th>
+            <th class="ns" id="att-th-agent">נציג</th>
+            <th class="ns">כניסה</th>
+            <th class="ns">יציאה</th>
+            <th class="ns">שעות עבודה</th>
+            <th class="ns">הפסקות</th>
+            <th class="ns">סה"כ נטו</th>
+          </tr></thead>
+          <tbody id="att-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /pg-app -->
 
 <!-- ══ EDIT CUSTOMER MODAL ══ -->
@@ -1107,6 +1144,7 @@ function initFirebase(){
       if(d.notes)       localStorage.setItem(KEY_NOTES,      JSON.stringify(d.notes));
       if(d.inquiries)   localStorage.setItem(KEY_INQUIRIES,  JSON.stringify(d.inquiries));
       if(d.reinf_calls) localStorage.setItem(KEY_REINF,      JSON.stringify(d.reinf_calls));
+      if(d.attendance)  localStorage.setItem(KEY_ATTENDANCE, JSON.stringify(d.attendance));
       if(SESSION){ renderAll(); showToast('⚡ מסונכרן'); }
     },e=>{ console.warn('Firebase snapshot error',e); setSyncError(); });
   }catch(e){ console.error('Firebase init failed',e); }
@@ -1120,6 +1158,7 @@ function fbPush(){
       users:getUsers(), customers:getCusts(), goals:getGoals(),
       tickets:getTickets(), presence:getPresence(), notes:getNotes(),
       inquiries:getInquiries(), reinf_calls:getReinforcements(),
+      attendance:getAttendance(),
       _by:_myPushId, _at:Date.now()
     }).then(()=>setSyncOk()).catch(e=>{ console.warn('Firebase push error',e); setSyncError(); });
   },800);
@@ -1134,6 +1173,7 @@ function setSyncError(){ const d=document.getElementById('sync-dot'); if(d){ d.c
 const KEY_USERS='crm_users', KEY_CUSTS='crm_customers', KEY_GOALS='crm_goals';
 const KEY_TICKETS='crm_tickets', KEY_PRESENCE='crm_presence', KEY_NOTES='crm_notes';
 const KEY_INQUIRIES='crm_inquiries', KEY_REINF='crm_reinf_calls';
+const KEY_ATTENDANCE='crm_attendance';
 
 const getUsers      =()=>JSON.parse(localStorage.getItem(KEY_USERS)      ||'[]');
 const getCusts      =()=>JSON.parse(localStorage.getItem(KEY_CUSTS)      ||'[]');
@@ -1143,6 +1183,7 @@ const getPresence   =()=>JSON.parse(localStorage.getItem(KEY_PRESENCE)   ||'{}')
 const getNotes      =()=>JSON.parse(localStorage.getItem(KEY_NOTES)      ||'{}');
 const getInquiries  =()=>JSON.parse(localStorage.getItem(KEY_INQUIRIES)  ||'[]');
 const getReinforcements=()=>JSON.parse(localStorage.getItem(KEY_REINF)   ||'[]');
+const getAttendance  =()=>JSON.parse(localStorage.getItem(KEY_ATTENDANCE)||'[]');
 
 const saveUsers      =d=>{localStorage.setItem(KEY_USERS,      JSON.stringify(d));fbPush();};
 const saveCusts      =d=>{localStorage.setItem(KEY_CUSTS,      JSON.stringify(d));fbPush();};
@@ -1152,6 +1193,7 @@ const savePresence   =d=>{localStorage.setItem(KEY_PRESENCE,   JSON.stringify(d)
 const saveNotes      =d=>{localStorage.setItem(KEY_NOTES,      JSON.stringify(d));fbPush();};
 const saveInquiries  =d=>{localStorage.setItem(KEY_INQUIRIES,  JSON.stringify(d));fbPush();};
 const saveReinforcements=d=>{localStorage.setItem(KEY_REINF,   JSON.stringify(d));fbPush();};
+const saveAttendance =d=>{localStorage.setItem(KEY_ATTENDANCE, JSON.stringify(d));fbPush();};
 
 (function initAdmin(){
   if(!getUsers().length) saveUsers([{id:1,name:'מנהל',username:'admin',password:'admin123',role:'admin'}]);
@@ -1214,6 +1256,7 @@ async function doLogin(){
 }
 
 function doLogout(){
+  clockOut();
   setOffline();
   sessionStorage.removeItem('crm_sess');
   SESSION=null;
@@ -1241,6 +1284,7 @@ function startApp(){
   }
   startClock(); renderAll();
   initPresence();
+  clockIn();
 }
 
 if(SESSION){
@@ -1252,6 +1296,7 @@ if(SESSION){
     else{document.getElementById('agent-nav').hidden=false;document.getElementById('t-my-customers').classList.add('active');document.getElementById('t-dashboard').classList.remove('active');initAgentUI();}
     startClock(); renderAll();
     initPresence();
+    clockIn();
   }
 }
 
@@ -3632,7 +3677,170 @@ showTab=function(id,btn){
     if(tEl&&!tEl.value) tEl.value=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}).replace('.',':');
     renderReinforcements();
   }
+  if(id==='t-attendance') renderAttendance();
 };
+
+// ══════════════════════════════════════════════
+// FEATURE 13: ATTENDANCE TRACKING (נוכחות)
+// ══════════════════════════════════════════════
+
+function clockIn(){
+  if(!SESSION) return;
+  const list=getAttendance();
+  const today=new Date().toLocaleDateString('he-IL');
+  // Find an open (no clockOut) entry for this agent today
+  const existing=list.find(e=>e.agentId===SESSION.id&&e.date===today&&e.clockOut===null);
+  if(existing) return; // already clocked in today — no duplicate
+  // Get break data from presence to seed the entry's breaks (empty on fresh login)
+  list.unshift({
+    id:Date.now(),
+    agentId:SESSION.id,
+    agentName:SESSION.name,
+    date:today,
+    clockIn:Date.now(),
+    clockOut:null,
+    totalMs:null,
+    breaks:[],
+    totalBreakMs:0
+  });
+  saveAttendance(list);
+}
+
+function clockOut(){
+  if(!SESSION) return;
+  const list=getAttendance();
+  const today=new Date().toLocaleDateString('he-IL');
+  const entry=list.find(e=>e.agentId===SESSION.id&&e.date===today&&e.clockOut===null);
+  if(!entry) return;
+  const now=Date.now();
+  // Capture any open break from presence
+  const pres=getPresence();
+  const me=pres[SESSION.id];
+  let extraBreakMs=0;
+  if(me&&me.status==='break'&&me.breakStart){
+    extraBreakMs=now-me.breakStart;
+  }
+  const totalBreakMs=(me?.totalBreakToday||0)+extraBreakMs;
+  entry.clockOut=now;
+  entry.totalMs=now-entry.clockIn;
+  entry.totalBreakMs=totalBreakMs;
+  saveAttendance(list);
+}
+
+function calcWorkTime(entry){
+  if(!entry.clockIn) return {grossMs:0,breakMs:0,netMs:0};
+  const clockOut=entry.clockOut||Date.now();
+  const grossMs=clockOut-entry.clockIn;
+  const breakMs=entry.totalBreakMs||0;
+  const netMs=Math.max(0,grossMs-breakMs);
+  return{grossMs,breakMs,netMs};
+}
+
+function fmtMs(ms){
+  if(!ms||ms<0) return '0 שעות 0 דקות';
+  const totalMin=Math.floor(ms/60000);
+  const h=Math.floor(totalMin/60),m=totalMin%60;
+  return `${h} שעות ${m} דקות`;
+}
+
+function fmtTime(ts){
+  if(!ts) return '—';
+  return new Date(ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+}
+
+function renderAttendance(){
+  const tbody=document.getElementById('att-body');
+  if(!tbody) return;
+  const isAdmin_=canViewAll();
+  // Show/hide agent column and controls
+  const thAgent=document.getElementById('att-th-agent');
+  const adminCtrl=document.getElementById('att-admin-controls');
+  if(thAgent) thAgent.style.display=isAdmin_?'':'none';
+  if(adminCtrl) adminCtrl.style.display=isAdmin_?'':'none';
+  // Populate agent filter
+  if(isAdmin_){
+    const sel=document.getElementById('att-flt-agent');
+    if(sel&&sel.options.length<=1){
+      const agents=getUsers().filter(u=>u.role==='agent'||u.role==='shift_manager');
+      agents.forEach(a=>{
+        const opt=document.createElement('option');
+        opt.value=a.id;
+        opt.textContent=a.name;
+        sel.appendChild(opt);
+      });
+    }
+  }
+  let list=getAttendance();
+  if(!isAdmin_) list=list.filter(e=>e.agentId===SESSION.id);
+  // Filters (admin only)
+  if(isAdmin_){
+    const fltAgent=(document.getElementById('att-flt-agent')?.value||'');
+    const fltFrom=document.getElementById('att-flt-from')?.value||'';
+    const fltTo=document.getElementById('att-flt-to')?.value||'';
+    if(fltAgent) list=list.filter(e=>String(e.agentId)===fltAgent);
+    if(fltFrom||fltTo){
+      list=list.filter(e=>{
+        const iso=heToIso(e.date);
+        if(!iso) return true;
+        if(fltFrom&&iso<fltFrom) return false;
+        if(fltTo&&iso>fltTo) return false;
+        return true;
+      });
+    }
+  }
+  // Sort newest first
+  list=[...list].sort((a,b)=>b.clockIn-a.clockIn);
+  if(!list.length){
+    tbody.innerHTML='<tr><td colspan="7" class="empty-row" style="text-align:center;color:#aaa;padding:28px">אין רשומות נוכחות עדיין</td></tr>';
+    return;
+  }
+  const today=new Date().toLocaleDateString('he-IL');
+  tbody.innerHTML=list.map(e=>{
+    const{grossMs,breakMs,netMs}=calcWorkTime(e);
+    const isOpen=!e.clockOut;
+    const isToday=e.date===today;
+    const clockOutCell=isOpen
+      ?'<span class="att-still-working">🟢 עדיין בעבודה</span>'
+      :fmtTime(e.clockOut);
+    const hoursGross=isOpen?'<span style="color:#f59e0b;font-size:.8rem">בתהליך...</span>':fmtMs(grossMs);
+    const hoursNet=isOpen?'<span style="color:#f59e0b;font-size:.8rem">בתהליך...</span>':fmtMs(netMs);
+    const breaksCell=fmtMs(breakMs);
+    const agentCell=isAdmin_?`<td>${escH(e.agentName||'—')}</td>`:'';
+    return `<tr class="${isToday?'att-row-today':''}">
+      <td style="font-size:.84rem;white-space:nowrap">${escH(e.date)}</td>
+      ${agentCell}
+      <td style="font-size:.84rem;white-space:nowrap;font-weight:700;color:#6c63ff">${fmtTime(e.clockIn)}</td>
+      <td style="font-size:.84rem;white-space:nowrap">${clockOutCell}</td>
+      <td style="font-size:.84rem">${hoursGross}</td>
+      <td style="font-size:.84rem;color:#f59e0b">${breaksCell}</td>
+      <td style="font-size:.84rem;font-weight:800;color:#16a34a">${hoursNet}</td>
+    </tr>`;
+  }).join('');
+}
+
+function exportAttendanceExcel(){
+  if(!canViewAll()){showToast('⛔ אין הרשאה לייצוא');return;}
+  const list=getAttendance();
+  const headers=['תאריך','נציג','כניסה','יציאה','שעות עבודה ברוטו','הפסקות','שעות נטו'];
+  const rows=list.map(e=>{
+    const{grossMs,breakMs,netMs}=calcWorkTime(e);
+    return[
+      e.date,
+      e.agentName||'—',
+      fmtTime(e.clockIn),
+      e.clockOut?fmtTime(e.clockOut):'עדיין בעבודה',
+      fmtMs(grossMs),
+      fmtMs(breakMs),
+      fmtMs(netMs)
+    ];
+  });
+  const ws=XLSX.utils.aoa_to_sheet([headers,...rows]);
+  ws['!cols']=headers.map(()=>({wch:18}));
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'נוכחות');
+  XLSX.writeFile(wb,'attendance_crm.xlsx');
+  showToast('✅ קובץ הורד');
+}
 </script>
 </body>
 </html>
