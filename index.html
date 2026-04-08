@@ -896,6 +896,16 @@ body.dark-mode .att-row-today{background:#0a2a1a}
         <select id="att-flt-agent" onchange="renderAttendance()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa">
           <option value="">כל הנציגים</option>
         </select>
+        <select id="att-flt-month" onchange="attApplyMonthFilter()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa">
+          <option value="">כל החודשים</option>
+          <option value="1">ינואר</option><option value="2">פברואר</option><option value="3">מרץ</option>
+          <option value="4">אפריל</option><option value="5">מאי</option><option value="6">יוני</option>
+          <option value="7">יולי</option><option value="8">אוגוסט</option><option value="9">ספטמבר</option>
+          <option value="10">אוקטובר</option><option value="11">נובמבר</option><option value="12">דצמבר</option>
+        </select>
+        <select id="att-flt-year" onchange="attApplyMonthFilter()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa">
+          <option value="">כל השנים</option>
+        </select>
         <input type="date" id="att-flt-from" onchange="renderAttendance();renderAttendanceSummary()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa" title="מתאריך"/>
         <input type="date" id="att-flt-to" onchange="renderAttendance();renderAttendanceSummary()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa" title="עד תאריך"/>
         <button class="btn-pri" onclick="exportAttendanceExcel()">⬇ ייצוא לאקסל</button>
@@ -3798,7 +3808,7 @@ showTab=function(id,btn){
     }
     renderReinforcements();
   }
-  if(id==='t-attendance'){renderAttendance();renderAttendanceSummary();}
+  if(id==='t-attendance'){initAttYears();renderAttendance();renderAttendanceSummary();}
 };
 
 // ══════════════════════════════════════════════
@@ -4008,6 +4018,39 @@ function exportAttendanceExcel(){
   XLSX.utils.book_append_sheet(wb,ws,'נוכחות');
   XLSX.writeFile(wb,'attendance_crm.xlsx');
   showToast('✅ קובץ הורד');
+}
+
+// ══════════════════════════════════════════════
+// ATTENDANCE MONTH/YEAR FILTER
+// ══════════════════════════════════════════════
+function initAttYears(){
+  const sel=document.getElementById('att-flt-year');
+  if(!sel||sel.options.length>1) return;
+  const curYear=new Date().getFullYear();
+  for(let y=curYear;y>=curYear-3;y--){
+    const opt=document.createElement('option');
+    opt.value=y;opt.textContent=y;
+    sel.appendChild(opt);
+  }
+  // Default to current month/year
+  sel.value=curYear;
+  document.getElementById('att-flt-month').value=new Date().getMonth()+1;
+  attApplyMonthFilter();
+}
+function attApplyMonthFilter(){
+  const month=document.getElementById('att-flt-month')?.value;
+  const year=document.getElementById('att-flt-year')?.value;
+  const fromEl=document.getElementById('att-flt-from');
+  const toEl=document.getElementById('att-flt-to');
+  if(month&&year){
+    const y=+year,m=+month;
+    const lastDay=new Date(y,m,0).getDate();
+    fromEl.value=`${y}-${String(m).padStart(2,'0')}-01`;
+    toEl.value=`${y}-${String(m).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`;
+  } else if(!month&&!year){
+    fromEl.value='';toEl.value='';
+  }
+  renderAttendance();renderAttendanceSummary();
 }
 
 // ══════════════════════════════════════════════
