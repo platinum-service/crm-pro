@@ -384,6 +384,21 @@ body.dark-mode .chart-card h3{color:#bbb}
 .team-perf-good{background:#d4edda;color:#1e7e34}
 .team-perf-warn{background:#fff3cd;color:#856404}
 .team-perf-bad{background:#fde8e8;color:#9f1239}
+/* ══ INQUIRIES & REINFORCEMENT CALLS ══ */
+.inq-tbl td,.reinf-tbl td{padding:8px 10px;vertical-align:middle}
+.inq-notes-cell{min-width:140px}
+.inq-notes-input{width:100%;padding:5px 8px;border:1.5px solid #ddd;border-radius:7px;font-size:.82rem;background:#fafafa;font-family:inherit;resize:none;min-height:38px}
+.inq-notes-input:focus{outline:none;border-color:#6c63ff;background:#fff}
+.inq-status-sel{padding:5px 8px;border:1.5px solid #ddd;border-radius:7px;font-size:.82rem;background:#fafafa;font-family:inherit}
+.inq-status-sel:focus{outline:none;border-color:#6c63ff}
+.b-inq-open{background:#fde8e8;color:#9f1239}
+.b-inq-done{background:#d4edda;color:#1e7e34}
+.reinf-done-chk{width:18px;height:18px;cursor:pointer;accent-color:#6c63ff}
+.reinf-add-form{background:#f8f8ff;border:1.5px solid #e0dcff;border-radius:10px;padding:16px 18px;margin-bottom:18px}
+.reinf-add-form h3{font-size:.92rem;color:#6c63ff;font-weight:800;margin-bottom:12px}
+body.dark-mode .inq-notes-input{background:#1e2a4a;color:#e0e0e0;border-color:#3a3a6a}
+body.dark-mode .inq-status-sel{background:#1e2a4a;color:#e0e0e0;border-color:#3a3a6a}
+body.dark-mode .reinf-add-form{background:#1e2a4a;border-color:#3a3a6a}
 /* ══ END FEATURE CSS ══ */
 
 /* ── PRINT ── */
@@ -476,12 +491,16 @@ body.dark-mode .chart-card h3{color:#bbb}
     <button class="tab-btn" onclick="showTab('t-goals',this)">🎯 יעדים</button>
     <button class="tab-btn" onclick="showTab('t-calendar',this)">📅 לוח שנה</button>
     <button class="tab-btn" id="tab-team-leader" onclick="showTab('t-team-leader',this)" hidden>👥 ניהול הצוות</button>
+    <button class="tab-btn" onclick="showTab('t-inquiries',this)">📋 פניות</button>
+    <button class="tab-btn" onclick="showTab('t-reinf-calls',this)">📞 שיחות חיזוק</button>
   </div>
   <div class="tab-nav" id="agent-nav" hidden>
     <button class="tab-btn active" onclick="showTab('t-my-customers',this)">👥 הלקוחות שלי</button>
     <button class="tab-btn" onclick="showTab('t-my-tickets',this)" id="tab-btn-tickets">📬 הפניות שלי <span id="tickets-badge" hidden style="background:#e74c3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:.72rem;font-weight:900;margin-right:4px"></span></button>
     <button class="tab-btn" onclick="showTab('t-my-stats',this)">📊 הסטטיסטיקה שלי</button>
     <button class="tab-btn" onclick="showTab('t-calendar',this)">📅 לוח שנה</button>
+    <button class="tab-btn" onclick="showTab('t-inquiries',this)">📋 פניות</button>
+    <button class="tab-btn" onclick="showTab('t-reinf-calls',this)">📞 שיחות חיזוק</button>
   </div>
 
   <!-- ── Dashboard ── -->
@@ -759,6 +778,76 @@ body.dark-mode .chart-card h3{color:#bbb}
     <div class="an-card an-full" style="margin-top:14px"><h3>📈 ביצועי הצוות לפי חודש</h3><canvas id="chart-team" height="190"></canvas></div>
   </div>
 
+
+  <!-- ── Inquiries Tab ── -->
+  <div class="tab-pane" id="t-inquiries">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div style="font-size:1.1rem;font-weight:800;color:#333">📋 יומן פניות משותף</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <select id="inq-flt-status" onchange="renderInquiries()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa">
+          <option value="">כל הסטטוסים</option><option value="פתוח">פתוח</option><option value="טופל">טופל</option>
+        </select>
+        <input type="text" id="inq-srch" placeholder="חיפוש לקוח..." oninput="renderInquiries()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa;width:150px"/>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="tbl-scroll">
+        <table class="inq-tbl">
+          <thead><tr>
+            <th class="ns">תאריך</th><th class="ns">שעה</th><th class="ns">שם לקוח</th>
+            <th class="ns">ת.ז</th><th class="ns">טלפון</th><th class="ns">נציג</th>
+            <th class="ns">חברה</th><th class="ns">סטטוס</th><th class="ns">מהות הפנייה</th>
+            <th class="ns">הערות מאור</th><th class="ns">הערות נציג</th>
+          </tr></thead>
+          <tbody id="inq-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Reinforcement Calls Tab ── -->
+  <div class="tab-pane" id="t-reinf-calls">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div style="font-size:1.1rem;font-weight:800;color:#333">📞 שיחות חיזוק</div>
+    </div>
+    <div class="reinf-add-form card">
+      <h3>+ הוסף שיחת חיזוק</h3>
+      <div class="form-row">
+        <div class="fg"><label>שם לקוח <span class="req">*</span></label><input type="text" id="rf-cust-name" placeholder="שם הלקוח..."/></div>
+        <div class="fg"><label>ת.ז</label><input type="text" id="rf-cust-id" maxlength="9" placeholder="9 ספרות"/></div>
+        <div class="fg"><label>טלפון</label><input type="text" id="rf-cust-phone" placeholder="05X..."/></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>תאריך</label><input type="date" id="rf-date"/></div>
+        <div class="fg"><label>שעה</label><input type="time" id="rf-time"/></div>
+        <div class="fg"><label>שיחת חיזוק בוצעה?</label>
+          <select id="rf-done" style="padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.93rem;background:#fafafa;font-family:inherit">
+            <option value="לא בוצע">לא בוצע</option><option value="בוצע">בוצע</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>סיכום שיחה</label><textarea id="rf-summary" rows="2" placeholder="תיאור השיחה..."></textarea></div>
+        <div class="fg"><label>הערות נציג</label><textarea id="rf-agent-notes" rows="2" placeholder="הערות..."></textarea></div>
+      </div>
+      <button class="btn-pri" onclick="addReinforcement()">+ הוסף שיחת חיזוק</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="tbl-scroll">
+        <table class="reinf-tbl">
+          <thead><tr>
+            <th class="ns">תאריך</th><th class="ns">שעת פנייה</th><th class="ns">שם לקוח</th>
+            <th class="ns">ת.ז</th><th class="ns">טלפון</th><th class="ns">נציג</th>
+            <th class="ns">שיחת חיזוק</th><th class="ns">סיכום</th>
+            <th class="ns">חתימה</th><th class="ns">הערות מאור</th><th class="ns">הערות נציג</th>
+            <th class="ns">פעולות</th>
+          </tr></thead>
+          <tbody id="reinf-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /pg-app -->
 
 <!-- ══ EDIT CUSTOMER MODAL ══ -->
@@ -1010,12 +1099,14 @@ function initFirebase(){
       if(!doc.exists) return;
       const d=doc.data();
       if(d._by===_myPushId && Date.now()-d._at<8000) return;
-      if(d.users)    localStorage.setItem(KEY_USERS,    JSON.stringify(d.users));
-      if(d.customers)localStorage.setItem(KEY_CUSTS,   JSON.stringify(d.customers));
-      if(d.goals)    localStorage.setItem(KEY_GOALS,   JSON.stringify(d.goals));
-      if(d.tickets)  localStorage.setItem(KEY_TICKETS, JSON.stringify(d.tickets));
-      if(d.presence) localStorage.setItem(KEY_PRESENCE,JSON.stringify(d.presence));
-      if(d.notes)    localStorage.setItem(KEY_NOTES,   JSON.stringify(d.notes));
+      if(d.users)       localStorage.setItem(KEY_USERS,      JSON.stringify(d.users));
+      if(d.customers)   localStorage.setItem(KEY_CUSTS,      JSON.stringify(d.customers));
+      if(d.goals)       localStorage.setItem(KEY_GOALS,      JSON.stringify(d.goals));
+      if(d.tickets)     localStorage.setItem(KEY_TICKETS,    JSON.stringify(d.tickets));
+      if(d.presence)    localStorage.setItem(KEY_PRESENCE,   JSON.stringify(d.presence));
+      if(d.notes)       localStorage.setItem(KEY_NOTES,      JSON.stringify(d.notes));
+      if(d.inquiries)   localStorage.setItem(KEY_INQUIRIES,  JSON.stringify(d.inquiries));
+      if(d.reinf_calls) localStorage.setItem(KEY_REINF,      JSON.stringify(d.reinf_calls));
       if(SESSION){ renderAll(); showToast('⚡ מסונכרן'); }
     },e=>{ console.warn('Firebase snapshot error',e); setSyncError(); });
   }catch(e){ console.error('Firebase init failed',e); }
@@ -1028,6 +1119,7 @@ function fbPush(){
     _db.collection('crm').doc('data').set({
       users:getUsers(), customers:getCusts(), goals:getGoals(),
       tickets:getTickets(), presence:getPresence(), notes:getNotes(),
+      inquiries:getInquiries(), reinf_calls:getReinforcements(),
       _by:_myPushId, _at:Date.now()
     }).then(()=>setSyncOk()).catch(e=>{ console.warn('Firebase push error',e); setSyncError(); });
   },800);
@@ -1041,20 +1133,25 @@ function setSyncError(){ const d=document.getElementById('sync-dot'); if(d){ d.c
 // ══════════════════════════════════════════════
 const KEY_USERS='crm_users', KEY_CUSTS='crm_customers', KEY_GOALS='crm_goals';
 const KEY_TICKETS='crm_tickets', KEY_PRESENCE='crm_presence', KEY_NOTES='crm_notes';
+const KEY_INQUIRIES='crm_inquiries', KEY_REINF='crm_reinf_calls';
 
-const getUsers   =()=>JSON.parse(localStorage.getItem(KEY_USERS)   ||'[]');
-const getCusts   =()=>JSON.parse(localStorage.getItem(KEY_CUSTS)   ||'[]');
-const getGoals   =()=>JSON.parse(localStorage.getItem(KEY_GOALS)   ||'[]');
-const getTickets =()=>JSON.parse(localStorage.getItem(KEY_TICKETS) ||'[]');
-const getPresence=()=>JSON.parse(localStorage.getItem(KEY_PRESENCE)||'{}');
-const getNotes   =()=>JSON.parse(localStorage.getItem(KEY_NOTES)   ||'{}');
+const getUsers      =()=>JSON.parse(localStorage.getItem(KEY_USERS)      ||'[]');
+const getCusts      =()=>JSON.parse(localStorage.getItem(KEY_CUSTS)      ||'[]');
+const getGoals      =()=>JSON.parse(localStorage.getItem(KEY_GOALS)      ||'[]');
+const getTickets    =()=>JSON.parse(localStorage.getItem(KEY_TICKETS)    ||'[]');
+const getPresence   =()=>JSON.parse(localStorage.getItem(KEY_PRESENCE)   ||'{}');
+const getNotes      =()=>JSON.parse(localStorage.getItem(KEY_NOTES)      ||'{}');
+const getInquiries  =()=>JSON.parse(localStorage.getItem(KEY_INQUIRIES)  ||'[]');
+const getReinforcements=()=>JSON.parse(localStorage.getItem(KEY_REINF)   ||'[]');
 
-const saveUsers  =d=>{localStorage.setItem(KEY_USERS,   JSON.stringify(d));fbPush();};
-const saveCusts  =d=>{localStorage.setItem(KEY_CUSTS,   JSON.stringify(d));fbPush();};
-const saveGoals  =d=>{localStorage.setItem(KEY_GOALS,   JSON.stringify(d));fbPush();};
-const saveTickets=d=>{localStorage.setItem(KEY_TICKETS, JSON.stringify(d));fbPush();};
-const savePresence=d=>{localStorage.setItem(KEY_PRESENCE,JSON.stringify(d));fbPush();};
-const saveNotes  =d=>{localStorage.setItem(KEY_NOTES,   JSON.stringify(d));fbPush();};
+const saveUsers      =d=>{localStorage.setItem(KEY_USERS,      JSON.stringify(d));fbPush();};
+const saveCusts      =d=>{localStorage.setItem(KEY_CUSTS,      JSON.stringify(d));fbPush();};
+const saveGoals      =d=>{localStorage.setItem(KEY_GOALS,      JSON.stringify(d));fbPush();};
+const saveTickets    =d=>{localStorage.setItem(KEY_TICKETS,    JSON.stringify(d));fbPush();};
+const savePresence   =d=>{localStorage.setItem(KEY_PRESENCE,   JSON.stringify(d));fbPush();};
+const saveNotes      =d=>{localStorage.setItem(KEY_NOTES,      JSON.stringify(d));fbPush();};
+const saveInquiries  =d=>{localStorage.setItem(KEY_INQUIRIES,  JSON.stringify(d));fbPush();};
+const saveReinforcements=d=>{localStorage.setItem(KEY_REINF,   JSON.stringify(d));fbPush();};
 
 (function initAdmin(){
   if(!getUsers().length) saveUsers([{id:1,name:'מנהל',username:'admin',password:'admin123',role:'admin'}]);
@@ -2556,6 +2653,8 @@ function saveTicket(){
   const tickets=getTickets();
   tickets.push({id:Date.now(),customerId:ticketCustomerId,type,cancelReason,note,createdAt:Date.now(),createdBy:SESSION.id,status:'open'});
   saveTickets(tickets);
+  // Auto-create inquiry entry
+  addInquiry(ticketCustomerId, (TICKET_TYPES[type]||type)+(note?' — '+note:''));
   closeModal('ticket-modal');
   if(SESSION.role==='admin') renderCustTable(); else renderMyTable();
 }
@@ -3335,6 +3434,202 @@ if(SESSION){
     requestNotifPermission();
   },300);
 }
+
+// ══════════════════════════════════════════════
+// FEATURE 11: INQUIRIES TAB (פניות)
+// ══════════════════════════════════════════════
+
+function addInquiry(custId, subject){
+  const c=getCusts().find(x=>x.id===custId);
+  if(!c) return;
+  const now=new Date();
+  const entry={
+    id:Date.now(),
+    date:now.toLocaleDateString('he-IL'),
+    time:now.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}),
+    custName:c.name||'',
+    custId:c.idNum||'',
+    custPhone:c.phone||'',
+    agent:SESSION?.name||'',
+    agentId:SESSION?.id||null,
+    company:c.service||'',
+    status:'פתוח',
+    subject:subject||'',
+    notesMaor:'',
+    notesAgent:''
+  };
+  const inqs=getInquiries();
+  inqs.unshift(entry);
+  saveInquiries(inqs);
+}
+
+function renderInquiries(){
+  const tbody=document.getElementById('inq-body');
+  if(!tbody) return;
+  const srch=(document.getElementById('inq-srch')?.value||'').toLowerCase();
+  const fltStatus=document.getElementById('inq-flt-status')?.value||'';
+  let list=getInquiries();
+  if(srch) list=list.filter(e=>(e.custName||'').toLowerCase().includes(srch)||(e.custId||'').includes(srch));
+  if(fltStatus) list=list.filter(e=>e.status===fltStatus);
+  if(!list.length){tbody.innerHTML='<tr><td colspan="11" class="empty-row" style="text-align:center;color:#aaa;padding:24px">אין פניות עדיין</td></tr>';return;}
+  const admin=isAdmin();
+  const myId=SESSION?.id;
+  tbody.innerHTML=list.map(e=>{
+    const canEditMaor=admin;
+    const canEditAgent=admin||(e.agentId===myId);
+    const statusBadge=e.status==='טופל'?'b-inq-done':'b-inq-open';
+    // Status cell: editable by admin OR the entry's agent
+    const statusCell=canEditAgent
+      ?`<select class="inq-status-sel" onchange="updateInqField(${e.id},'status',this.value)"><option${e.status==='פתוח'?' selected':''}>פתוח</option><option${e.status==='טופל'?' selected':''}>טופל</option></select>`
+      :`<span class="badge ${statusBadge}">${escH(e.status)}</span>`;
+    const maorCell=canEditMaor
+      ?`<textarea class="inq-notes-input" rows="2" onblur="updateInqField(${e.id},'notesMaor',this.value)">${escH(e.notesMaor||'')}</textarea>`
+      :`<span style="font-size:.82rem;color:#555">${escH(e.notesMaor||'—')}</span>`;
+    const agentCell=canEditAgent
+      ?`<textarea class="inq-notes-input" rows="2" onblur="updateInqField(${e.id},'notesAgent',this.value)">${escH(e.notesAgent||'')}</textarea>`
+      :`<span style="font-size:.82rem;color:#555">${escH(e.notesAgent||'—')}</span>`;
+    return `<tr>
+      <td style="font-size:.82rem;white-space:nowrap">${escH(e.date)}</td>
+      <td style="font-size:.82rem;white-space:nowrap">${escH(e.time)}</td>
+      <td><strong style="font-size:.87rem">${escH(e.custName)}</strong></td>
+      <td style="font-size:.8rem;color:#666">${escH(e.custId||'—')}</td>
+      <td style="font-size:.82rem">${e.custPhone?`<div class="phone-cell">${escH(e.custPhone)}</div>`:'—'}</td>
+      <td style="font-size:.82rem">${escH(e.agent||'—')}</td>
+      <td style="font-size:.82rem">${escH(e.company||'—')}</td>
+      <td>${statusCell}</td>
+      <td style="font-size:.82rem;max-width:200px">${escH(e.subject||'—')}</td>
+      <td class="inq-notes-cell">${maorCell}</td>
+      <td class="inq-notes-cell">${agentCell}</td>
+    </tr>`;
+  }).join('');
+}
+
+function updateInqField(id, field, value){
+  const inqs=getInquiries();
+  const e=inqs.find(x=>x.id===id);
+  if(!e) return;
+  // Permission check
+  if(field==='notesMaor'&&!isAdmin()) return;
+  if((field==='notesAgent'||field==='status')&&!isAdmin()&&e.agentId!==SESSION?.id) return;
+  e[field]=value;
+  saveInquiries(inqs);
+  showToast('✅ עודכן');
+}
+
+// Hook: open follow-up also creates an inquiry
+const _origShowCalDayDetail=showCalDayDetail;
+showCalDayDetail=function(iso){
+  _origShowCalDayDetail(iso);
+};
+
+// Hook showHistory to create inquiry when opened from follow-up context
+// (we add an explicit button instead — see below)
+
+// ══════════════════════════════════════════════
+// FEATURE 12: REINFORCEMENT CALLS (שיחות חיזוק)
+// ══════════════════════════════════════════════
+
+function addReinforcement(){
+  const custName=document.getElementById('rf-cust-name').value.trim();
+  if(!custName){alert('נא להזין שם לקוח');return;}
+  const now=new Date();
+  const dateVal=document.getElementById('rf-date').value||now.toISOString().slice(0,10);
+  const timeVal=document.getElementById('rf-time').value||now.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+  const entry={
+    id:Date.now(),
+    date:fmtD(dateVal),
+    time:timeVal,
+    custName,
+    custId:document.getElementById('rf-cust-id').value.trim(),
+    custPhone:document.getElementById('rf-cust-phone').value.trim(),
+    agent:SESSION?.name||'',
+    agentId:SESSION?.id||null,
+    done:document.getElementById('rf-done').value,
+    summary:document.getElementById('rf-summary').value.trim(),
+    signature:SESSION?.name||'',
+    notesMaor:'',
+    notesAgent:document.getElementById('rf-agent-notes').value.trim()
+  };
+  const list=getReinforcements();
+  list.unshift(entry);
+  saveReinforcements(list);
+  // Reset form
+  ['rf-cust-name','rf-cust-id','rf-cust-phone','rf-summary','rf-agent-notes'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.getElementById('rf-done').value='לא בוצע';
+  document.getElementById('rf-date').value='';
+  document.getElementById('rf-time').value='';
+  renderReinforcements();
+  showToast('✅ שיחת חיזוק נוספה');
+}
+
+function renderReinforcements(){
+  const tbody=document.getElementById('reinf-body');
+  if(!tbody) return;
+  const list=getReinforcements();
+  const admin=isAdmin();
+  const myId=SESSION?.id;
+  if(!list.length){tbody.innerHTML='<tr><td colspan="12" class="empty-row" style="text-align:center;color:#aaa;padding:24px">אין שיחות חיזוק עדיין</td></tr>';return;}
+  tbody.innerHTML=list.map(e=>{
+    const canEdit=admin||(e.agentId===myId);
+    const doneBadge=e.done==='בוצע'?'b-inq-done':'b-inq-open';
+    const maorCell=admin
+      ?`<textarea class="inq-notes-input" rows="2" onblur="updateReinfField(${e.id},'notesMaor',this.value)">${escH(e.notesMaor||'')}</textarea>`
+      :`<span style="font-size:.82rem;color:#555">${escH(e.notesMaor||'—')}</span>`;
+    const agentNotesCell=canEdit
+      ?`<textarea class="inq-notes-input" rows="2" onblur="updateReinfField(${e.id},'notesAgent',this.value)">${escH(e.notesAgent||'')}</textarea>`
+      :`<span style="font-size:.82rem;color:#555">${escH(e.notesAgent||'—')}</span>`;
+    const delBtn=canEdit?`<button class="ab del" onclick="delReinforcement(${e.id})" title="מחק">🗑️</button>`:'';
+    return `<tr>
+      <td style="font-size:.82rem;white-space:nowrap">${escH(e.date)}</td>
+      <td style="font-size:.82rem;white-space:nowrap">${escH(e.time)}</td>
+      <td><strong style="font-size:.87rem">${escH(e.custName)}</strong></td>
+      <td style="font-size:.8rem;color:#666">${escH(e.custId||'—')}</td>
+      <td style="font-size:.82rem">${e.custPhone?`<div class="phone-cell">${escH(e.custPhone)}</div>`:'—'}</td>
+      <td style="font-size:.82rem">${escH(e.agent||'—')}</td>
+      <td><span class="badge ${doneBadge}">${escH(e.done||'לא בוצע')}</span></td>
+      <td style="font-size:.82rem;max-width:200px">${escH(e.summary||'—')}</td>
+      <td style="font-size:.82rem">${escH(e.signature||e.agent||'—')}</td>
+      <td class="inq-notes-cell">${maorCell}</td>
+      <td class="inq-notes-cell">${agentNotesCell}</td>
+      <td style="white-space:nowrap">${delBtn}</td>
+    </tr>`;
+  }).join('');
+}
+
+function updateReinfField(id, field, value){
+  const list=getReinforcements();
+  const e=list.find(x=>x.id===id);
+  if(!e) return;
+  if(field==='notesMaor'&&!isAdmin()) return;
+  if(field==='notesAgent'&&!isAdmin()&&e.agentId!==SESSION?.id) return;
+  e[field]=value;
+  saveReinforcements(list);
+  showToast('✅ עודכן');
+}
+
+function delReinforcement(id){
+  if(!confirm('מחק שיחת חיזוק זו?')) return;
+  saveReinforcements(getReinforcements().filter(x=>x.id!==id));
+  renderReinforcements();
+  showToast('🗑️ נמחק');
+}
+
+// Hook showTab to render these tabs
+const _origShowTabBase=showTab;
+showTab=function(id,btn){
+  _origShowTabBase(id,btn);
+  if(id==='t-inquiries') renderInquiries();
+  if(id==='t-reinf-calls'){
+    // Auto-fill date & time fields with current values if empty
+    const dEl=document.getElementById('rf-date');
+    const tEl=document.getElementById('rf-time');
+    if(dEl&&!dEl.value) dEl.value=new Date().toISOString().slice(0,10);
+    if(tEl&&!tEl.value) tEl.value=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}).replace('.',':');
+    renderReinforcements();
+  }
+};
 </script>
 </body>
 </html>
