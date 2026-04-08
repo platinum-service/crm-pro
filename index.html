@@ -885,6 +885,24 @@ body.dark-mode .chart-card h3{color:#bbb}
   </div>
 </div>
 
+<!-- ══ ADD SPOUSE MODAL ══ -->
+<div class="modal-bg" id="spouse-modal">
+  <div class="modal" style="max-width:400px">
+    <button class="modal-x" onclick="closeModal('spouse-modal')">✕</button>
+    <h2>👫 הוסף מבוטח נוסף</h2>
+    <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:.84rem;color:#166534">
+      הפרטים המשותפים יועתקו אוטומטית מ: <strong id="spouse-from-name"></strong>
+    </div>
+    <div class="fg"><label>שם מלא <span class="req">*</span></label><input type="text" id="sp-name" placeholder="שם המבוטח הנוסף..."/></div>
+    <div class="fg"><label>ת.ז <span class="req">*</span></label><input type="text" id="sp-id" maxlength="9" placeholder="9 ספרות"/></div>
+    <div id="sp-msg" style="font-size:.83rem;color:#dc3545;min-height:18px;margin-bottom:8px"></div>
+    <div class="modal-acts">
+      <button class="btn-mcancel" onclick="closeModal('spouse-modal')">ביטול</button>
+      <button class="btn-msave" onclick="saveSpouse()">+ הוסף מבוטח</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ WHATSAPP MODAL ══ -->
 <div class="modal-bg" id="wa-modal">
   <div class="modal" style="max-width:500px">
@@ -1411,6 +1429,47 @@ function restoreCust(id){
   else{renderMyTable();renderAgentStats();}
 }
 
+let _spouseSourceId=null;
+function openSpouseModal(id){
+  _spouseSourceId=id;
+  const c=getCusts().find(x=>x.id===id);
+  document.getElementById('spouse-from-name').textContent=c.name||'';
+  document.getElementById('sp-name').value='';
+  document.getElementById('sp-id').value='';
+  document.getElementById('sp-msg').textContent='';
+  openModal('spouse-modal');
+  setTimeout(()=>document.getElementById('sp-name').focus(),100);
+}
+function saveSpouse(){
+  const name=document.getElementById('sp-name').value.trim();
+  const idNum=document.getElementById('sp-id').value.trim();
+  const msg=document.getElementById('sp-msg');
+  if(!name){msg.textContent='נא להזין שם';return;}
+  if(!/^\d{9}$/.test(idNum)){msg.textContent='ת.ז חייבת להכיל 9 ספרות';return;}
+  const src=getCusts().find(x=>x.id===_spouseSourceId);
+  const custs=getCusts();
+  const cust={
+    id:Date.now(), name, idNum,
+    phone:src.phone||'', address:src.address||'',
+    email:'', payment:src.payment||'',
+    cardDetails:src.cardDetails||null, soDetails:src.soDetails||null,
+    status:'closed', pipelineStage:'',
+    agentId:src.agentId||SESSION.id,
+    service:src.service||'', agent:src.agent||'',
+    amount:src.amount||0,
+    meetDate:'', contractDate:'',
+    followUpDate:'', followUpNote:'',
+    date:new Date().toLocaleDateString('he-IL'),
+    _history:[]
+  };
+  addAuditEntry(cust,'created',`נוסף כמבוטח נוסף של ${src.name}`);
+  custs.push(cust);
+  saveCusts(custs);
+  closeModal('spouse-modal');
+  if(canViewAll()){renderCustTable();renderDashboard();}else{renderMyTable();renderAgentStats();}
+  showToast('✅ מבוטח נוסף נוסף בהצלחה');
+  if(cust.phone) setTimeout(()=>autoWaOnClose(cust.id),300);
+}
 function fillSpouse(id){
   const c=getCusts().find(x=>x.id===id);
   const p=SESSION.role==='admin'?'a':'m';
@@ -1509,7 +1568,7 @@ function custRow(c, users, mode){
     ${isCan?`<button class="ab res" onclick="restoreCust(${c.id})" title="שחזר">↩</button>`:''}
     <button class="ab" style="color:#3b82f6" onclick="openNewTicket(${c.id})" title="פנייה חדשה">📋</button>
     <button class="ab" onclick="showHistory(${c.id})" title="היסטוריה/הערות" style="${ticketCount||noteCount?'color:#6c63ff':''}">📂${ticketCount?`<sup style="font-size:.65rem">${ticketCount}</sup>`:''}</button>
-    <button class="ab sp" onclick="fillSpouse(${c.id})" title="בן/בת זוג">👫</button>
+    <button class="ab sp" onclick="openSpouseModal(${c.id})" title="הוסף מבוטח נוסף">👫 +</button>
     <button class="ab" onclick="openEdit(${c.id})" title="עריכה">✏️</button>
     <button class="ab del" onclick="delCustomer(${c.id})" title="מחק">🗑️</button>`;
   const rowCls=urgent?'row-urgent':isCan?'row-can':'';
