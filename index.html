@@ -393,6 +393,7 @@ body.dark-mode .chart-card h3{color:#bbb}
 .inq-status-sel:focus{outline:none;border-color:#6c63ff}
 .b-inq-open{background:#fde8e8;color:#9f1239}
 .b-inq-done{background:#d4edda;color:#1e7e34}
+.b-inq-skip{background:#f3f4f6;color:#6b7280}
 .reinf-done-chk{width:18px;height:18px;cursor:pointer;accent-color:#6c63ff}
 .reinf-add-form{background:#f8f8ff;border:1.5px solid #e0dcff;border-radius:10px;padding:16px 18px;margin-bottom:18px}
 .reinf-add-form h3{font-size:.92rem;color:#6c63ff;font-weight:800;margin-bottom:12px}
@@ -831,14 +832,23 @@ body.dark-mode .att-row-today{background:#0a2a1a}
         <div class="fg"><label>שעה</label><input type="time" id="rf-time"/></div>
       </div>
       <div class="form-row">
-        <div class="fg"><label>📞 שיחת חיזוק בוצעה?</label>
+        <div class="fg"><label>📞 שיחת חיזוק</label>
           <select id="rf-done" style="padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.93rem;background:#fafafa;font-family:inherit">
-            <option value="לא בוצע">לא בוצע</option><option value="בוצע">בוצע</option>
+            <option value="צריך לבצע">צריך לבצע</option>
+            <option value="לא צריך לבצע">לא צריך לבצע</option>
+            <option value="בוצע">בוצע</option>
           </select>
         </div>
-        <div class="fg"><label>📝 שיחת סיכום בוצעה?</label>
+        <div class="fg"><label>📝 שיחת סיכום</label>
           <select id="rf-summary-done" style="padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.93rem;background:#fafafa;font-family:inherit">
-            <option value="לא בוצע">לא בוצע</option><option value="בוצע">בוצע</option>
+            <option value="צריך לבצע">צריך לבצע</option>
+            <option value="לא צריך לבצע">לא צריך לבצע</option>
+            <option value="בוצע">בוצע</option>
+          </select>
+        </div>
+        <div class="fg"><label>נציג מבצע</label>
+          <select id="rf-assigned-agent" style="padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.93rem;background:#fafafa;font-family:inherit">
+            <option value="">-- בחר נציג --</option>
           </select>
         </div>
       </div>
@@ -853,7 +863,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
         <table class="reinf-tbl">
           <thead><tr>
             <th class="ns">תאריך</th><th class="ns">שעת פנייה</th><th class="ns">שם לקוח</th>
-            <th class="ns">ת.ז</th><th class="ns">טלפון</th><th class="ns">נציג</th>
+            <th class="ns">ת.ז</th><th class="ns">טלפון</th><th class="ns">נציג</th><th class="ns">נציג מבצע</th>
             <th class="ns">📞 שיחת חיזוק</th><th class="ns">📝 שיחת סיכום</th><th class="ns">סיכום שיחה</th>
             <th class="ns">חתימה</th><th class="ns">הערות מאור</th><th class="ns">הערות נציג</th>
             <th class="ns">פעולות</th>
@@ -3606,6 +3616,7 @@ function addReinforcement(){
     agentId:SESSION?.id||null,
     done:document.getElementById('rf-done').value,
     summaryDone:document.getElementById('rf-summary-done').value,
+    assignedAgent:document.getElementById('rf-assigned-agent').value,
     summary:document.getElementById('rf-summary').value.trim(),
     signature:SESSION?.name||'',
     notesMaor:'',
@@ -3618,8 +3629,9 @@ function addReinforcement(){
   ['rf-cust-name','rf-cust-id','rf-cust-phone','rf-summary','rf-agent-notes'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.value='';
   });
-  document.getElementById('rf-done').value='לא בוצע';
-  document.getElementById('rf-summary-done').value='לא בוצע';
+  document.getElementById('rf-done').value='צריך לבצע';
+  document.getElementById('rf-summary-done').value='צריך לבצע';
+  document.getElementById('rf-assigned-agent').value='';
   document.getElementById('rf-date').value='';
   document.getElementById('rf-time').value='';
   renderReinforcements();
@@ -3632,11 +3644,11 @@ function renderReinforcements(){
   const list=getReinforcements();
   const admin=isAdmin();
   const myId=SESSION?.id;
-  if(!list.length){tbody.innerHTML='<tr><td colspan="13" class="empty-row" style="text-align:center;color:#aaa;padding:24px">אין שיחות חיזוק עדיין</td></tr>';return;}
+  if(!list.length){tbody.innerHTML='<tr><td colspan="14" class="empty-row" style="text-align:center;color:#aaa;padding:24px">אין שיחות חיזוק עדיין</td></tr>';return;}
   tbody.innerHTML=list.map(e=>{
     const canEdit=admin||(e.agentId===myId);
-    const doneBadge=e.done==='בוצע'?'b-inq-done':'b-inq-open';
-    const sumDoneBadge=(e.summaryDone||'לא בוצע')==='בוצע'?'b-inq-done':'b-inq-open';
+    const rfBadge=v=>v==='בוצע'?'b-inq-done':v==='לא צריך לבצע'?'b-inq-skip':'b-inq-open';
+    const rfOpts=(val)=>['צריך לבצע','לא צריך לבצע','בוצע'].map(o=>`<option${val===o?' selected':''}>${o}</option>`).join('');
     const maorCell=admin
       ?`<textarea class="inq-notes-input" rows="2" onblur="updateReinfField(${e.id},'notesMaor',this.value)">${escH(e.notesMaor||'')}</textarea>`
       :`<span style="font-size:.82rem;color:#555">${escH(e.notesMaor||'—')}</span>`;
@@ -3644,17 +3656,18 @@ function renderReinforcements(){
       ?`<textarea class="inq-notes-input" rows="2" onblur="updateReinfField(${e.id},'notesAgent',this.value)">${escH(e.notesAgent||'')}</textarea>`
       :`<span style="font-size:.82rem;color:#555">${escH(e.notesAgent||'—')}</span>`;
     const reinfToggle=canEdit
-      ?`<select class="inq-status-sel" onchange="updateReinfField(${e.id},'done',this.value)" style="font-size:.8rem;padding:3px 7px;border-radius:6px;border:1.5px solid #ddd;background:#fafafa">
-          <option${e.done==='לא בוצע'?' selected':''}>לא בוצע</option>
-          <option${e.done==='בוצע'?' selected':''}>בוצע</option>
-        </select>`
-      :`<span class="badge ${doneBadge}">${escH(e.done||'לא בוצע')}</span>`;
+      ?`<select class="inq-status-sel" onchange="updateReinfField(${e.id},'done',this.value)" style="font-size:.8rem;padding:3px 7px;border-radius:6px;border:1.5px solid #ddd;background:#fafafa">${rfOpts(e.done||'צריך לבצע')}</select>`
+      :`<span class="badge ${rfBadge(e.done||'צריך לבצע')}">${escH(e.done||'צריך לבצע')}</span>`;
     const summaryToggle=canEdit
-      ?`<select class="inq-status-sel" onchange="updateReinfField(${e.id},'summaryDone',this.value)" style="font-size:.8rem;padding:3px 7px;border-radius:6px;border:1.5px solid #ddd;background:#fafafa">
-          <option${(e.summaryDone||'לא בוצע')==='לא בוצע'?' selected':''}>לא בוצע</option>
-          <option${e.summaryDone==='בוצע'?' selected':''}>בוצע</option>
+      ?`<select class="inq-status-sel" onchange="updateReinfField(${e.id},'summaryDone',this.value)" style="font-size:.8rem;padding:3px 7px;border-radius:6px;border:1.5px solid #ddd;background:#fafafa">${rfOpts(e.summaryDone||'צריך לבצע')}</select>`
+      :`<span class="badge ${rfBadge(e.summaryDone||'צריך לבצע')}">${escH(e.summaryDone||'צריך לבצע')}</span>`;
+    const allAgents=getUsers().filter(u=>u.role==='agent'||u.role==='shift_manager');
+    const assignedToggle=canEdit
+      ?`<select class="inq-status-sel" onchange="updateReinfField(${e.id},'assignedAgent',this.value)" style="font-size:.8rem;padding:3px 7px;border-radius:6px;border:1.5px solid #ddd;background:#fafafa">
+          <option value="">-- בחר --</option>
+          ${allAgents.map(a=>`<option${e.assignedAgent===a.name?' selected':''}>${escH(a.name)}</option>`).join('')}
         </select>`
-      :`<span class="badge ${sumDoneBadge}">${escH(e.summaryDone||'לא בוצע')}</span>`;
+      :`<span style="font-size:.82rem">${escH(e.assignedAgent||'—')}</span>`;
     const delBtn=canEdit?`<button class="ab del" onclick="delReinforcement(${e.id})" title="מחק">🗑️</button>`:'';
     return `<tr>
       <td style="font-size:.82rem;white-space:nowrap">${escH(e.date)}</td>
@@ -3663,6 +3676,7 @@ function renderReinforcements(){
       <td style="font-size:.8rem;color:#666">${escH(e.custId||'—')}</td>
       <td style="font-size:.82rem">${e.custPhone?`<div class="phone-cell">${escH(e.custPhone)}</div>`:'—'}</td>
       <td style="font-size:.82rem">${escH(e.agent||'—')}</td>
+      <td>${assignedToggle}</td>
       <td>${reinfToggle}</td>
       <td>${summaryToggle}</td>
       <td style="font-size:.82rem;max-width:180px">${escH(e.summary||'—')}</td>
@@ -3698,11 +3712,16 @@ showTab=function(id,btn){
   _origShowTabBase(id,btn);
   if(id==='t-inquiries') renderInquiries();
   if(id==='t-reinf-calls'){
-    // Auto-fill date & time fields with current values if empty
     const dEl=document.getElementById('rf-date');
     const tEl=document.getElementById('rf-time');
     if(dEl&&!dEl.value) dEl.value=new Date().toISOString().slice(0,10);
     if(tEl&&!tEl.value) tEl.value=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}).replace('.',':');
+    // Populate agent dropdown
+    const agSel=document.getElementById('rf-assigned-agent');
+    if(agSel){
+      const agents=getUsers().filter(u=>u.role==='agent'||u.role==='shift_manager');
+      agSel.innerHTML='<option value="">-- בחר נציג --</option>'+agents.map(a=>`<option>${escH(a.name)}</option>`).join('');
+    }
     renderReinforcements();
   }
   if(id==='t-attendance') renderAttendance();
