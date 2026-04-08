@@ -3470,14 +3470,16 @@ function renderInquiries(){
   const srch=(document.getElementById('inq-srch')?.value||'').toLowerCase();
   const fltStatus=document.getElementById('inq-flt-status')?.value||'';
   let list=getInquiries();
+  // נציג רגיל רואה רק את הפניות שלו
+  if(!canViewAll()) list=list.filter(e=>e.agentId===SESSION?.id);
   if(srch) list=list.filter(e=>(e.custName||'').toLowerCase().includes(srch)||(e.custId||'').includes(srch));
   if(fltStatus) list=list.filter(e=>e.status===fltStatus);
   if(!list.length){tbody.innerHTML='<tr><td colspan="11" class="empty-row" style="text-align:center;color:#aaa;padding:24px">אין פניות עדיין</td></tr>';return;}
   const admin=isAdmin();
   const myId=SESSION?.id;
   tbody.innerHTML=list.map(e=>{
-    const canEditMaor=admin;
-    const canEditAgent=admin||(e.agentId===myId);
+    const canEditMaor=canViewAll();
+    const canEditAgent=canViewAll()||(e.agentId===myId);
     const statusBadge=e.status==='טופל'?'b-inq-done':'b-inq-open';
     // Status cell: editable by admin OR the entry's agent
     const statusCell=canEditAgent
@@ -3510,8 +3512,8 @@ function updateInqField(id, field, value){
   const e=inqs.find(x=>x.id===id);
   if(!e) return;
   // Permission check
-  if(field==='notesMaor'&&!isAdmin()) return;
-  if((field==='notesAgent'||field==='status')&&!isAdmin()&&e.agentId!==SESSION?.id) return;
+  if(field==='notesMaor'&&!canViewAll()) return;
+  if((field==='notesAgent'||field==='status')&&!canViewAll()&&e.agentId!==SESSION?.id) return;
   e[field]=value;
   saveInquiries(inqs);
   showToast('✅ עודכן');
