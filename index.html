@@ -1353,7 +1353,7 @@ function initAdminUI(){
 function initAgentUI(){ updateTicketsBadge(); }
 
 function populateAgentSelects(){
-  const agents=getUsers().filter(u=>u.role==='agent'||u.role==='shift_manager');
+  const agents=getUsers().filter(u=>u.role==='agent'||u.role==='shift_manager'||u.role==='admin');
   ['a-agent-sel','flt-agent','gl-agent','e-agent-sel'].forEach(id=>{
     const sel=document.getElementById(id);
     if(!sel) return;
@@ -1838,7 +1838,7 @@ function toggleShiftManager(id){
 }
 
 function renderAgents(){
-  const agents=getUsers().filter(u=>u.role==='agent'||u.role==='shift_manager');
+  const agents=getUsers().filter(u=>u.role==='agent'||u.role==='shift_manager'||u.role==='admin');
   const custs=getCusts();
   const now=new Date();
   const curKey=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
@@ -1859,21 +1859,24 @@ function renderAgents(){
     const dotCls=pStatus==='online'?'dot-online':pStatus==='break'?'dot-break':'dot-offline';
     const statusLabel=pStatus==='online'?'מחובר':pStatus==='break'?'בהפסקה':pStatus==='blocked'?'חסום':'מנותק';
     const isShift=a.role==='shift_manager';
+    const isAdminUser=a.role==='admin';
     const blockedBadge=a.blocked?'<span style="background:#fde8e8;color:#9f1239;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:800;margin-right:6px">🔒 חסום</span>':'';
     const shiftBadge=isShift?'<span style="background:#fff3e0;color:#e65100;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:800;margin-right:6px">⭐ מנהל משמרת</span>':'';
-    const adminOnlyBtns=isAdmin()?`
+    const adminBadge=isAdminUser?'<span style="background:#ede9fe;color:#6c63ff;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:800;margin-right:6px">👑 מנהל</span>':'';
+    const adminOnlyBtns=isAdmin()&&!isAdminUser?`
       <button class="btn-card" onclick="toggleBlock(${a.id})" style="${a.blocked?'border-color:#198754;color:#198754':'border-color:#f59e0b;color:#d97706'}">${a.blocked?'🔓 שחרר':'🔒 חסום'}</button>
       <button class="btn-card" onclick="toggleShiftManager(${a.id})" style="${isShift?'border-color:#6c63ff;color:#6c63ff':'border-color:#e65100;color:#e65100'}">${isShift?'👤 הורד לנציג':'⭐ מנהל משמרת'}</button>
       <button class="btn-card d" onclick="delAgent(${a.id})">🗑️ מחק</button>`:'';
-    return `<div class="agent-card" style="${a.blocked?'opacity:.65':''}${isShift?';border:1.5px solid #ffcc80':''}">
-      <div class="ac-name">${escH(a.name)} ${shiftBadge}${blockedBadge}</div>
+    const editBtn=isAdmin()?`<button class="btn-card" onclick="openEditAgent(${a.id})">✏️ עריכה / עמלה</button>`:'';
+    return `<div class="agent-card" style="${a.blocked?'opacity:.65':''}${isShift?';border:1.5px solid #ffcc80':''}${isAdminUser?';border:1.5px solid #c4b5fd':''}">
+      <div class="ac-name">${escH(a.name)} ${adminBadge}${shiftBadge}${blockedBadge}</div>
       <div class="ac-user">👤 ${escH(a.username)} &nbsp;<span class="status-dot ${dotCls}"></span> <span style="font-size:.73rem;color:#888">${statusLabel}</span></div>
       <div class="ac-row">סגירות החודש <span>${closedMonth}</span></div>
       <div class="ac-row">סה"כ לקוחות <span>${total}</span></div>
       <div class="ac-row">יחס המרה <span>${conv}%</span></div>
       <div class="ac-row">עמלה (${comm.rate}%) <span style="color:#16a34a">₪${comm.amount.toLocaleString('he-IL')}</span></div>
       <div class="ac-acts">
-        <button class="btn-card" onclick="openEditAgent(${a.id})">✏️ עריכה</button>
+        ${editBtn}
         ${adminOnlyBtns}
       </div></div>`;
   }).join('');
@@ -2026,7 +2029,7 @@ function renderAgentStats(){
     <div class="stat-box" style="border-top:3px solid #6c63ff"><div class="num" style="color:#6c63ff">${myTodayClosures}</div><div class="lbl">סגירות היום 📅</div></div>
     <div class="stat-box sb-can"><div class="num">${custs.filter(c=>c.status==='cancelled').length}</div><div class="lbl">ביטולים</div></div>
     <div class="stat-box sb-rev"><div class="num">₪${active.reduce((s,c)=>s+(c.amount||0),0).toLocaleString('he-IL')}</div><div class="lbl">הכנסות שלי</div></div>
-    <div class="stat-box" style="border-top:3px solid #22c55e"><div class="num" style="color:#16a34a;font-size:1.3rem">₪${myComm.amount.toLocaleString('he-IL')}</div><div class="lbl">עמלה שלי</div></div>`;
+    <div class="stat-box" style="border-top:3px solid #22c55e"><div class="num" style="color:#16a34a;font-size:1.3rem">₪${myComm.amount.toLocaleString('he-IL')}</div><div class="lbl">עמלה שלי (${myComm.rate}%)</div></div>`;
   const now=new Date();
   const goal=getGoals().find(g=>g.agentId===SESSION.id&&g.year===now.getFullYear()&&g.month===now.getMonth()+1)||null;
   const {curKey}=curPrevKeys();
