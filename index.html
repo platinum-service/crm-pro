@@ -319,6 +319,32 @@ body.dark-mode .saved-filters-area{background:#1e2a4a;border-bottom-color:#2a2a4
 .sf-pill .sf-x:hover{opacity:1;color:#dc3545}
 .btn-save-filter{padding:4px 12px;background:#6c63ff;color:#fff;border:none;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;white-space:nowrap}
 .btn-save-filter:hover{background:#574fd6}
+/* ── UX IMPROVEMENTS ── */
+tr.tr-closed td{background:#f0fdf4}
+tr.tr-cancelled td{background:#f9f9f9;color:#999}
+tr.tr-cancelled td .badge{opacity:.7}
+.qflt-btn{padding:5px 14px;border-radius:20px;border:1.5px solid #ddd;background:#fff;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.qflt-btn:hover{border-color:#6c63ff;color:#6c63ff}
+.qflt-btn.qf-active{background:#6c63ff;color:#fff;border-color:#6c63ff}
+.qflt-btn.qf-closed{border-color:#16a34a;color:#16a34a}.qflt-btn.qf-closed.qf-active{background:#16a34a}
+.qflt-btn.qf-open{border-color:#e74c3c;color:#e74c3c}.qflt-btn.qf-open.qf-active{background:#e74c3c;color:#fff}
+.qflt-btn.qf-cancelled{border-color:#888;color:#888}.qflt-btn.qf-cancelled.qf-active{background:#888;color:#fff}
+.punch-banner{background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;padding:11px 18px;margin:0 0 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.9rem;font-weight:700;color:#856404}
+.followup-banner-top{background:#e8f4fd;border:1.5px solid #3b82f6;border-radius:10px;padding:11px 18px;margin:0 0 14px;font-size:.88rem;color:#1e40af}
+.agent-top-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.ats-box{flex:1;min-width:100px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);padding:12px;text-align:center}
+.ats-box .ats-n{font-size:1.6rem;font-weight:900;color:#6c63ff}
+.ats-box .ats-l{font-size:.75rem;color:#888;margin-top:3px}
+.cust-row-click{cursor:pointer}.cust-row-click:hover td{background:rgba(108,99,255,.04)!important}
+.extra-fields-toggle{background:none;border:1.5px dashed #ddd;border-radius:8px;width:100%;padding:8px;font-size:.83rem;color:#888;cursor:pointer;margin:8px 0;text-align:center;font-weight:700}
+.extra-fields-toggle:hover{border-color:#6c63ff;color:#6c63ff}
+.extra-fields{display:none}
+.extra-fields.open{display:block}
+.rf-cust-search{position:relative}
+.rf-cust-dropdown{position:absolute;top:100%;right:0;left:0;background:#fff;border:1.5px solid #ddd;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:100;max-height:200px;overflow-y:auto;display:none}
+.rf-cust-dropdown.show{display:block}
+.rf-cust-opt{padding:9px 13px;cursor:pointer;font-size:.85rem;border-bottom:1px solid #f0f0f0}
+.rf-cust-opt:hover{background:#f0f0ff}
 
 /* Calendar View */
 .cal-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -493,6 +519,13 @@ body.dark-mode .att-row-today{background:#0a2a1a}
     <button class="btn-logout" onclick="doLogout()">התנתק</button>
   </div>
 
+  <!-- ── Banners ── -->
+  <div id="punch-banner" hidden class="punch-banner" style="max-width:1200px;margin:10px auto 0">
+    ⏱ טרם התחלת משמרת היום
+    <button onclick="manualPunch();hidePunchBanner()" style="background:#f59e0b;color:#fff;border:none;padding:5px 14px;border-radius:7px;font-size:.82rem;font-weight:700;cursor:pointer">▶ התחל עכשיו</button>
+  </div>
+  <div id="followup-banner-top" hidden class="followup-banner-top" style="max-width:1200px;margin:8px auto 0"></div>
+
   <div class="tab-nav" id="admin-nav" hidden>
     <button class="tab-btn active" onclick="showTab('t-dashboard',this)">📊 לוח בקרה</button>
     <button class="tab-btn" onclick="showTab('t-customers',this)">👥 לקוחות</button>
@@ -571,23 +604,29 @@ body.dark-mode .att-row-today{background:#0a2a1a}
         <button class="btn-pri" style="margin-top:8px" onclick="smartPaste('a')">⚡ מלא שדות</button>
       </details>
       <div class="form-row"><div class="fg"><label>שם לקוח <span class="req">*</span></label><input type="text" id="a-name"/></div><div class="fg"><label>ת.ז <span class="req">*</span></label><input type="text" id="a-id" maxlength="9"/></div></div>
-      <div class="form-row"><div class="fg"><label>טלפון</label><input type="text" id="a-phone" placeholder="05X-XXXXXXX"/></div><div class="fg"><label>כתובת</label><input type="text" id="a-address"/></div></div>
-      <div class="form-row"><div class="fg"><label>אימייל</label><input type="email" id="a-email"/></div><div class="fg"><label>אמצעי תשלום</label><select id="a-payment" onchange="onPaymentChange('a')"><option value="">— לא נבחר —</option><option value="credit">💳 כרטיס אשראי</option><option value="standing">🔄 הוראת קבע</option></select></div></div>
+      <div class="form-row"><div class="fg"><label>טלפון</label><input type="text" id="a-phone" placeholder="05X-XXXXXXX"/></div><div class="fg"><label>כתב שירות <span class="req">*</span></label><input type="text" id="a-service" placeholder="שם כתב השירות..."/></div></div>
+      <div class="form-row"><div class="fg"><label>סטטוס מכירה</label><select id="a-status" onchange="onStatusChange('a')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select></div><div class="fg"><label>נציג אחראי</label><select id="a-agent-sel"></select></div></div>
+      <button class="extra-fields-toggle" onclick="toggleExtraFields('a-extra')">▼ פרטים נוספים (כתובת, תשלום, תאריכים...)</button>
+      <div id="a-extra" class="extra-fields">
+      <div class="form-row"><div class="fg"><label>כתובת</label><input type="text" id="a-address"/></div><div class="fg"><label>אימייל</label><input type="email" id="a-email"/></div></div>
+      <div class="form-row"><div class="fg"><label>אמצעי תשלום</label><select id="a-payment" onchange="onPaymentChange('a')"><option value="">— לא נבחר —</option><option value="credit">💳 כרטיס אשראי</option><option value="standing">🔄 הוראת קבע</option></select></div><div class="fg"><label>סכום עסקה (₪)</label><input type="text" id="a-amount" placeholder="0"/></div></div>
       <div id="a-card-wrap" style="display:none"><div style="background:#f0f0ff;border:1.5px solid #c4b5fd;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#6c63ff;margin-bottom:10px">💳 פרטי כרטיס אשראי</div><div class="form-row"><div class="fg"><label>4 ספרות אחרונות</label><input type="text" id="a-card-last4" maxlength="4" placeholder="1234"/></div><div class="fg"><label>תוקף (MM/YY)</label><input type="text" id="a-card-expiry" maxlength="5" placeholder="12/27"/></div></div><div class="form-row"><div class="fg"><label>שם בעל הכרטיס</label><input type="text" id="a-card-holder"/></div><div class="fg"><label>סוג כרטיס</label><select id="a-card-type"><option value="">— בחר —</option><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="amex">American Express</option><option value="isracard">ישראכרט</option><option value="diners">דיינרס</option></select></div></div></div></div>
       <div id="a-so-wrap" style="display:none"><div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#16a34a;margin-bottom:10px">🔄 פרטי הוראת קבע</div><div class="form-row"><div class="fg"><label>שם הבנק</label><input type="text" id="a-so-bank" placeholder="הפועלים, לאומי..."/></div><div class="fg"><label>מספר סניף</label><input type="text" id="a-so-branch" placeholder="123"/></div></div><div class="form-row"><div class="fg"><label>מספר חשבון</label><input type="text" id="a-so-account"/></div><div class="fg"><label>יום חיוב בחודש</label><input type="number" id="a-so-day" min="1" max="31" placeholder="1"/></div></div></div></div>
-      <div class="form-row">
-        <div class="fg"><label>סטטוס מכירה</label><select id="a-status" onchange="onStatusChange('a')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select></div>
-        <div class="fg" id="a-pipeline-wrap"><label>שלב Pipeline</label><select id="a-pipeline"><option value="">— לא צוין —</option><option value="new">🆕 ליד חדש</option><option value="contacted">📞 יצירת קשר</option><option value="demo">🖥️ הצגת מוצר</option><option value="negotiating">🤝 מו"מ</option></select></div>
-      </div>
-      <div class="form-row"><div class="fg"><label>נציג אחראי</label><select id="a-agent-sel"></select></div><div class="fg"><label>כתב שירות <span class="req">*</span></label><input type="text" id="a-service" placeholder="שם כתב השירות..."/></div></div>
-      <div class="form-row"><div class="fg"><label>שם הנציג שסגר</label><input type="text" id="a-agent"/></div><div class="fg"><label>סכום עסקה (₪)</label><input type="text" id="a-amount" placeholder="0"/></div></div>
+      <div class="form-row"><div class="fg"><label>שם הנציג שסגר</label><input type="text" id="a-agent"/></div><div class="fg" id="a-pipeline-wrap"><label>שלב Pipeline</label><select id="a-pipeline"><option value="">— לא צוין —</option><option value="new">🆕 ליד חדש</option><option value="contacted">📞 יצירת קשר</option><option value="demo">🖥️ הצגת מוצר</option><option value="negotiating">🤝 מו"מ</option></select></div></div>
       <div class="form-row" id="a-mdate-wrap"><div class="fg"><label>תאריך יצירת קשר</label><input type="date" id="a-mdate"/></div><div class="fg"><label>תאריך התחלת חוזה</label><input type="date" id="a-cdate"/></div></div>
       <div class="form-row" id="a-followup-wrap"><div class="fg"><label>📅 תזכורת לפולו-אפ</label><input type="date" id="a-followup"/></div><div class="fg"><label>הערה לתזכורת</label><input type="text" id="a-followup-note" placeholder="לתאם פגישה..."/></div></div>
+      </div><!-- /a-extra -->
       <button class="btn-pri full" onclick="addCustomer()">+ הוסף לקוח</button>
     </div>
     <div class="card" style="padding:0;overflow:hidden">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px;border-bottom:1.5px solid #f0f0f0;flex-wrap:wrap;gap:8px">
-        <div style="font-size:.95rem;font-weight:700;color:#333">לקוחות</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div style="font-size:.95rem;font-weight:700;color:#333">לקוחות</div>
+          <button class="qflt-btn qf-active" id="qfadm-all" onclick="setAdmQFlt('',this)">הכל</button>
+          <button class="qflt-btn qf-closed" id="qfadm-closed" onclick="setAdmQFlt('closed',this)">✅ סגר</button>
+          <button class="qflt-btn qf-open" id="qfadm-open" onclick="setAdmQFlt('open',this)">⏳ לא סגר</button>
+          <button class="qflt-btn qf-cancelled" id="qfadm-cancelled" onclick="setAdmQFlt('cancelled',this)">❌ בוטל</button>
+        </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <input type="text" id="srch" placeholder="חיפוש..." oninput="renderCustTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa;width:140px"/>
           <select id="flt-status" onchange="renderCustTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa">
@@ -669,6 +708,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
 
   <!-- ── My Customers (agent) ── -->
   <div class="tab-pane" id="t-my-customers">
+    <div id="agent-top-stats" class="agent-top-stats"></div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
       <div style="font-size:1.1rem;font-weight:800;color:#333">הלקוחות שלי</div>
     </div>
@@ -680,23 +720,29 @@ body.dark-mode .att-row-today{background:#0a2a1a}
         <button class="btn-pri" style="margin-top:8px" onclick="smartPaste('m')">⚡ מלא שדות</button>
       </details>
       <div class="form-row"><div class="fg"><label>שם לקוח <span class="req">*</span></label><input type="text" id="m-name"/></div><div class="fg"><label>ת.ז <span class="req">*</span></label><input type="text" id="m-id" maxlength="9"/></div></div>
-      <div class="form-row"><div class="fg"><label>טלפון</label><input type="text" id="m-phone" placeholder="05X-XXXXXXX"/></div><div class="fg"><label>כתובת</label><input type="text" id="m-address"/></div></div>
-      <div class="form-row"><div class="fg"><label>אימייל</label><input type="email" id="m-email"/></div><div class="fg"><label>אמצעי תשלום</label><select id="m-payment" onchange="onPaymentChange('m')"><option value="">— לא נבחר —</option><option value="credit">💳 כרטיס אשראי</option><option value="standing">🔄 הוראת קבע</option></select></div></div>
+      <div class="form-row"><div class="fg"><label>טלפון</label><input type="text" id="m-phone" placeholder="05X-XXXXXXX"/></div><div class="fg"><label>כתב שירות <span class="req">*</span></label><input type="text" id="m-service" placeholder="שם כתב השירות..."/></div></div>
+      <div class="form-row"><div class="fg"><label>סטטוס מכירה</label><select id="m-status" onchange="onStatusChange('m')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select></div><div class="fg"><label>סכום עסקה (₪)</label><input type="text" id="m-amount" placeholder="0"/></div></div>
+      <button class="extra-fields-toggle" onclick="toggleExtraFields('m-extra')">▼ פרטים נוספים (כתובת, תשלום, תאריכים...)</button>
+      <div id="m-extra" class="extra-fields">
+      <div class="form-row"><div class="fg"><label>כתובת</label><input type="text" id="m-address"/></div><div class="fg"><label>אימייל</label><input type="email" id="m-email"/></div></div>
+      <div class="form-row"><div class="fg"><label>אמצעי תשלום</label><select id="m-payment" onchange="onPaymentChange('m')"><option value="">— לא נבחר —</option><option value="credit">💳 כרטיס אשראי</option><option value="standing">🔄 הוראת קבע</option></select></div><div class="fg"><label>שם הנציג שסגר</label><input type="text" id="m-agent"/></div></div>
       <div id="m-card-wrap" style="display:none"><div style="background:#f0f0ff;border:1.5px solid #c4b5fd;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#6c63ff;margin-bottom:10px">💳 פרטי כרטיס אשראי</div><div class="form-row"><div class="fg"><label>4 ספרות אחרונות</label><input type="text" id="m-card-last4" maxlength="4"/></div><div class="fg"><label>תוקף (MM/YY)</label><input type="text" id="m-card-expiry" maxlength="5" placeholder="12/27"/></div></div><div class="form-row"><div class="fg"><label>שם בעל הכרטיס</label><input type="text" id="m-card-holder"/></div><div class="fg"><label>סוג כרטיס</label><select id="m-card-type"><option value="">— בחר —</option><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="amex">American Express</option><option value="isracard">ישראכרט</option><option value="diners">דיינרס</option></select></div></div></div></div>
       <div id="m-so-wrap" style="display:none"><div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#16a34a;margin-bottom:10px">🔄 פרטי הוראת קבע</div><div class="form-row"><div class="fg"><label>שם הבנק</label><input type="text" id="m-so-bank"/></div><div class="fg"><label>מספר סניף</label><input type="text" id="m-so-branch"/></div></div><div class="form-row"><div class="fg"><label>מספר חשבון</label><input type="text" id="m-so-account"/></div><div class="fg"><label>יום חיוב</label><input type="number" id="m-so-day" min="1" max="31"/></div></div></div></div>
-      <div class="form-row">
-        <div class="fg"><label>סטטוס מכירה</label><select id="m-status" onchange="onStatusChange('m')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select></div>
-        <div class="fg" id="m-pipeline-wrap"><label>שלב Pipeline</label><select id="m-pipeline"><option value="">— לא צוין —</option><option value="new">🆕 ליד חדש</option><option value="contacted">📞 יצירת קשר</option><option value="demo">🖥️ הצגת מוצר</option><option value="negotiating">🤝 מו"מ</option></select></div>
-      </div>
-      <div class="form-row"><div class="fg"><label>כתב שירות <span class="req">*</span></label><input type="text" id="m-service" placeholder="שם כתב השירות..."/></div><div class="fg"><label>שם הנציג שסגר</label><input type="text" id="m-agent"/></div></div>
+      <div class="form-row" id="m-pipeline-wrap"><div class="fg"><label>שלב Pipeline</label><select id="m-pipeline"><option value="">— לא צוין —</option><option value="new">🆕 ליד חדש</option><option value="contacted">📞 יצירת קשר</option><option value="demo">🖥️ הצגת מוצר</option><option value="negotiating">🤝 מו"מ</option></select></div></div>
       <div class="form-row" id="m-mdate-wrap"><div class="fg"><label>תאריך יצירת קשר</label><input type="date" id="m-mdate"/></div><div class="fg"><label>תאריך התחלת חוזה</label><input type="date" id="m-cdate"/></div></div>
       <div class="form-row" id="m-followup-wrap"><div class="fg"><label>📅 תזכורת לפולו-אפ</label><input type="date" id="m-followup"/></div><div class="fg"><label>הערה לתזכורת</label><input type="text" id="m-followup-note" placeholder="לתאם פגישה..."/></div></div>
-      <div class="fg"><label>סכום עסקה (₪)</label><input type="text" id="m-amount" placeholder="0"/></div>
+      </div><!-- /m-extra -->
       <button class="btn-pri full" onclick="addMyCustomer()">+ הוסף לקוח</button>
     </div>
     <div class="card" style="padding:0;overflow:hidden">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px;border-bottom:1.5px solid #f0f0f0;flex-wrap:wrap;gap:8px">
-        <div style="font-size:.95rem;font-weight:700;color:#333">לקוחות</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div style="font-size:.95rem;font-weight:700;color:#333">לקוחות</div>
+          <button class="qflt-btn qf-active" id="qfagt-all" onclick="setAgtQFlt('',this)">הכל</button>
+          <button class="qflt-btn qf-closed" id="qfagt-closed" onclick="setAgtQFlt('closed',this)">✅ סגר</button>
+          <button class="qflt-btn qf-open" id="qfagt-open" onclick="setAgtQFlt('open',this)">⏳ לא סגר</button>
+          <button class="qflt-btn qf-cancelled" id="qfagt-cancelled" onclick="setAgtQFlt('cancelled',this)">❌ בוטל</button>
+        </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <input type="text" id="m-srch" placeholder="חיפוש..." oninput="renderMyTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa;width:140px"/>
           <select id="m-flt" onchange="renderMyTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa"><option value="">כל הסטטוסים</option><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select>
@@ -837,7 +883,11 @@ body.dark-mode .att-row-today{background:#0a2a1a}
     <div class="reinf-add-form card">
       <h3>+ הוסף שיחת חיזוק</h3>
       <div class="form-row">
-        <div class="fg"><label>שם לקוח <span class="req">*</span></label><input type="text" id="rf-cust-name" placeholder="שם הלקוח..."/></div>
+        <div class="fg rf-cust-search">
+          <label>שם לקוח <span class="req">*</span></label>
+          <input type="text" id="rf-cust-name" placeholder="הקלד שם או חפש לקוח קיים..." oninput="rfCustSearch()" autocomplete="off"/>
+          <div class="rf-cust-dropdown" id="rf-cust-dropdown"></div>
+        </div>
         <div class="fg"><label>ת.ז</label><input type="text" id="rf-cust-id" maxlength="9" placeholder="9 ספרות"/></div>
         <div class="fg"><label>טלפון</label><input type="text" id="rf-cust-phone" placeholder="05X..."/></div>
       </div>
@@ -1330,6 +1380,7 @@ function startApp(){
   }
   startClock(); renderAll();
   initPresence();
+  setTimeout(()=>{showPunchBanner();showFollowUpBanner();},400);
 }
 
 if(SESSION){
@@ -1341,6 +1392,7 @@ if(SESSION){
     else{document.getElementById('agent-nav').hidden=false;document.getElementById('t-my-customers').classList.add('active');document.getElementById('t-dashboard').classList.remove('active');initAgentUI();}
     startClock(); renderAll();
     initPresence();
+    setTimeout(()=>{showPunchBanner();showFollowUpBanner();},400);
   }
 }
 
@@ -1675,6 +1727,97 @@ const PIPELINE_LABELS={'new':'🆕 ליד חדש','contacted':'📞 יצירת �
 const STATUS_LABELS={closed:'סגר',open:'לא סגר',cancelled:'בוטל'};
 
 // ══════════════════════════════════════════════
+// UX IMPROVEMENTS
+// ══════════════════════════════════════════════
+function toggleExtraFields(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const btn=el.previousElementSibling;
+  el.classList.toggle('open');
+  if(btn&&btn.classList.contains('extra-fields-toggle'))
+    btn.textContent=el.classList.contains('open')?'▲ הסתר פרטים נוספים':'▼ פרטים נוספים (כתובת, תשלום, תאריכים...)';
+}
+function setAdmQFlt(val,btn){
+  document.getElementById('flt-status').value=val;
+  document.querySelectorAll('[id^="qfadm-"]').forEach(b=>b.classList.remove('qf-active'));
+  if(btn) btn.classList.add('qf-active');
+  renderCustTable();
+}
+function setAgtQFlt(val,btn){
+  document.getElementById('m-flt').value=val;
+  document.querySelectorAll('[id^="qfagt-"]').forEach(b=>b.classList.remove('qf-active'));
+  if(btn) btn.classList.add('qf-active');
+  renderMyTable();
+}
+function renderAgentTopStats(){
+  const el=document.getElementById('agent-top-stats');
+  if(!el||!SESSION) return;
+  const custs=getCusts().filter(c=>c.agentId===SESSION.id);
+  const today=new Date().toLocaleDateString('he-IL');
+  const {curKey}=curPrevKeys?curPrevKeys():{curKey:''};
+  const todayClose=custs.filter(c=>c.status==='closed'&&c.date===today).length;
+  const monthClose=custs.filter(c=>c.status==='closed'&&parseHeDate(c.date)?.key===curKey).length;
+  const comm=agentCommission(SESSION.id,custs);
+  el.innerHTML=`
+    <div class="ats-box"><div class="ats-n" style="color:#16a34a">${todayClose}</div><div class="ats-l">סגירות היום</div></div>
+    <div class="ats-box"><div class="ats-n">${monthClose}</div><div class="ats-l">סגירות החודש</div></div>
+    <div class="ats-box"><div class="ats-n" style="color:#16a34a;font-size:1.2rem">₪${comm.amount.toLocaleString('he-IL')}</div><div class="ats-l">עמלה שלי (${comm.rate}%)</div></div>
+    <div class="ats-box"><div class="ats-n" style="color:#6c63ff">${custs.length}</div><div class="ats-l">סה"כ לקוחות</div></div>`;
+}
+function showPunchBanner(){
+  if(!SESSION) return;
+  const banner=document.getElementById('punch-banner');
+  if(!banner) return;
+  const today=new Date().toLocaleDateString('he-IL');
+  const open=getAttendance().find(e=>e.agentId===SESSION.id&&e.date===today&&e.clockOut===null);
+  banner.hidden=!!open; // hide if already punched in
+}
+function hidePunchBanner(){
+  const b=document.getElementById('punch-banner');
+  if(b) b.hidden=true;
+}
+function showFollowUpBanner(){
+  const el=document.getElementById('followup-banner-top');
+  if(!el) return;
+  const today=new Date().toLocaleDateString('he-IL');
+  const todayISO=new Date().toISOString().slice(0,10);
+  const custs=getCusts().filter(c=>{
+    if(!c.followUpDate) return false;
+    if(canViewAll()) return c.followUpDate===todayISO;
+    return c.agentId===SESSION?.id&&c.followUpDate===todayISO;
+  });
+  if(!custs.length){el.hidden=true;return;}
+  el.hidden=false;
+  el.innerHTML=`📅 <strong>יש לך ${custs.length} לקוחות עם תזכורת פולו-אפ להיום:</strong> ${custs.slice(0,3).map(c=>`<strong>${escH(c.name)}</strong>`).join(', ')}${custs.length>3?` ועוד ${custs.length-3}`:''}`;
+}
+function rfCustSearch(){
+  const q=(document.getElementById('rf-cust-name').value||'').trim().toLowerCase();
+  const dd=document.getElementById('rf-cust-dropdown');
+  if(!q||q.length<2){dd.classList.remove('show');return;}
+  const custs=getCusts().filter(c=>
+    (c.name||'').toLowerCase().includes(q)||(c.phone||'').includes(q)||(c.idNum||'').includes(q)
+  ).slice(0,8);
+  if(!custs.length){dd.classList.remove('show');return;}
+  dd.innerHTML=custs.map(c=>`<div class="rf-cust-opt" onclick="rfPickCust(${c.id})">
+    <strong>${escH(c.name)}</strong>
+    <span style="color:#888;font-size:.78rem;margin-right:8px">${escH(c.phone||'')} ${escH(c.idNum||'')}</span>
+  </div>`).join('');
+  dd.classList.add('show');
+}
+function rfPickCust(id){
+  const c=getCusts().find(x=>x.id===id);
+  if(!c) return;
+  document.getElementById('rf-cust-name').value=c.name||'';
+  document.getElementById('rf-cust-id').value=c.idNum||'';
+  document.getElementById('rf-cust-phone').value=c.phone||'';
+  document.getElementById('rf-cust-dropdown').classList.remove('show');
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.rf-cust-search'))
+    document.getElementById('rf-cust-dropdown')?.classList.remove('show');
+});
+
+// ══════════════════════════════════════════════
 //  RENDER CUSTOMER TABLE (admin)
 // ══════════════════════════════════════════════
 function renderCustTable(){
@@ -1719,6 +1862,7 @@ function renderMyTable(){
   list.sort((a,b)=>{let va=a[sortKm]??'',vb=b[sortKm]??'';if(sortKm==='amount'){va=+va;vb=+vb;}return va<vb?-sortDm:va>vb?sortDm:0;});
   document.getElementById('my-body').innerHTML=list.map(c=>custRow(c,getUsers(),'agent')).join('');
   document.getElementById('my-empty').hidden=list.length>0;
+  renderAgentTopStats();
 }
 
 const PAYMENT_METHODS={credit:'💳 כרטיס אשראי',standing:'🔄 הוראת קבע'};
@@ -1757,7 +1901,8 @@ function custRow(c, users, mode){
     <button class="ab sp" onclick="openSpouseModal(${c.id})" title="הוסף מבוטח נוסף">👫 +</button>
     <button class="ab" onclick="openEdit(${c.id})" title="עריכה">✏️</button>
     <button class="ab del" onclick="delCustomer(${c.id})" title="מחק">🗑️</button>`;
-  const rowCls=urgent?'row-urgent':isCan?'row-can':'';
+  const trColor=c.status==='closed'?'tr-closed':c.status==='cancelled'?'tr-cancelled':'';
+  const rowCls=[urgent?'row-urgent':isCan?'row-can':'',trColor].filter(Boolean).join(' ');
   if(mode==='admin') return `<tr class="${rowCls}">
     <td><strong>${escH(c.name)}</strong></td><td style="font-size:.8rem;color:#666">${escH(c.idNum||'—')}</td>
     <td>${phone}</td><td style="font-size:.8rem">${escH(c.address||'—')}</td>
