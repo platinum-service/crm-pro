@@ -3946,8 +3946,8 @@ showTab=function(id,btn){
     // Populate agent dropdown
     const agSel=document.getElementById('rf-assigned-agent');
     if(agSel){
-      const agents=getUsers().filter(u=>u.role==='agent'||u.role==='shift_manager');
-      agSel.innerHTML='<option value="">-- בחר נציג --</option>'+agents.map(a=>`<option>${escH(a.name)}</option>`).join('');
+      const agents=getUsers().filter(u=>['agent','shift_manager','admin'].includes(u.role));
+      agSel.innerHTML='<option value="">-- בחר נציג --</option>'+agents.map(a=>`<option value="${escH(a.name)}">${escH(a.name)}</option>`).join('');
     }
     renderReinforcements();
   }
