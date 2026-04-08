@@ -474,6 +474,10 @@ body.dark-mode .att-row-today{background:#0a2a1a}
       <span class="break-timer-hdr" id="break-timer"></span>
       <button class="btn-break-hdr" id="btn-break" onclick="toggleBreak()">☕ יצאתי להפסקה</button>
     </div>
+    <div id="punch-area" hidden style="display:flex;align-items:center;gap:7px">
+      <span id="punch-timer" style="font-size:.8rem;color:#22c55e;font-weight:800;font-family:monospace;white-space:nowrap"></span>
+      <button id="btn-punch" onclick="manualPunch()" style="background:#22c55e;color:#fff;border:none;padding:5px 13px;border-radius:7px;font-size:.81rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s">▶ התחל משמרת</button>
+    </div>
     <div class="hdr-search-wrap" id="hdr-search-wrap" hidden>
       <span class="hdr-search-icon">🔍</span>
       <input type="text" class="hdr-search-input" id="global-search-input" placeholder="חיפוש גלובלי..." oninput="onGlobalSearch()" onblur="setTimeout(()=>hideSearchDropdown(),200)" autocomplete="off"/>
@@ -1341,7 +1345,7 @@ function startClock(){
     if(SESSION) updateBreakUI();
     if(SESSION?.role==='admin') renderPresencePanel();
   },10000);
-  setInterval(()=>{ if(SESSION) updateBreakUI(); },1000);
+  setInterval(()=>{ if(SESSION){updateBreakUI();updatePunchUI();} },1000);
 }
 function updateClock(){
   const now=new Date();
@@ -2454,7 +2458,9 @@ function initPresence(){
   }
   savePresence(p);
   document.getElementById('break-area').hidden=false;
+  document.getElementById('punch-area').hidden=false;
   updateBreakUI();
+  updatePunchUI();
 }
 function setOffline(){
   if(!SESSION) return;
@@ -3727,6 +3733,40 @@ function clockOut(){
   saveAttendance(list);
 }
 
+function manualPunch(){
+  if(!SESSION) return;
+  const list=getAttendance();
+  const today=new Date().toLocaleDateString('he-IL');
+  const open=list.find(e=>e.agentId===SESSION.id&&e.date===today&&e.clockOut===null);
+  if(!open){
+    clockIn();
+    showToast('✅ התחלת משמרת נרשמה');
+  } else {
+    if(!confirm('האם לסיים את המשמרת?')) return;
+    clockOut();
+    showToast('⏹ סיום משמרת נרשם');
+  }
+  updatePunchUI();
+}
+function updatePunchUI(){
+  if(!SESSION) return;
+  const btn=document.getElementById('btn-punch');
+  const timerEl=document.getElementById('punch-timer');
+  if(!btn||!timerEl) return;
+  const list=getAttendance();
+  const today=new Date().toLocaleDateString('he-IL');
+  const open=list.find(e=>e.agentId===SESSION.id&&e.date===today&&e.clockOut===null);
+  if(open){
+    const elapsed=Date.now()-open.clockIn;
+    timerEl.textContent='⏱ '+fmtDuration(elapsed);
+    btn.textContent='■ סיים משמרת';
+    btn.style.background='#ef4444';
+  } else {
+    timerEl.textContent='';
+    btn.textContent='▶ התחל משמרת';
+    btn.style.background='#22c55e';
+  }
+}
 function calcWorkTime(entry){
   if(!entry.clockIn) return {grossMs:0,breakMs:0,netMs:0};
   const clockOut=entry.clockOut||Date.now();
