@@ -1778,9 +1778,9 @@ async function addAgent(){
   const name=document.getElementById('ag-name').value.trim();
   const username=document.getElementById('ag-user').value.trim();
   const password=document.getElementById('ag-pass').value;
-  if(!name||!username||!password){alert('נא למלא את כל השדות');return;}
+  if(!name||!username||!password){showToast('⚠️ נא למלא את כל השדות');return;}
   const users=getUsers();
-  if(users.find(u=>u.username===username)){alert('שם משתמש כבר קיים');return;}
+  if(users.find(u=>u.username===username)){showToast('⚠️ שם משתמש כבר קיים');return;}
   const passwordHash=await hashPass(password);
   users.push({id:Date.now(),name,username,passwordHash,role:'agent'});
   saveUsers(users);
@@ -1790,9 +1790,10 @@ async function addAgent(){
 
 let editingAgentId=null;
 function openEditAgent(id){
+  closeAllModals();
   const users=getUsers();
   const u=users.find(x=>x.id===id||x.id===+id||String(x.id)===String(id));
-  if(!u){showToast('⚠️ נציג לא נמצא');return;}
+  if(!u){showToast('⚠️ נציג לא נמצא — ID: '+id);return;}
   editingAgentId=u.id;
   sv('ea-name',u.name);sv('ea-user',u.username);sv('ea-pass','');
   sv('ea-commission',u.commissionRate??10);
@@ -2679,6 +2680,7 @@ function openModal(id){
   document.getElementById(id).classList.add('open');
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeAllModals(){document.querySelectorAll('.modal-bg.open').forEach(m=>m.classList.remove('open'));}
 
 async function saveProfile(){
   const profMsg=document.getElementById('prof-msg');
