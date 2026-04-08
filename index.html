@@ -549,7 +549,7 @@ body.dark-mode .chart-card h3{color:#bbb}
         <div class="fg"><label>סטטוס מכירה</label><select id="a-status" onchange="onStatusChange('a')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select></div>
         <div class="fg" id="a-pipeline-wrap"><label>שלב Pipeline</label><select id="a-pipeline"><option value="">— לא צוין —</option><option value="new">🆕 ליד חדש</option><option value="contacted">📞 יצירת קשר</option><option value="demo">🖥️ הצגת מוצר</option><option value="negotiating">🤝 מו"מ</option></select></div>
       </div>
-      <div class="form-row"><div class="fg"><label>נציג אחראי</label><select id="a-agent-sel"></select></div><div class="fg"><label>כתב שירות</label><input type="text" id="a-service"/></div></div>
+      <div class="form-row"><div class="fg"><label>נציג אחראי</label><select id="a-agent-sel"></select></div><div class="fg"><label>כתב שירות <span class="req">*</span></label><input type="text" id="a-service" placeholder="שם כתב השירות..."/></div></div>
       <div class="form-row"><div class="fg"><label>שם הנציג שסגר</label><input type="text" id="a-agent"/></div><div class="fg"><label>סכום עסקה (₪)</label><input type="text" id="a-amount" placeholder="0"/></div></div>
       <div class="form-row" id="a-mdate-wrap"><div class="fg"><label>תאריך יצירת קשר</label><input type="date" id="a-mdate"/></div><div class="fg"><label>תאריך התחלת חוזה</label><input type="date" id="a-cdate"/></div></div>
       <div class="form-row" id="a-followup-wrap"><div class="fg"><label>📅 תזכורת לפולו-אפ</label><input type="date" id="a-followup"/></div><div class="fg"><label>הערה לתזכורת</label><input type="text" id="a-followup-note" placeholder="לתאם פגישה..."/></div></div>
@@ -645,7 +645,7 @@ body.dark-mode .chart-card h3{color:#bbb}
         <div class="fg"><label>סטטוס מכירה</label><select id="m-status" onchange="onStatusChange('m')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select></div>
         <div class="fg" id="m-pipeline-wrap"><label>שלב Pipeline</label><select id="m-pipeline"><option value="">— לא צוין —</option><option value="new">🆕 ליד חדש</option><option value="contacted">📞 יצירת קשר</option><option value="demo">🖥️ הצגת מוצר</option><option value="negotiating">🤝 מו"מ</option></select></div>
       </div>
-      <div class="form-row"><div class="fg"><label>כתב שירות</label><input type="text" id="m-service"/></div><div class="fg"><label>שם הנציג שסגר</label><input type="text" id="m-agent"/></div></div>
+      <div class="form-row"><div class="fg"><label>כתב שירות <span class="req">*</span></label><input type="text" id="m-service" placeholder="שם כתב השירות..."/></div><div class="fg"><label>שם הנציג שסגר</label><input type="text" id="m-agent"/></div></div>
       <div class="form-row" id="m-mdate-wrap"><div class="fg"><label>תאריך יצירת קשר</label><input type="date" id="m-mdate"/></div><div class="fg"><label>תאריך התחלת חוזה</label><input type="date" id="m-cdate"/></div></div>
       <div class="form-row" id="m-followup-wrap"><div class="fg"><label>📅 תזכורת לפולו-אפ</label><input type="date" id="m-followup"/></div><div class="fg"><label>הערה לתזכורת</label><input type="text" id="m-followup-note" placeholder="לתאם פגישה..."/></div></div>
       <div class="fg"><label>סכום עסקה (₪)</label><input type="text" id="m-amount" placeholder="0"/></div>
@@ -1298,8 +1298,10 @@ function buildNewCust(prefix, agentId){
 function addCustomer(){
   const name=document.getElementById('a-name').value.trim();
   const idNum=document.getElementById('a-id').value.trim();
+  const service=document.getElementById('a-service').value.trim();
   if(!name){alert('נא להזין שם');return;}
   if(!/^\d{9}$/.test(idNum)){alert('ת.ז חייבת להכיל 9 ספרות');return;}
+  if(!service){alert('נא להזין כתב שירות');document.getElementById('a-service').focus();return;}
   const custs=getCusts();
   custs.push(buildNewCust('a',+v('a-agent-sel')||null));
   saveCusts(custs);
@@ -1316,8 +1318,10 @@ function addCustomer(){
 function addMyCustomer(){
   const name=document.getElementById('m-name').value.trim();
   const idNum=document.getElementById('m-id').value.trim();
+  const service=document.getElementById('m-service').value.trim();
   if(!name){alert('נא להזין שם');return;}
   if(!/^\d{9}$/.test(idNum)){alert('ת.ז חייבת להכיל 9 ספרות');return;}
+  if(!service){alert('נא להזין כתב שירות');document.getElementById('m-service').focus();return;}
   const custs=getCusts();
   custs.push(buildNewCust('m',SESSION.id));
   saveCusts(custs);
