@@ -82,6 +82,7 @@ tbody td{padding:9px 12px;vertical-align:middle}
 .b-closed{background:#d4edda;color:#1e7e34}
 .b-open{background:#f8d7da;color:#a71d2a}
 .b-cancelled{background:#e2e3e5;color:#6c757d}
+.b-collection{background:#fef3c7;color:#92400e}
 .b-admin{background:#e8e0ff;color:#5a4fcf}
 .b-agent{background:#d1ecf1;color:#0c5460}
 .b-shift{background:#fff3e0;color:#e65100}
@@ -323,12 +324,14 @@ body.dark-mode .saved-filters-area{background:#1e2a4a;border-bottom-color:#2a2a4
 tr.tr-closed td{background:#f0fdf4}
 tr.tr-cancelled td{background:#f9f9f9;color:#999}
 tr.tr-cancelled td .badge{opacity:.7}
+tr.tr-collection td{background:#fffbeb}
 .qflt-btn{padding:5px 14px;border-radius:20px;border:1.5px solid #ddd;background:#fff;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
 .qflt-btn:hover{border-color:#6c63ff;color:#6c63ff}
 .qflt-btn.qf-active{background:#6c63ff;color:#fff;border-color:#6c63ff}
 .qflt-btn.qf-closed{border-color:#16a34a;color:#16a34a}.qflt-btn.qf-closed.qf-active{background:#16a34a}
 .qflt-btn.qf-open{border-color:#e74c3c;color:#e74c3c}.qflt-btn.qf-open.qf-active{background:#e74c3c;color:#fff}
 .qflt-btn.qf-cancelled{border-color:#888;color:#888}.qflt-btn.qf-cancelled.qf-active{background:#888;color:#fff}
+.qflt-btn.qf-collection{border-color:#d97706;color:#d97706}.qflt-btn.qf-collection.qf-active{background:#d97706;color:#fff}
 .punch-banner{background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;padding:11px 18px;margin:0 0 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.9rem;font-weight:700;color:#856404}
 .followup-banner-top{background:#e8f4fd;border:1.5px solid #3b82f6;border-radius:10px;padding:11px 18px;margin:0 0 14px;font-size:.88rem;color:#1e40af}
 .agent-top-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
@@ -605,7 +608,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
       </details>
       <div class="form-row"><div class="fg"><label>שם לקוח <span class="req">*</span></label><input type="text" id="a-name"/></div><div class="fg"><label>ת.ז <span class="req">*</span></label><input type="text" id="a-id" maxlength="9"/></div></div>
       <div class="form-row"><div class="fg"><label>טלפון</label><input type="text" id="a-phone" placeholder="05X-XXXXXXX"/></div><div class="fg"><label>כתב שירות <span class="req">*</span></label><input type="text" id="a-service" placeholder="שם כתב השירות..."/></div></div>
-      <div class="form-row"><div class="fg"><label>סטטוס מכירה</label><select id="a-status" onchange="onStatusChange('a')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select></div><div class="fg"><label>נציג אחראי</label><select id="a-agent-sel"></select></div></div>
+      <div class="form-row"><div class="fg"><label>סטטוס מכירה</label><select id="a-status" onchange="onStatusChange('a')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option><option value="collection_issue">⚠️ בעיית גבייה</option></select></div><div class="fg"><label>נציג אחראי</label><select id="a-agent-sel"></select></div></div>
       <button class="extra-fields-toggle" onclick="toggleExtraFields('a-extra')">▼ פרטים נוספים (כתובת, תשלום, תאריכים...)</button>
       <div id="a-extra" class="extra-fields">
       <div class="form-row"><div class="fg"><label>כתובת</label><input type="text" id="a-address"/></div><div class="fg"><label>אימייל</label><input type="email" id="a-email"/></div></div>
@@ -626,11 +629,12 @@ body.dark-mode .att-row-today{background:#0a2a1a}
           <button class="qflt-btn qf-closed" id="qfadm-closed" onclick="setAdmQFlt('closed',this)">✅ סגר</button>
           <button class="qflt-btn qf-open" id="qfadm-open" onclick="setAdmQFlt('open',this)">⏳ לא סגר</button>
           <button class="qflt-btn qf-cancelled" id="qfadm-cancelled" onclick="setAdmQFlt('cancelled',this)">❌ בוטל</button>
+          <button class="qflt-btn qf-collection" id="qfadm-collection" onclick="setAdmQFlt('collection_issue',this)">⚠️ בעיית גבייה</button>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <input type="text" id="srch" placeholder="חיפוש..." oninput="renderCustTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa;width:140px"/>
           <select id="flt-status" onchange="renderCustTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa">
-            <option value="">כל הסטטוסים</option><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option>
+            <option value="">כל הסטטוסים</option><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option><option value="collection_issue">⚠️ בעיית גבייה</option>
           </select>
           <select id="flt-agent" onchange="renderCustTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa"><option value="">כל הנציגים</option></select>
           <select id="flt-pipeline" onchange="renderCustTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa">
@@ -666,7 +670,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
       <div style="font-size:1.1rem;font-weight:800;color:#333">📋 לקוחות לפי נציג</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <select id="ba-flt-status" onchange="renderByAgent()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa">
-          <option value="">כל הסטטוסים</option><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option>
+          <option value="">כל הסטטוסים</option><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option><option value="collection_issue">⚠️ בעיית גבייה</option>
         </select>
       </div>
     </div>
@@ -721,7 +725,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
       </details>
       <div class="form-row"><div class="fg"><label>שם לקוח <span class="req">*</span></label><input type="text" id="m-name"/></div><div class="fg"><label>ת.ז <span class="req">*</span></label><input type="text" id="m-id" maxlength="9"/></div></div>
       <div class="form-row"><div class="fg"><label>טלפון</label><input type="text" id="m-phone" placeholder="05X-XXXXXXX"/></div><div class="fg"><label>כתב שירות <span class="req">*</span></label><input type="text" id="m-service" placeholder="שם כתב השירות..."/></div></div>
-      <div class="form-row"><div class="fg"><label>סטטוס מכירה</label><select id="m-status" onchange="onStatusChange('m')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select></div><div class="fg"><label>סכום עסקה (₪)</label><input type="text" id="m-amount" placeholder="0"/></div></div>
+      <div class="form-row"><div class="fg"><label>סטטוס מכירה</label><select id="m-status" onchange="onStatusChange('m')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option><option value="collection_issue">⚠️ בעיית גבייה</option></select></div><div class="fg"><label>סכום עסקה (₪)</label><input type="text" id="m-amount" placeholder="0"/></div></div>
       <button class="extra-fields-toggle" onclick="toggleExtraFields('m-extra')">▼ פרטים נוספים (כתובת, תשלום, תאריכים...)</button>
       <div id="m-extra" class="extra-fields">
       <div class="form-row"><div class="fg"><label>כתובת</label><input type="text" id="m-address"/></div><div class="fg"><label>אימייל</label><input type="email" id="m-email"/></div></div>
@@ -742,10 +746,11 @@ body.dark-mode .att-row-today{background:#0a2a1a}
           <button class="qflt-btn qf-closed" id="qfagt-closed" onclick="setAgtQFlt('closed',this)">✅ סגר</button>
           <button class="qflt-btn qf-open" id="qfagt-open" onclick="setAgtQFlt('open',this)">⏳ לא סגר</button>
           <button class="qflt-btn qf-cancelled" id="qfagt-cancelled" onclick="setAgtQFlt('cancelled',this)">❌ בוטל</button>
+          <button class="qflt-btn qf-collection" id="qfagt-collection" onclick="setAgtQFlt('collection_issue',this)">⚠️ בעיית גבייה</button>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <input type="text" id="m-srch" placeholder="חיפוש..." oninput="renderMyTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa;width:140px"/>
-          <select id="m-flt" onchange="renderMyTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa"><option value="">כל הסטטוסים</option><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select>
+          <select id="m-flt" onchange="renderMyTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa"><option value="">כל הסטטוסים</option><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option><option value="collection_issue">⚠️ בעיית גבייה</option></select>
           <select id="m-flt-pipeline" onchange="renderMyTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa"><option value="">כל השלבים</option><option value="new">🆕 ליד חדש</option><option value="contacted">📞 יצירת קשר</option><option value="demo">🖥️ הצגת מוצר</option><option value="negotiating">🤝 מו"מ</option></select>
         </div>
       </div>
@@ -994,7 +999,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
     <div id="e-card-wrap" style="display:none"><div style="background:#f0f0ff;border:1.5px solid #c4b5fd;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#6c63ff;margin-bottom:10px">💳 פרטי כרטיס אשראי</div><div class="form-row"><div class="fg"><label>4 ספרות אחרונות</label><input type="text" id="e-card-last4" maxlength="4" placeholder="1234"/></div><div class="fg"><label>תוקף (MM/YY)</label><input type="text" id="e-card-expiry" maxlength="5" placeholder="12/27"/></div></div><div class="form-row"><div class="fg"><label>שם בעל הכרטיס</label><input type="text" id="e-card-holder"/></div><div class="fg"><label>סוג כרטיס</label><select id="e-card-type"><option value="">— בחר —</option><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="amex">American Express</option><option value="isracard">ישראכרט</option><option value="diners">דיינרס</option></select></div></div></div></div>
     <div id="e-so-wrap" style="display:none"><div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#16a34a;margin-bottom:10px">🔄 פרטי הוראת קבע</div><div class="form-row"><div class="fg"><label>שם הבנק</label><input type="text" id="e-so-bank"/></div><div class="fg"><label>מספר סניף</label><input type="text" id="e-so-branch"/></div></div><div class="form-row"><div class="fg"><label>מספר חשבון</label><input type="text" id="e-so-account"/></div><div class="fg"><label>יום חיוב</label><input type="number" id="e-so-day" min="1" max="31"/></div></div></div></div>
     <div class="form-row">
-      <div class="fg"><label>סטטוס</label><select id="e-status" onchange="onStatusChange('e')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option></select></div>
+      <div class="fg"><label>סטטוס</label><select id="e-status" onchange="onStatusChange('e')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option><option value="collection_issue">⚠️ בעיית גבייה</option></select></div>
       <div class="fg" id="e-pipeline-wrap"><label>Pipeline</label><select id="e-pipeline"><option value="">— לא צוין —</option><option value="new">🆕 ליד חדש</option><option value="contacted">📞 יצירת קשר</option><option value="demo">🖥️ הצגת מוצר</option><option value="negotiating">🤝 מו"מ</option></select></div>
     </div>
     <div class="fg" id="e-agent-wrap"><label>נציג</label><select id="e-agent-sel"></select></div>
@@ -1062,6 +1067,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
         <option value="product">🔍 בירור מוצר</option>
         <option value="agentreq">📞 בקשה לדבר עם נציג סוגר</option>
         <option value="cancelreq">❌ בקשת ביטול</option>
+        <option value="collectionreq">⚠️ בעיית גבייה</option>
       </select>
     </div>
     <div class="fg" id="tk-cancel-reason-wrap" style="display:none">
@@ -1500,7 +1506,7 @@ function parseAmount(s){return parseFloat((s||'').replace(/[^0-9.]/g,''))||0;}
 
 function onStatusChange(prefix){
   const val=document.getElementById(prefix+'-status').value;
-  const hide=val==='closed'||val==='cancelled';
+  const hide=val==='closed'||val==='cancelled'||val==='collection_issue';
   const ids=[prefix+'-pipeline-wrap',prefix+'-mdate-wrap',prefix+'-followup-wrap'];
   ids.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=hide?'none':'';});
 }
@@ -1724,7 +1730,7 @@ function fillSpouse(id){
 //  PIPELINE / STATUS LABELS
 // ══════════════════════════════════════════════
 const PIPELINE_LABELS={'new':'🆕 ליד חדש','contacted':'📞 יצירת קשר','demo':'🖥️ הצגת מוצר','negotiating':'🤝 מו"מ'};
-const STATUS_LABELS={closed:'סגר',open:'לא סגר',cancelled:'בוטל'};
+const STATUS_LABELS={closed:'סגר',open:'לא סגר',cancelled:'בוטל',collection_issue:'⚠️ בעיית גבייה'};
 
 // ══════════════════════════════════════════════
 // UX IMPROVEMENTS
@@ -1869,7 +1875,7 @@ const PAYMENT_METHODS={credit:'💳 כרטיס אשראי',standing:'🔄 הור
 
 function custRow(c, users, mode){
   const isCan=c.status==='cancelled';
-  const sMap={closed:['b-closed','סגר'],open:['b-open','לא סגר'],cancelled:['b-cancelled','בוטל']};
+  const sMap={closed:['b-closed','סגר'],open:['b-open','לא סגר'],cancelled:['b-cancelled','בוטל'],collection_issue:['b-collection','⚠️ בעיית גבייה']};
   const [sc,sl]=sMap[c.status]||['b-open','?'];
   const phone=c.phone?`<div class="phone-cell">${escH(c.phone)}<button class="ab wa" title="וואטסאפ" onclick="openWaModal(${c.id})">💬</button></div>`:'—';
   const emailCell=c.email?`<div class="email-cell">${escH(c.email)}<a href="mailto:${encodeURIComponent(c.email)}" onclick="event.stopPropagation()"><button class="ab mail">✉️</button></a></div>`:'—';
@@ -1883,7 +1889,7 @@ function custRow(c, users, mode){
   const agentName=users.find(u=>u.id===c.agentId)?.name||'—';
   const urgent=isUrgent(c.id);
   const ticketCount=getTickets().filter(t=>t.customerId===c.id).length;
-  const pipelineBadge=c.pipelineStage&&c.status!=='closed'&&c.status!=='cancelled'
+  const pipelineBadge=c.pipelineStage&&c.status!=='closed'&&c.status!=='cancelled'&&c.status!=='collection_issue'
     ?`<span class="badge b-${c.pipelineStage}" style="font-size:.72rem">${PIPELINE_LABELS[c.pipelineStage]||c.pipelineStage}</span>`:'—';
   const today=new Date().toISOString().slice(0,10);
   let fuCell='—';
@@ -1901,7 +1907,7 @@ function custRow(c, users, mode){
     <button class="ab sp" onclick="openSpouseModal(${c.id})" title="הוסף מבוטח נוסף">👫 +</button>
     <button class="ab" onclick="openEdit(${c.id})" title="עריכה">✏️</button>
     <button class="ab del" onclick="delCustomer(${c.id})" title="מחק">🗑️</button>`;
-  const trColor=c.status==='closed'?'tr-closed':c.status==='cancelled'?'tr-cancelled':'';
+  const trColor=c.status==='closed'?'tr-closed':c.status==='cancelled'?'tr-cancelled':c.status==='collection_issue'?'tr-collection':'';
   const rowCls=[urgent?'row-urgent':isCan?'row-can':'',trColor].filter(Boolean).join(' ');
   if(mode==='admin') return `<tr class="${rowCls}">
     <td><strong>${escH(c.name)}</strong></td><td style="font-size:.8rem;color:#666">${escH(c.idNum||'—')}</td>
@@ -2076,7 +2082,7 @@ function renderGoals(){
     const key=`${g.year}-${String(g.month).padStart(2,'0')}`;
     const mine=isTeam?custs.filter(c=>parseHeDate(c.date)?.key===key):custs.filter(c=>c.agentId===g.agentId&&parseHeDate(c.date)?.key===key);
     const actualDeals=mine.filter(c=>c.status==='closed').length;
-    const actualRev=mine.filter(c=>c.status!=='cancelled').reduce((s,c)=>s+(c.amount||0),0);
+    const actualRev=mine.filter(c=>c.status!=='cancelled'&&c.status!=='collection_issue').reduce((s,c)=>s+(c.amount||0),0);
     const pctD=g.deals>0?Math.min(100,Math.round(actualDeals/g.deals*100)):0;
     const pctR=g.revenue>0?Math.min(100,Math.round(actualRev/g.revenue*100)):0;
     return `<div class="goal-item">
@@ -2127,14 +2133,15 @@ function renderFollowUpBanner(custs){
 // ══════════════════════════════════════════════
 function renderDashboard(){
   const custs=getCusts();
-  const active=custs.filter(c=>c.status!=='cancelled');
+  const active=custs.filter(c=>c.status!=='cancelled'&&c.status!=='collection_issue');
   const todayStr=new Date().toLocaleDateString('he-IL');
   const todayClosures=custs.filter(c=>c.status==='closed'&&c.date===todayStr).length;
   document.getElementById('adm-stats').innerHTML=`
     <div class="stat-box"><div class="num">${custs.length}</div><div class="lbl">סה"כ לקוחות</div></div>
     <div class="stat-box"><div class="num">${custs.filter(c=>c.status==='closed').length}</div><div class="lbl">סגרו עסקה</div></div>
     <div class="stat-box sb-can"><div class="num">${custs.filter(c=>c.status==='cancelled').length}</div><div class="lbl">ביטולים</div></div>
-    <div class="stat-box sb-rev"><div class="num">₪${active.reduce((s,c)=>s+(c.amount||0),0).toLocaleString('he-IL')}</div><div class="lbl">הכנסות (ללא ביטולים)</div></div>
+    <div class="stat-box" style="border-top:3px solid #d97706"><div class="num" style="color:#d97706">${custs.filter(c=>c.status==='collection_issue').length}</div><div class="lbl">⚠️ בעיות גבייה</div></div>
+    <div class="stat-box sb-rev"><div class="num">₪${active.reduce((s,c)=>s+(c.amount||0),0).toLocaleString('he-IL')}</div><div class="lbl">הכנסות (גבוי בפועל)</div></div>
     <div class="stat-box" style="border-top:3px solid #6c63ff"><div class="num" style="color:#6c63ff">${todayClosures}</div><div class="lbl">סגירות היום 📅</div></div>`;
   renderFollowUpBanner(custs);
   const md=buildMonthMap(custs);
@@ -2158,7 +2165,7 @@ function renderTeamGoalBox(custs,curKey){
   if(!teamGoal){box.innerHTML='';return;}
   const monthCusts=custs.filter(c=>parseHeDate(c.date)?.key===curKey);
   const actualDeals=monthCusts.filter(c=>c.status==='closed').length;
-  const actualRev=monthCusts.filter(c=>c.status!=='cancelled').reduce((s,c)=>s+(c.amount||0),0);
+  const actualRev=monthCusts.filter(c=>c.status!=='cancelled'&&c.status!=='collection_issue').reduce((s,c)=>s+(c.amount||0),0);
   const pd=teamGoal.deals>0?Math.min(100,Math.round(actualDeals/teamGoal.deals*100)):null;
   const pr=teamGoal.revenue>0?Math.min(100,Math.round(actualRev/teamGoal.revenue*100)):null;
   box.innerHTML=`<div class="team-goal-box">
@@ -2174,23 +2181,25 @@ function renderTeamGoalBox(custs,curKey){
 // ══════════════════════════════════════════════
 function renderAgentStats(){
   const custs=getCusts().filter(c=>c.agentId===SESSION.id);
-  const active=custs.filter(c=>c.status!=='cancelled');
+  const active=custs.filter(c=>c.status!=='cancelled'&&c.status!=='collection_issue');
   const myComm=agentCommission(SESSION.id,custs);
   const todayStr=new Date().toLocaleDateString('he-IL');
   const myTodayClosures=custs.filter(c=>c.status==='closed'&&c.date===todayStr).length;
+  const myCollection=custs.filter(c=>c.status==='collection_issue').length;
   document.getElementById('agent-stats').innerHTML=`
     <div class="stat-box"><div class="num">${custs.length}</div><div class="lbl">הלקוחות שלי</div></div>
     <div class="stat-box"><div class="num">${custs.filter(c=>c.status==='closed').length}</div><div class="lbl">עסקאות שסגרתי</div></div>
     <div class="stat-box" style="border-top:3px solid #6c63ff"><div class="num" style="color:#6c63ff">${myTodayClosures}</div><div class="lbl">סגירות היום 📅</div></div>
     <div class="stat-box sb-can"><div class="num">${custs.filter(c=>c.status==='cancelled').length}</div><div class="lbl">ביטולים</div></div>
-    <div class="stat-box sb-rev"><div class="num">₪${active.reduce((s,c)=>s+(c.amount||0),0).toLocaleString('he-IL')}</div><div class="lbl">הכנסות שלי</div></div>
-    <div class="stat-box" style="border-top:3px solid #22c55e"><div class="num" style="color:#16a34a;font-size:1.3rem">₪${myComm.amount.toLocaleString('he-IL')}</div><div class="lbl">עמלה שלי (${myComm.rate}%)</div></div>`;
+    ${myCollection>0?`<div class="stat-box" style="border-top:3px solid #d97706"><div class="num" style="color:#d97706">${myCollection}</div><div class="lbl">⚠️ בעיות גבייה</div></div>`:''}
+    <div class="stat-box sb-rev"><div class="num">₪${active.reduce((s,c)=>s+(c.amount||0),0).toLocaleString('he-IL')}</div><div class="lbl">הכנסות גבויות</div></div>
+    <div class="stat-box" style="border-top:3px solid #22c55e"><div class="num" style="color:#16a34a;font-size:1.3rem">₪${myComm.amount.toLocaleString('he-IL')}</div><div class="lbl">עמלה שלי (${myComm.rate}%) · 30 יום שוטף</div></div>`;
   const now=new Date();
   const goal=getGoals().find(g=>g.agentId===SESSION.id&&g.year===now.getFullYear()&&g.month===now.getMonth()+1)||null;
   const {curKey}=curPrevKeys();
   const myCusts=getCusts().filter(c=>c.agentId===SESSION.id&&parseHeDate(c.date)?.key===curKey);
   const myDeals=myCusts.filter(c=>c.status==='closed').length;
-  const myRev=myCusts.filter(c=>c.status!=='cancelled').reduce((s,c)=>s+(c.amount||0),0);
+  const myRev=myCusts.filter(c=>c.status!=='cancelled'&&c.status!=='collection_issue').reduce((s,c)=>s+(c.amount||0),0);
   const goalArea=document.getElementById('my-goal-area');
   if(goal){
     const pd=goal.deals>0?Math.min(100,Math.round(myDeals/goal.deals*100)):null;
@@ -2264,7 +2273,7 @@ function renderPerfTable(custs,md,curKey){
     const mine=custs.filter(c=>c.agentId===a.id);
     const mineMonth=mine.filter(c=>parseHeDate(c.date)?.key===curKey);
     const leads=mineMonth.length, closed=mineMonth.filter(c=>c.status==='closed').length;
-    const rev=mineMonth.filter(c=>c.status!=='cancelled').reduce((s,c)=>s+(c.amount||0),0);
+    const rev=mineMonth.filter(c=>c.status!=='cancelled'&&c.status!=='collection_issue').reduce((s,c)=>s+(c.amount||0),0);
     const conv=leads>0?Math.round(closed/leads*100):0;
     const goal=goals.find(g=>g.agentId===a.id&&g.year===now.getFullYear()&&g.month===now.getMonth()+1);
     const goalPct=goal?.deals>0?Math.min(100,Math.round(closed/goal.deals*100)):null;
@@ -2373,7 +2382,7 @@ function exportExcel(mode){
   let custs=getCusts();
   if(mode==='mine') custs=custs.filter(c=>c.agentId===SESSION.id);
   const headers=['שם לקוח','ת.ז.','טלפון','כתובת','אימייל','אמצעי תשלום','פרטי אשראי','פרטי הוראת קבע','סטטוס','Pipeline','נציג','כתב שירות','מוכר','סכום','ת.יצירת קשר','ת.חוזה','ת.תזכורת','הערת תזכורת','ת.הוספה'];
-  const sMap={closed:'סגר',open:'לא סגר',cancelled:'בוטל'};
+  const sMap={closed:'סגר',open:'לא סגר',cancelled:'בוטל',collection_issue:'בעיית גבייה'};
   const payMap={credit:'כרטיס אשראי',standing:'הוראת קבע'};
   const rows=custs.map(c=>{
     const cd=c.cardDetails, sd=c.soDetails;
@@ -2395,7 +2404,7 @@ function exportGoals(){
     const key=`${g.year}-${String(g.month).padStart(2,'0')}`;
     const mine=g.agentId==='team'?custs.filter(c=>parseHeDate(c.date)?.key===key):custs.filter(c=>c.agentId===g.agentId&&parseHeDate(c.date)?.key===key);
     const actualDeals=mine.filter(c=>c.status==='closed').length;
-    const actualRev=mine.filter(c=>c.status!=='cancelled').reduce((s,c)=>s+(c.amount||0),0);
+    const actualRev=mine.filter(c=>c.status!=='cancelled'&&c.status!=='collection_issue').reduce((s,c)=>s+(c.amount||0),0);
     return[agent?.name||'—',MONTHS[g.month-1],g.year,g.deals||0,g.revenue||0,actualDeals,actualRev,g.deals>0?Math.round(actualDeals/g.deals*100)+'%':'—',g.revenue>0?Math.round(actualRev/g.revenue*100)+'%':'—'];
   });
   const ws=XLSX.utils.aoa_to_sheet([headers,...rows]);
@@ -2434,7 +2443,7 @@ function handleImportFile(file){
 
 function parseImportData(data){
   _importRows=[];
-  const sMap={'סגר':'closed','לא סגר':'open','בוטל':'cancelled','closed':'closed','open':'open','cancelled':'cancelled'};
+  const sMap={'סגר':'closed','לא סגר':'open','בוטל':'cancelled','בעיית גבייה':'collection_issue','collection_issue':'collection_issue','closed':'closed','open':'open','cancelled':'cancelled'};
   data.forEach(row=>{
     const name=String(row['שם לקוח']||row['שם']||row['name']||'').trim();
     const idNum=String(row['ת.ז.']||row['ת.ז']||row['id']||row['תז']||'').replace(/\D/g,'');
@@ -2597,19 +2606,21 @@ function renderMyTickets(){
   const custMap=Object.fromEntries(custs.map(c=>[c.id,c]));
   const allTickets=getMyTickets().sort((a,b)=>b.createdAt-a.createdAt);
   const openTickets=allTickets.filter(t=>t.status==='open');
-  const urgentTickets=openTickets.filter(t=>t.type==='cancelreq'&&Date.now()-t.createdAt>86400000);
-  if(urgentTickets.length>0){alertText.textContent=`יש ${urgentTickets.length} בקשת ביטול שלא טופלה מעל 24 שעות!`;alertEl.hidden=false;alertEl.style.display='flex';}
+  const urgentCancelTickets=openTickets.filter(t=>t.type==='cancelreq'&&Date.now()-t.createdAt>86400000);
+  const openCollectionTickets=openTickets.filter(t=>t.type==='collectionreq');
+  if(urgentCancelTickets.length>0){alertText.textContent=`יש ${urgentCancelTickets.length} בקשת ביטול שלא טופלה מעל 24 שעות!`;alertEl.hidden=false;alertEl.style.display='flex';}
+  else if(openCollectionTickets.length>0){alertText.textContent=`יש ${openCollectionTickets.length} בעיית גבייה פתוחה — יש לטפל ולסמן כטופל`;alertEl.hidden=false;alertEl.style.display='flex';}
   else alertEl.hidden=true;
   summary.textContent=`פתוחות: ${openTickets.length} | טופלו: ${allTickets.filter(t=>t.status==='handled').length}`;
   if(!allTickets.length){body.innerHTML='<div style="text-align:center;color:#aaa;padding:28px;font-size:.9rem">אין פניות עדיין</div>';return;}
   const users=getUsers();
-  const tMap={'product':'b-product','agentreq':'b-agentreq','cancelreq':'b-cancelreq'};
+  const tMap={'product':'b-product','agentreq':'b-agentreq','cancelreq':'b-cancelreq','collectionreq':'b-collection'};
   body.innerHTML=allTickets.map(t=>{
     const c=custMap[t.customerId];
     const dt=new Date(t.createdAt).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
     const urgent=t.type==='cancelreq'&&t.status==='open'&&Date.now()-t.createdAt>86400000;
     const byUser=users.find(u=>u.id===t.createdBy);
-    return `<div class="ticket-item" style="margin:8px 14px;${urgent?'border-color:#f87171;background:#fff5f5':''}">
+    return `<div class="ticket-item" style="margin:8px 14px;${urgent?'border-color:#f87171;background:#fff5f5':t.type==='collectionreq'&&t.status==='open'?'border-color:#f59e0b;background:#fffbeb':''}">
       <div class="ti-top">
         <div style="font-weight:800;font-size:.88rem;color:#333">👤 ${escH(c?.name||'לקוח לא ידוע')}</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -2619,10 +2630,11 @@ function renderMyTickets(){
         </div>
       </div>
       ${t.cancelReason?`<div style="font-size:.8rem;color:#9f1239;margin:4px 0">סיבת ביטול: <strong>${CANCEL_REASONS[t.cancelReason]||t.cancelReason}</strong></div>`:''}
+      ${t.type==='collectionreq'&&t.status==='open'?`<div style="font-size:.8rem;color:#d97706;margin:4px 0;font-weight:700">⚠️ בעיית גבייה — לאחר טיפול לחץ "סמן כטופל" להחזרת הסטטוס ל"סגר"</div>`:''}
       ${t.note?`<div class="ti-note">${escH(t.note)}</div>`:''}
       <div class="ti-meta">📅 ${dt}${byUser?' | '+escH(byUser.name):''}</div>
       ${t.status==='open'?`<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-        <button class="btn-pri" style="padding:5px 14px;font-size:.8rem" onclick="handleTicket(${t.id})">✅ סמן כטופל</button>
+        <button class="btn-pri" style="padding:5px 14px;font-size:.8rem${t.type==='collectionreq'?';background:#16a34a':''}" onclick="handleTicket(${t.id})">${t.type==='collectionreq'?'✅ בעיה נפתרה':'✅ סמן כטופל'}</button>
         <button class="btn-pri" style="padding:5px 14px;font-size:.8rem;background:#3b82f6" onclick="showHistory(${t.customerId})">📂 היסטוריה</button>
         ${c?.phone?`<button class="ab wa" style="font-size:1rem;padding:5px 10px" onclick="openWaModal(${t.customerId})">💬</button>`:''}
       </div>`:''}
@@ -2874,7 +2886,7 @@ document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>
 // ══════════════════════════════════════════════
 //  TICKET SYSTEM
 // ══════════════════════════════════════════════
-const TICKET_TYPES={product:'🔍 בירור מוצר',agentreq:'📞 בקשה לנציג סוגר',cancelreq:'❌ בקשת ביטול'};
+const TICKET_TYPES={product:'🔍 בירור מוצר',agentreq:'📞 בקשה לנציג סוגר',cancelreq:'❌ בקשת ביטול',collectionreq:'⚠️ בעיית גבייה'};
 const CANCEL_REASONS={price:'💰 מחיר גבוה',service:'😤 בעיה בשירות',competitor:'🏢 מתחרה',personal:'👤 סיבה אישית',other:'📝 אחר'};
 
 let ticketCustomerId=null;
@@ -2883,6 +2895,8 @@ function openNewTicket(custId){
   ticketCustomerId=custId;
   const c=getCusts().find(x=>x.id===custId);
   document.getElementById('ticket-modal-title').textContent=`פנייה חדשה — ${escH(c.name)}`;
+  const typeSelect=document.getElementById('tk-type');
+  Array.from(typeSelect.options).forEach(o=>{o.hidden=false;});
   sv('tk-type','product');sv('tk-note','');sv('tk-cancel-reason','price');
   onTicketTypeChange();
   const closerBox=document.getElementById('ticket-closer-box');
@@ -2891,13 +2905,28 @@ function openNewTicket(custId){
   openModal('ticket-modal');
 }
 function onTicketTypeChange(){
-  document.getElementById('tk-cancel-reason-wrap').style.display=v('tk-type')==='cancelreq'?'block':'none';
+  const type=v('tk-type');
+  document.getElementById('tk-cancel-reason-wrap').style.display=type==='cancelreq'?'block':'none';
 }
 function saveTicket(){
   const type=v('tk-type'),note=v('tk-note'),cancelReason=type==='cancelreq'?v('tk-cancel-reason'):'';
   const tickets=getTickets();
   tickets.push({id:Date.now(),customerId:ticketCustomerId,type,cancelReason,note,createdAt:Date.now(),createdBy:SESSION.id,status:'open'});
   saveTickets(tickets);
+  // If collection issue opened — auto-change customer status to collection_issue
+  if(type==='collectionreq'){
+    const custs=getCusts();
+    const idx=custs.findIndex(c=>c.id===ticketCustomerId);
+    if(idx!==-1&&custs[idx].status!=='collection_issue'){
+      custs[idx].status='collection_issue';
+      saveCusts(custs);
+      addInquiry(ticketCustomerId,'⚠️ בעיית גבייה נפתחה — סטטוס שונה ל"בעיית גבייה"'+(note?' | '+note:''));
+      showToast('⚠️ בעיית גבייה נרשמה — הסטטוס עודכן');
+      closeModal('ticket-modal');
+      if(canViewAll()) renderCustTable(); else renderMyTable();
+      return;
+    }
+  }
   // Auto-create inquiry entry
   addInquiry(ticketCustomerId, (TICKET_TYPES[type]||type)+(note?' — '+note:''));
   closeModal('ticket-modal');
@@ -2905,8 +2934,20 @@ function saveTicket(){
 }
 function handleTicket(ticketId){
   const tickets=getTickets();
-  tickets.find(t=>t.id===ticketId).status='handled';
+  const ticket=tickets.find(t=>t.id===ticketId);
+  ticket.status='handled';
   saveTickets(tickets);
+  // If collection issue handled — restore customer status to closed
+  if(ticket.type==='collectionreq'){
+    const custs=getCusts();
+    const idx=custs.findIndex(c=>c.id===ticket.customerId);
+    if(idx!==-1&&custs[idx].status==='collection_issue'){
+      custs[idx].status='closed';
+      saveCusts(custs);
+      addInquiry(ticket.customerId,'✅ בעיית גבייה טופלה — סטטוס הוחזר ל"סגר"');
+      showToast('✅ בעיית הגבייה טופלה — הלקוח חזר לסטטוס "סגר"');
+    }
+  }
   const modal=document.getElementById('history-modal');
   if(modal.classList.contains('open')) showHistory(parseInt(modal.dataset.custId));
   if(canViewAll()) renderCustTable(); else {renderMyTable();renderMyTickets();}
@@ -2920,7 +2961,7 @@ function showHistory(custId){
   // Render tickets tab
   const tickets=getTickets().filter(t=>t.customerId===custId).sort((a,b)=>b.createdAt-a.createdAt);
   const users=getUsers();
-  const tMap={'product':'b-product','agentreq':'b-agentreq','cancelreq':'b-cancelreq'};
+  const tMap={'product':'b-product','agentreq':'b-agentreq','cancelreq':'b-cancelreq','collectionreq':'b-collection'};
   const ticketEl=document.getElementById('history-tickets');
   if(!tickets.length){ticketEl.innerHTML='<div style="color:#aaa;text-align:center;padding:24px">אין פניות עדיין</div>';}
   else{
@@ -2928,7 +2969,7 @@ function showHistory(custId){
       const byUser=users.find(u=>u.id===t.createdBy);
       const dt=new Date(t.createdAt).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
       const isUrgentT=t.type==='cancelreq'&&t.status==='open'&&Date.now()-t.createdAt>86400000;
-      return `<div class="ticket-item" style="${isUrgentT?'border-color:#f87171;background:#fff5f5':''}">
+      return `<div class="ticket-item" style="${isUrgentT?'border-color:#f87171;background:#fff5f5':t.type==='collectionreq'&&t.status==='open'?'border-color:#f59e0b;background:#fffbeb':''}">
         <div class="ti-top">
           <span class="badge ${tMap[t.type]||'b-product'}">${TICKET_TYPES[t.type]||t.type}</span>
           <span class="badge ${t.status==='handled'?'b-handled':'b-open'}">${t.status==='handled'?'טופל':'פתוח'}</span>
@@ -2936,7 +2977,7 @@ function showHistory(custId){
         ${t.cancelReason?`<div style="font-size:.8rem;color:#9f1239;margin-bottom:4px">סיבת ביטול: <strong>${CANCEL_REASONS[t.cancelReason]||t.cancelReason}</strong></div>`:''}
         ${t.note?`<div class="ti-note">${escH(t.note)}</div>`:''}
         <div class="ti-meta">📅 ${dt} | 👤 ${escH(byUser?.name||'—')}</div>
-        ${t.status==='open'?`<button class="btn-pri" style="margin-top:8px;padding:5px 14px;font-size:.8rem" onclick="handleTicket(${t.id})">✅ סמן כטופל</button>`:''}
+        ${t.status==='open'?`<button class="btn-pri" style="margin-top:8px;padding:5px 14px;font-size:.8rem${t.type==='collectionreq'?';background:#16a34a':''}" onclick="handleTicket(${t.id})">${t.type==='collectionreq'?'✅ בעיה נפתרה':'✅ סמן כטופל'}</button>`:''}
       </div>`;
     }).join('');
   }
@@ -3475,17 +3516,18 @@ function drawRevenueChart(canvasId,keys,rm,curKey){
   });
 }
 
-function drawStatusDonut(canvasId, closed, open, cancelled){
+function drawStatusDonut(canvasId, closed, open, cancelled, collection){
+  collection=collection||0;
   const canvas=document.getElementById(canvasId);
   if(!canvas) return;
   const size=Math.min(canvas.parentElement.clientWidth-40,180);
   canvas.width=size;canvas.height=size;
   const ctx=canvas.getContext('2d');
   ctx.clearRect(0,0,size,size);
-  const total=closed+open+cancelled;
+  const total=closed+open+cancelled+collection;
   if(!total){ctx.fillStyle='#bbb';ctx.font='13px Segoe UI';ctx.textAlign='center';ctx.fillText('אין נתונים',size/2,size/2);return;}
   const cx=size/2,cy=size/2,r=size/2-10,ir=r*0.55;
-  const slices=[{v:closed,color:'#4ade80'},{v:open,color:'#f87171'},{v:cancelled,color:'#9ca3af'}];
+  const slices=[{v:closed,color:'#4ade80'},{v:open,color:'#f87171'},{v:cancelled,color:'#9ca3af'},{v:collection,color:'#f59e0b'}];
   let start=-Math.PI/2;
   slices.forEach(s=>{
     if(!s.v) return;
@@ -3503,15 +3545,17 @@ function drawStatusDonut(canvasId, closed, open, cancelled){
   ctx.font='10px Segoe UI';ctx.fillStyle='#888';ctx.fillText('לקוחות',cx,cy+10);
 }
 
-function renderStatusLegend(elId,closed,open,cancelled){
+function renderStatusLegend(elId,closed,open,cancelled,collection){
+  collection=collection||0;
   const el=document.getElementById(elId);
   if(!el) return;
-  const total=closed+open+cancelled||1;
+  const total=closed+open+cancelled+collection||1;
   el.innerHTML=`
     <div style="display:flex;flex-direction:column;gap:8px;padding:14px 0">
       <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:3px;background:#4ade80;flex-shrink:0"></div><span style="font-size:.83rem;flex:1">סגרו עסקה</span><strong style="font-size:.88rem;color:#16a34a">${closed} (${Math.round(closed/total*100)}%)</strong></div>
       <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:3px;background:#f87171;flex-shrink:0"></div><span style="font-size:.83rem;flex:1">לא סגרו</span><strong style="font-size:.88rem;color:#e74c3c">${open} (${Math.round(open/total*100)}%)</strong></div>
       <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:3px;background:#9ca3af;flex-shrink:0"></div><span style="font-size:.83rem;flex:1">בוטלו</span><strong style="font-size:.88rem;color:#6c757d">${cancelled} (${Math.round(cancelled/total*100)}%)</strong></div>
+      ${collection>0?`<div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:3px;background:#f59e0b;flex-shrink:0"></div><span style="font-size:.83rem;flex:1">⚠️ בעיות גבייה</span><strong style="font-size:.88rem;color:#d97706">${collection} (${Math.round(collection/total*100)}%)</strong></div>`:''}
     </div>`;
 }
 
@@ -3529,7 +3573,7 @@ function renderTeamLeaderDashboard(){
   const teamCusts=custs.filter(c=>myTeam.some(a=>a.id===c.agentId));
   const teamMonth=teamCusts.filter(c=>parseHeDate(c.date)?.key===curKey);
   const teamClosed=teamMonth.filter(c=>c.status==='closed').length;
-  const teamRev=teamMonth.filter(c=>c.status!=='cancelled').reduce((s,c)=>s+(c.amount||0),0);
+  const teamRev=teamMonth.filter(c=>c.status!=='cancelled'&&c.status!=='collection_issue').reduce((s,c)=>s+(c.amount||0),0);
   const teamLeads=teamMonth.length;
   const teamConv=teamLeads>0?Math.round(teamClosed/teamLeads*100):0;
   document.getElementById('tl-team-stats').innerHTML=`
@@ -3555,7 +3599,7 @@ function renderTeamLeaderDashboard(){
     const mine=custs.filter(c=>c.agentId===a.id);
     const mineMonth=mine.filter(c=>parseHeDate(c.date)?.key===curKey);
     const leads=mineMonth.length,closed=mineMonth.filter(c=>c.status==='closed').length;
-    const rev=mineMonth.filter(c=>c.status!=='cancelled').reduce((s,c)=>s+(c.amount||0),0);
+    const rev=mineMonth.filter(c=>c.status!=='cancelled'&&c.status!=='collection_issue').reduce((s,c)=>s+(c.amount||0),0);
     const conv=leads>0?Math.round(closed/leads*100):0;
     const goal=goals.find(g=>g.agentId===a.id&&g.year===now.getFullYear()&&g.month===now.getMonth()+1);
     const goalPct=goal?.deals>0?Math.min(100,Math.round(closed/goal.deals*100)):null;
@@ -3642,8 +3686,9 @@ renderDashboard=function(){
   const closed=custs.filter(c=>c.status==='closed').length;
   const open=custs.filter(c=>c.status==='open').length;
   const cancelled=custs.filter(c=>c.status==='cancelled').length;
-  drawStatusDonut('chart-adm-status',closed,open,cancelled);
-  renderStatusLegend('adm-status-legend',closed,open,cancelled);
+  const collection=custs.filter(c=>c.status==='collection_issue').length;
+  drawStatusDonut('chart-adm-status',closed,open,cancelled,collection);
+  renderStatusLegend('adm-status-legend',closed,open,cancelled,collection);
 };
 
 // Override renderAgentStats to include new charts
@@ -3658,8 +3703,9 @@ renderAgentStats=function(){
   const closed=custs.filter(c=>c.status==='closed').length;
   const open=custs.filter(c=>c.status==='open').length;
   const cancelled=custs.filter(c=>c.status==='cancelled').length;
-  drawStatusDonut('chart-agent-status',closed,open,cancelled);
-  renderStatusLegend('agent-status-legend',closed,open,cancelled);
+  const collection=custs.filter(c=>c.status==='collection_issue').length;
+  drawStatusDonut('chart-agent-status',closed,open,cancelled,collection);
+  renderStatusLegend('agent-status-legend',closed,open,cancelled,collection);
 };
 
 // Init on load if already logged in
@@ -4289,33 +4335,46 @@ function renderAttendanceSummary(){
     },0);
     totalNetMs+=netMs;
     const myCusts=allCusts.filter(c=>c.agentId===u.id&&c.status!=='cancelled');
+    const collectionCount=allCusts.filter(c=>c.agentId===u.id&&c.status==='collection_issue').length;
     const comm=agentCommission(u.id,myCusts);
-    return{name:u.name,netMs,comm};
+    return{name:u.name,netMs,comm,collectionCount};
   }).filter(Boolean);
   if(!rows.length){el.style.display='none';return;}
   el.style.display='block';
   const totalComm=rows.reduce((s,r)=>s+r.comm.amount,0);
+  const totalCollection=rows.reduce((s,r)=>s+r.collectionCount,0);
+  const now30=new Date();now30.setMonth(now30.getMonth()+1);now30.setDate(0);
+  const payDate=`${now30.getDate()}/${now30.getMonth()+1}/${now30.getFullYear()}`;
   el.innerHTML=`<div class="card" style="margin-top:16px">
     <div style="font-size:.97rem;font-weight:800;color:#333;margin-bottom:14px">📊 סיכום תקופה</div>
     <table style="width:100%;border-collapse:collapse">
       <thead><tr style="background:#f8fafc;font-size:.82rem;color:#555">
         <th style="padding:8px 12px;text-align:right;border-bottom:1.5px solid #e5e7eb">נציג</th>
         <th style="padding:8px 12px;text-align:right;border-bottom:1.5px solid #e5e7eb">סה"כ שעות נטו</th>
+        <th style="padding:8px 12px;text-align:right;border-bottom:1.5px solid #e5e7eb;color:#d97706">⚠️ בעיות גבייה</th>
         <th style="padding:8px 12px;text-align:right;border-bottom:1.5px solid #e5e7eb">עמלה (${rows[0]?.comm.rate||10}%)</th>
       </tr></thead>
       <tbody>
         ${rows.map(r=>`<tr style="border-bottom:1px solid #f0f0f0">
           <td style="padding:8px 12px;font-size:.85rem;font-weight:700">${escH(r.name)}</td>
           <td style="padding:8px 12px;font-size:.85rem">${fmtMs(r.netMs)}</td>
+          <td style="padding:8px 12px;font-size:.85rem;font-weight:700;color:${r.collectionCount>0?'#d97706':'#aaa'}">${r.collectionCount>0?r.collectionCount:'—'}</td>
           <td style="padding:8px 12px;font-size:.85rem;font-weight:800;color:#16a34a">₪${r.comm.amount.toLocaleString('he-IL')}</td>
         </tr>`).join('')}
       </tbody>
       <tfoot><tr style="background:#f0fdf4;font-weight:800">
         <td style="padding:10px 12px;font-size:.87rem">סה"כ</td>
         <td style="padding:10px 12px;font-size:.87rem">${fmtMs(totalNetMs)}</td>
+        <td style="padding:10px 12px;font-size:.87rem;color:${totalCollection>0?'#d97706':'#aaa'}">${totalCollection||'—'}</td>
         <td style="padding:10px 12px;font-size:.95rem;color:#16a34a">₪${totalComm.toLocaleString('he-IL')}</td>
       </tfoot>
     </table>
+    <div style="margin-top:10px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:.82rem;color:#555;display:flex;flex-wrap:wrap;gap:8px">
+      <span>🕐 שכר שעתי: <strong>שוטף</strong> (אותו חודש)</span>
+      <span style="color:#aaa">|</span>
+      <span>💰 עמלות: <strong>30 יום שוטף</strong> — <strong>${payDate}</strong></span>
+      ${totalCollection>0?`<span style="color:#d97706">⚠️ ${totalCollection} לקוחות עם בעיית גבייה — לא נכללים בעמלה עד לפתרון</span>`:''}
+    </div>
   </div>`;
 }
 </script>
