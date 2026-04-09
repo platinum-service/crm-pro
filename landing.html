@@ -293,7 +293,7 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const FB_CFG = {
     apiKey: "AIzaSyBqDua2LUZqhOlixdb0wCXC5K-dP_tt1j8",
@@ -417,30 +417,19 @@
     const notes = `ליד מדף נחיתה | גיל: ${ageLabels[answers.age]} | ביטוח: ${insLabels[answers.insurance]} | רפואי: ${medLabels[answers.medical]} | עדיפות: ${priLabels[answers.priority]} | ניקוד: ${score}/10`;
 
     try {
-      // שמירה לתוך מסמך crm/data — כמו ה-CRM
-      const crmRef  = doc(db, 'crm', 'data');
-      const crmSnap = await getDoc(crmRef);
-      const existing = crmSnap.exists() ? crmSnap.data() : {};
-      const customers = existing.customers || [];
-
-      const newCustomer = {
-        id: Date.now(),
+      // שמירה לקולקציית landing_leads — נפרד מה-CRM
+      await addDoc(collection(db, 'landing_leads'), {
         name: answers.name,
         phone: answers.phone,
-        status: 'open',
-        agentId: 'landing',
-        agentName: 'דף נחיתה',
+        age: answers.age,
+        insurance: answers.insurance,
+        medical: answers.medical,
+        priority: answers.priority,
+        score,
         notes,
-        leadScore: score,
-        date: new Date().toLocaleDateString('he-IL')
-      };
-      customers.push(newCustomer);
-
-      await setDoc(crmRef, {
-        ...existing,
-        customers,
-        _by: 'landing_page',
-        _at: Date.now()
+        status: 'new',
+        source: 'landing_page',
+        createdAt: serverTimestamp()
       });
 
       document.getElementById('form-wrap').style.display = 'none';
