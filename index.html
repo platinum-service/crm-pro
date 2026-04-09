@@ -332,6 +332,13 @@ tr.tr-collection td{background:#fffbeb}
 .qflt-btn.qf-open{border-color:#e74c3c;color:#e74c3c}.qflt-btn.qf-open.qf-active{background:#e74c3c;color:#fff}
 .qflt-btn.qf-cancelled{border-color:#888;color:#888}.qflt-btn.qf-cancelled.qf-active{background:#888;color:#fff}
 .qflt-btn.qf-collection{border-color:#d97706;color:#d97706}.qflt-btn.qf-collection.qf-active{background:#d97706;color:#fff}
+.qflt-btn.qf-cold{border-color:#0284c7;color:#0284c7}.qflt-btn.qf-cold.qf-active{background:#0284c7;color:#fff}
+.hl-tab-badge{display:inline-block;background:#ef4444;color:#fff;border-radius:10px;padding:1px 6px;font-size:.7rem;font-weight:800;margin-right:3px;vertical-align:middle}
+.hl-score{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.78rem;font-weight:800}
+.hl-score.s-high{background:#d1fae5;color:#065f46}
+.hl-score.s-med{background:#fef3c7;color:#92400e}
+.hl-score.s-low{background:#fee2e2;color:#991b1b}
+.b-handled{background:#d1ecf1;color:#0c5460}
 .punch-banner{background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;padding:11px 18px;margin:0 0 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.9rem;font-weight:700;color:#856404}
 .followup-banner-top{background:#e8f4fd;border:1.5px solid #3b82f6;border-radius:10px;padding:11px 18px;margin:0 0 14px;font-size:.88rem;color:#1e40af}
 .agent-top-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
@@ -532,6 +539,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
   <div class="tab-nav" id="admin-nav" hidden>
     <button class="tab-btn active" onclick="showTab('t-dashboard',this)">📊 לוח בקרה</button>
     <button class="tab-btn" onclick="showTab('t-customers',this)">👥 לקוחות</button>
+    <button class="tab-btn" id="tab-hot-leads" onclick="showTab('t-hot-leads',this)">🔥 לידים חמים <span id="hot-leads-badge" class="hl-tab-badge" style="display:none"></span></button>
     <button class="tab-btn" onclick="showTab('t-by-agent',this)">📋 לפי נציג</button>
     <button class="tab-btn" onclick="showTab('t-agents',this)">🧑‍💼 נציגים</button>
     <button class="tab-btn" onclick="showTab('t-goals',this)">🎯 יעדים</button>
@@ -630,6 +638,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
           <button class="qflt-btn qf-open" id="qfadm-open" onclick="setAdmQFlt('open',this)">⏳ לא סגר</button>
           <button class="qflt-btn qf-cancelled" id="qfadm-cancelled" onclick="setAdmQFlt('cancelled',this)">❌ בוטל</button>
           <button class="qflt-btn qf-collection" id="qfadm-collection" onclick="setAdmQFlt('collection_issue',this)">⚠️ בעיית גבייה</button>
+          <button class="qflt-btn qf-cold" id="qfadm-cold" onclick="setAdmQFlt('cold',this)">🧊 לידים קרים</button>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <input type="text" id="srch" placeholder="חיפוש..." oninput="renderCustTable()" style="padding:6px 11px;border:1.5px solid #ddd;border-radius:7px;font-size:.84rem;background:#fafafa;width:140px"/>
@@ -984,6 +993,38 @@ body.dark-mode .att-row-today{background:#0a2a1a}
       </div>
     </div>
     <div id="att-summary" style="display:none"></div>
+  </div>
+
+  <!-- ── Hot Leads (from landing page) ── -->
+  <div class="tab-pane" id="t-hot-leads">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div style="font-size:1.1rem;font-weight:800;color:#333">🔥 לידים חמים — הגיעו מדף הנחיתה</div>
+      <button class="btn-sec" onclick="loadHotLeads()">🔄 רענן</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <button class="qflt-btn qf-active" id="hl-flt-all" onclick="setHotLeadFilter('all',this)">הכל</button>
+      <button class="qflt-btn" id="hl-flt-new" style="border-color:#ef4444;color:#ef4444" onclick="setHotLeadFilter('new',this)">🆕 חדשים</button>
+      <button class="qflt-btn" id="hl-flt-handled" style="border-color:#0891b2;color:#0891b2" onclick="setHotLeadFilter('handled',this)">✅ טופלו</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr>
+            <th class="ns">שם</th>
+            <th class="ns">טלפון</th>
+            <th class="ns">גיל</th>
+            <th class="ns">ביטוח קיים</th>
+            <th class="ns">ניקוד</th>
+            <th class="ns">תאריך</th>
+            <th class="ns">סטטוס</th>
+            <th class="ns">פעולות</th>
+          </tr></thead>
+          <tbody id="hot-leads-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="hot-leads-empty" style="text-align:center;color:#aaa;padding:40px;display:none">אין לידים חמים להצגה</div>
+    <div id="hot-leads-loading" style="text-align:center;color:#888;padding:30px">טוען לידים...</div>
   </div>
 
 </div><!-- /pg-app -->
@@ -1743,8 +1784,10 @@ function toggleExtraFields(id){
   if(btn&&btn.classList.contains('extra-fields-toggle'))
     btn.textContent=el.classList.contains('open')?'▲ הסתר פרטים נוספים':'▼ פרטים נוספים (כתובת, תשלום, תאריכים...)';
 }
+let _coldLeadFilter=false;
 function setAdmQFlt(val,btn){
-  document.getElementById('flt-status').value=val;
+  _coldLeadFilter=(val==='cold');
+  document.getElementById('flt-status').value=_coldLeadFilter?'':val;
   document.querySelectorAll('[id^="qfadm-"]').forEach(b=>b.classList.remove('qf-active'));
   if(btn) btn.classList.add('qf-active');
   renderCustTable();
@@ -1836,6 +1879,7 @@ function renderCustTable(){
   let list=getCusts().filter(c=>{
     if(srch&&![(c.name||''),(c.idNum||''),(c.phone||''),(c.address||'')].some(x=>x.toLowerCase().includes(srch))) return false;
     if(fSt&&c.status!==fSt) return false;
+    if(_coldLeadFilter&&!c.pipelineStage) return false;
     if(fAg&&String(c.agentId)!==fAg) return false;
     if(fPl&&c.pipelineStage!==fPl) return false;
     if(fFrom||fTo){
@@ -3654,6 +3698,7 @@ showTab=function(id,btn){
     renderCalendar();
   }
   if(id==='t-team-leader') renderTeamLeaderDashboard();
+  if(id==='t-hot-leads') loadHotLeads();
 };
 
 // Override switchHistoryTab to handle timeline
@@ -3677,6 +3722,90 @@ switchHistoryTab=function(tab){
     if(tlBtn){tlBtn.style.background='';tlBtn.style.color='';}
   }
 };
+
+// ══════════════════════════════════════════════
+//  HOT LEADS (landing_leads collection)
+// ══════════════════════════════════════════════
+let _hotLeads=[];
+let _hotLeadFilter='all';
+
+function setHotLeadFilter(val,btn){
+  _hotLeadFilter=val;
+  document.querySelectorAll('[id^="hl-flt-"]').forEach(b=>b.classList.remove('qf-active'));
+  if(btn) btn.classList.add('qf-active');
+  renderHotLeads();
+}
+
+async function loadHotLeads(){
+  const loadEl=document.getElementById('hot-leads-loading');
+  const emptyEl=document.getElementById('hot-leads-empty');
+  if(loadEl) loadEl.style.display='block';
+  if(emptyEl) emptyEl.style.display='none';
+  try{
+    const snap=await firebase.firestore().collection('landing_leads').orderBy('createdAt','desc').limit(200).get();
+    _hotLeads=snap.docs.map(d=>({_docId:d.id,...d.data()}));
+    renderHotLeads();
+    // Update badge
+    const newCount=_hotLeads.filter(l=>l.status==='new'||!l.status).length;
+    const badge=document.getElementById('hot-leads-badge');
+    if(badge){badge.textContent=newCount||'';badge.style.display=newCount>0?'inline':'none';}
+  }catch(e){
+    console.error('loadHotLeads',e);
+    showToast('שגיאה בטעינת לידים חמים');
+  }finally{
+    if(loadEl) loadEl.style.display='none';
+  }
+}
+
+const AGE_LABELS={'18-30':'18-30','31-45':'31-45','46-60':'46-60','60+':'60+'};
+const INS_LABELS={yes:'כן מקיף',partial:'חלקי',no:'אין',unsure:'לא בטוח'};
+
+function renderHotLeads(){
+  const body=document.getElementById('hot-leads-body');
+  const emptyEl=document.getElementById('hot-leads-empty');
+  if(!body) return;
+  let list=_hotLeads;
+  if(_hotLeadFilter==='new') list=list.filter(l=>!l.status||l.status==='new');
+  else if(_hotLeadFilter==='handled') list=list.filter(l=>l.status==='handled');
+  if(!list.length){body.innerHTML='';if(emptyEl)emptyEl.style.display='block';return;}
+  if(emptyEl) emptyEl.style.display='none';
+  body.innerHTML=list.map(l=>{
+    const score=l.score||0;
+    const scoreCls=score>=8?'s-high':score>=6?'s-med':'s-low';
+    const isNew=!l.status||l.status==='new';
+    const statusBadge=isNew
+      ?'<span class="badge b-new">🆕 חדש</span>'
+      :'<span class="badge b-handled">✅ טופל</span>';
+    const dateStr=l.createdAt?.toDate
+      ?l.createdAt.toDate().toLocaleDateString('he-IL')
+      :(l.createdAt?.seconds?new Date(l.createdAt.seconds*1000).toLocaleDateString('he-IL'):'—');
+    const phone=escH(l.phone||'—');
+    const waLink=l.phone?`<a class="ab wa" href="https://wa.me/972${(l.phone||'').replace(/^0/,'').replace(/\D/g,'')}?text=${encodeURIComponent('שלום '+l.name+', קיבלנו את פנייתך לכתב שירות פלטינום. נשמח לעזור!')}" target="_blank" title="WhatsApp">💬</a>`:'';
+    return `<tr>
+      <td><strong>${escH(l.name||'—')}</strong></td>
+      <td><span class="phone-cell">${phone}${waLink}</span></td>
+      <td>${AGE_LABELS[l.age]||l.age||'—'}</td>
+      <td>${INS_LABELS[l.insurance]||l.insurance||'—'}</td>
+      <td><span class="hl-score ${scoreCls}">${score}/10</span></td>
+      <td>${dateStr}</td>
+      <td>${statusBadge}</td>
+      <td>${isNew?`<button class="ab res" onclick="markLeadHandled('${l._docId}')" title="סמן כטופל">✅ טופל</button>`:''}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function markLeadHandled(docId){
+  try{
+    await firebase.firestore().collection('landing_leads').doc(docId).update({status:'handled'});
+    const lead=_hotLeads.find(l=>l._docId===docId);
+    if(lead) lead.status='handled';
+    renderHotLeads();
+    const newCount=_hotLeads.filter(l=>l.status==='new'||!l.status).length;
+    const badge=document.getElementById('hot-leads-badge');
+    if(badge){badge.textContent=newCount||'';badge.style.display=newCount>0?'inline':'none';}
+    showToast('✅ ליד סומן כטופל');
+  }catch(e){ showToast('שגיאה בעדכון'); }
+}
 
 // Override renderDashboard to include new charts
 const _origRenderDashboard=renderDashboard;
