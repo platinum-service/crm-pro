@@ -107,6 +107,17 @@
     .footer{background:#1e293b;color:#94a3b8;text-align:center;padding:18px 20px;font-size:.8rem;line-height:1.6}
     .footer-sep{margin:0 8px;opacity:.4}
 
+    /* WHAT IS SECTION */
+    .whatis-section{background:#f8faff;padding:40px 20px;border-top:1.5px solid #e2e8f0}
+    .whatis-section h2{text-align:center;font-size:1.3rem;color:#0f2d5a;margin-bottom:8px;font-weight:800}
+    .whatis-section .sub{text-align:center;font-size:.9rem;color:#64748b;margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto}
+    .whatis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;max-width:800px;margin:0 auto 24px}
+    .whatis-card{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:0 2px 10px rgba(0,0,0,.07);border-right:4px solid #1d4ed8}
+    .whatis-card .wc-icon{font-size:1.6rem;margin-bottom:8px}
+    .whatis-card strong{display:block;font-size:.93rem;color:#0f2d5a;margin-bottom:5px;font-weight:800}
+    .whatis-card span{font-size:.83rem;color:#64748b;line-height:1.5}
+    .whatis-note{max-width:600px;margin:0 auto;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 18px;font-size:.86rem;color:#1e40af;line-height:1.6;text-align:center}
+
     /* ACCESSIBILITY WIDGET */
     .acc-btn{position:fixed;left:16px;bottom:24px;z-index:2000;width:52px;height:52px;border-radius:50%;background:#1d4ed8;color:#fff;border:none;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;transition:background .2s}
     .acc-btn:hover{background:#1e40af}
@@ -243,6 +254,37 @@
       </div>
     </li>
   </ul>
+</section>
+
+<!-- WHAT IS SECTION -->
+<section class="whatis-section" aria-labelledby="whatis-title">
+  <h2 id="whatis-title">מה זה כתב שירות פלטינום?</h2>
+  <p class="sub">לא ביטוח — שירות רפואי פרטי שמגיע לך מיד כשצריך, ללא הצהרת בריאות וללא החרגות</p>
+  <div class="whatis-grid">
+    <div class="whatis-card">
+      <div class="wc-icon">🏥</div>
+      <strong>גישה ישירה לרפואה פרטית</strong>
+      <span>רופא עד הבית, ייעוץ אונליין 24/7, תורים מהירים למומחים — בלי להמתין לקופת החולים</span>
+    </div>
+    <div class="whatis-card">
+      <div class="wc-icon">💰</div>
+      <strong>החזר כספי על טיפולים</strong>
+      <span>פיזיותרפיה, בדיקות אבחנתיות, רפואה משלימה — מקבלים את השירות ולא רק פיצוי</span>
+    </div>
+    <div class="whatis-card">
+      <div class="wc-icon">✅</div>
+      <strong>ללא הצהרת בריאות</strong>
+      <span>כולם מתקבלים — מגיל שנה ועד 120, בכל מצב רפואי, ללא תנאים והחרגות</span>
+    </div>
+    <div class="whatis-card">
+      <div class="wc-icon">🔓</div>
+      <strong>ביטול בכל עת ללא קנס</strong>
+      <span>אין התחייבות ארוכת טווח — ניתן לבטל בכל זמן, ללא עלות וללא בירוקרטיה</span>
+    </div>
+  </div>
+  <div class="whatis-note">
+    💡 <strong>ההבדל מביטוח:</strong> בביטוח מקבלים פיצוי כספי. בכתב שירות — מקבלים את <strong>השירות עצמו</strong>, מיד כשצריך, אצל מטפל מקצועי.
+  </div>
 </section>
 
 <!-- FORM SECTION -->
