@@ -47,6 +47,22 @@
     .quick-btn{display:block;width:100%;background:#0f172a;border:1px solid #334155;border-radius:9px;padding:9px 11px;color:#cbd5e1;font-size:.82rem;cursor:pointer;text-align:right;transition:all .18s;margin-bottom:5px;line-height:1.4}
     .quick-btn:hover{border-color:#6366f1;color:#a5b4fc;background:#1e1b4b}
 
+    /* LEADS PANEL */
+    .leads-panel{background:#0f172a;border:1px solid #f59e0b;border-radius:10px;overflow:hidden}
+    .leads-panel-header{background:#78350f;padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
+    .leads-panel-title{font-size:.82rem;font-weight:700;color:#fde68a}
+    .leads-badge{background:#f59e0b;color:#000;border-radius:10px;padding:1px 8px;font-size:.75rem;font-weight:800}
+    .lead-card{padding:10px 12px;border-bottom:1px solid #1e293b;cursor:pointer;transition:background .15s}
+    .lead-card:last-child{border-bottom:none}
+    .lead-card:hover{background:#1e293b}
+    .lead-card-name{font-size:.88rem;font-weight:700;color:#e2e8f0;margin-bottom:3px}
+    .lead-card-phone{font-size:.8rem;color:#94a3b8;direction:ltr;text-align:right}
+    .lead-card-meta{display:flex;justify-content:space-between;margin-top:4px}
+    .lead-score{font-size:.75rem;font-weight:700;padding:2px 7px;border-radius:8px}
+    .lead-score.high{background:#064e3b;color:#6ee7b7}
+    .lead-score.med{background:#1c1917;color:#fbbf24}
+    .lead-date{font-size:.72rem;color:#475569}
+
     /* CHAT */
     .chat-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
     .messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
@@ -138,6 +154,17 @@
     </div>
 
     <div>
+      <h2>🎯 לידים חדשים מדף נחיתה</h2>
+      <div class="leads-panel" id="leads-panel">
+        <div class="leads-panel-header">
+          <span class="leads-panel-title">ממתינים לטיפול</span>
+          <span class="leads-badge" id="leads-badge">0</span>
+        </div>
+        <div id="leads-list"><div style="padding:12px;font-size:.82rem;color:#475569;text-align:center">טוען...</div></div>
+      </div>
+    </div>
+
+    <div>
       <h2>💬 שאלות מהירות</h2>
       <button class="quick-btn" onclick="quickAsk('כמה לקוחות סגרנו החודש? מי הנציג הטוב ביותר?')">📈 סגרים החודש</button>
       <button class="quick-btn" onclick="quickAsk('הצג לי סיכום של כל הנציגים — כמה סגרו, כמה בוטלו, אחוז הצלחה')">👥 ביצועי נציגים</button>
@@ -202,8 +229,8 @@
   async function loadData() {
     try {
       const [custSnap, leadsSnap] = await Promise.all([
-        getDocs(collection(db, 'customers')),
-        getDocs(collection(db, 'leads')).catch(() => ({ docs: [] }))
+        getDocs(collection(db, 'customers')).catch(() => ({ docs: [] })),
+        getDocs(collection(db, 'landing_leads')).catch(() => ({ docs: [] }))
       ]);
 
       const customers = custSnap.docs.map(d => {
@@ -238,6 +265,24 @@
 
       // Update sidebar stats
       const byStatus = s => customers.filter(c => c.status === s).length;
+      // הצגת לידים חדשים
+      const newLeads = leads.filter(l => l.status === 'new');
+      document.getElementById('leads-badge').textContent = newLeads.length;
+      const leadsListEl = document.getElementById('leads-list');
+      if (newLeads.length === 0) {
+        leadsListEl.innerHTML = '<div style="padding:12px;font-size:.82rem;color:#475569;text-align:center">אין לידים חדשים</div>';
+      } else {
+        leadsListEl.innerHTML = newLeads.map(l => `
+          <div class="lead-card" onclick="quickAsk('ספר לי על הליד: שם ${l.name}, טלפון ${l.phone}, גיל ${l.age||'לא ידוע'}, ניקוד ${l.score}/10')">
+            <div class="lead-card-name">👤 ${l.name}</div>
+            <div class="lead-card-phone">${l.phone}</div>
+            <div class="lead-card-meta">
+              <span class="lead-score ${(l.score||0)>=7?'high':'med'}">ניקוד: ${l.score||'?'}/10</span>
+              <span class="lead-date">${l.createdAt}</span>
+            </div>
+          </div>`).join('');
+      }
+
       document.getElementById('s-total').textContent     = customers.length;
       document.getElementById('s-closed').textContent    = byStatus('closed');
       document.getElementById('s-open').textContent      = byStatus('open');
