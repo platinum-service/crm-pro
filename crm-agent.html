@@ -257,6 +257,7 @@
           age: r.age || '',
           insurance: r.insurance || '',
           score: r.score || 0,
+          status: r.status || 'new',
           createdAt: r.createdAt?.toDate?.()?.toLocaleDateString('he-IL') || 'לא ידוע'
         };
       });
