@@ -2630,11 +2630,11 @@ function renderMyTickets(){
         </div>
       </div>
       ${t.cancelReason?`<div style="font-size:.8rem;color:#9f1239;margin:4px 0">סיבת ביטול: <strong>${CANCEL_REASONS[t.cancelReason]||t.cancelReason}</strong></div>`:''}
-      ${t.type==='collectionreq'&&t.status==='open'?`<div style="font-size:.8rem;color:#d97706;margin:4px 0;font-weight:700">⚠️ בעיית גבייה — לאחר טיפול לחץ "סמן כטופל" להחזרת הסטטוס ל"סגר"</div>`:''}
+      ${t.type==='collectionreq'&&t.status==='open'?`<div style="font-size:.8rem;color:#d97706;margin:4px 0;font-weight:700">⚠️ יש לעדכן אמצעי תשלום בכתב השירות — לאחר מכן האחראי יסגור את הפנייה</div>`:''}
       ${t.note?`<div class="ti-note">${escH(t.note)}</div>`:''}
       <div class="ti-meta">📅 ${dt}${byUser?' | '+escH(byUser.name):''}</div>
-      ${t.status==='open'?`<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-        <button class="btn-pri" style="padding:5px 14px;font-size:.8rem${t.type==='collectionreq'?';background:#16a34a':''}" onclick="handleTicket(${t.id})">${t.type==='collectionreq'?'✅ בעיה נפתרה':'✅ סמן כטופל'}</button>
+      ${t.status==='open'&&t.type!=='collectionreq'?`<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button class="btn-pri" style="padding:5px 14px;font-size:.8rem" onclick="handleTicket(${t.id})">✅ סמן כטופל</button>
         <button class="btn-pri" style="padding:5px 14px;font-size:.8rem;background:#3b82f6" onclick="showHistory(${t.customerId})">📂 היסטוריה</button>
         ${c?.phone?`<button class="ab wa" style="font-size:1rem;padding:5px 10px" onclick="openWaModal(${t.customerId})">💬</button>`:''}
       </div>`:''}
@@ -2935,6 +2935,9 @@ function saveTicket(){
 function handleTicket(ticketId){
   const tickets=getTickets();
   const ticket=tickets.find(t=>t.id===ticketId);
+  if(ticket.type==='collectionreq'&&!canViewAll()){
+    showToast('⛔ רק מנהל או אחראי משמרת יכולים לסגור בעיית גבייה');return;
+  }
   ticket.status='handled';
   saveTickets(tickets);
   // If collection issue handled — restore customer status to closed
@@ -2977,7 +2980,8 @@ function showHistory(custId){
         ${t.cancelReason?`<div style="font-size:.8rem;color:#9f1239;margin-bottom:4px">סיבת ביטול: <strong>${CANCEL_REASONS[t.cancelReason]||t.cancelReason}</strong></div>`:''}
         ${t.note?`<div class="ti-note">${escH(t.note)}</div>`:''}
         <div class="ti-meta">📅 ${dt} | 👤 ${escH(byUser?.name||'—')}</div>
-        ${t.status==='open'?`<button class="btn-pri" style="margin-top:8px;padding:5px 14px;font-size:.8rem${t.type==='collectionreq'?';background:#16a34a':''}" onclick="handleTicket(${t.id})">${t.type==='collectionreq'?'✅ בעיה נפתרה':'✅ סמן כטופל'}</button>`:''}
+        ${t.status==='open'&&(t.type!=='collectionreq'||canViewAll())?`<button class="btn-pri" style="margin-top:8px;padding:5px 14px;font-size:.8rem${t.type==='collectionreq'?';background:#16a34a':''}" onclick="handleTicket(${t.id})">${t.type==='collectionreq'?'✅ בעיה נפתרה':'✅ סמן כטופל'}</button>`:''}
+        ${t.status==='open'&&t.type==='collectionreq'&&!canViewAll()?`<div style="font-size:.78rem;color:#d97706;margin-top:6px">⚠️ יש לעדכן אמצעי תשלום ולהודיע לאחראי משמרת</div>`:''}
       </div>`;
     }).join('');
   }
