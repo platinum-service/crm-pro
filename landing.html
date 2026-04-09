@@ -107,6 +107,31 @@
     .footer{background:#1e293b;color:#94a3b8;text-align:center;padding:18px 20px;font-size:.8rem;line-height:1.6}
     .footer-sep{margin:0 8px;opacity:.4}
 
+    /* URGENCY BANNER */
+    .urgency-bar{background:linear-gradient(90deg,#dc2626,#ef4444);color:#fff;text-align:center;padding:10px 16px;font-size:.88rem;font-weight:700;letter-spacing:.2px}
+    .urgency-bar span{background:rgba(255,255,255,.2);border-radius:12px;padding:2px 10px;margin-right:6px}
+
+    /* TESTIMONIALS */
+    .reviews-section{background:#fff;padding:40px 20px}
+    .reviews-section h2{text-align:center;font-size:1.3rem;color:#0f2d5a;margin-bottom:24px;font-weight:800}
+    .reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:800px;margin:0 auto}
+    .review-card{background:#f8faff;border-radius:14px;padding:20px 18px;border:1.5px solid #e2e8f0;position:relative}
+    .review-stars{color:#f59e0b;font-size:1rem;margin-bottom:10px}
+    .review-text{font-size:.88rem;color:#334155;line-height:1.65;margin-bottom:14px;font-style:italic}
+    .review-author{display:flex;align-items:center;gap:10px}
+    .review-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#0ea5e9);color:#fff;font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .review-name{font-size:.84rem;font-weight:800;color:#0f2d5a}
+    .review-meta{font-size:.76rem;color:#94a3b8}
+
+    /* NO COMMITMENT */
+    .no-commit{text-align:center;font-size:.8rem;color:#64748b;margin-top:8px}
+    .no-commit span{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:3px 10px;color:#15803d;font-weight:700}
+
+    /* SPOTS URGENCY */
+    .spots-wrap{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:10px 14px;margin-bottom:16px;text-align:center;font-size:.85rem;color:#9a3412;font-weight:700}
+    .spots-wrap .spots-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;margin-left:6px;animation:sdpulse .8s infinite}
+    @keyframes sdpulse{0%,100%{opacity:1}50%{opacity:.3}}
+
     /* WHAT IS SECTION */
     .whatis-section{background:#f8faff;padding:40px 20px;border-top:1.5px solid #e2e8f0}
     .whatis-section h2{text-align:center;font-size:1.3rem;color:#0f2d5a;margin-bottom:8px;font-weight:800}
@@ -164,6 +189,11 @@
 
 <!-- SKIP LINK — קפיצה לתוכן -->
 <a href="#main-form" class="skip-link">דלג לשאלון</a>
+
+<!-- URGENCY BAR -->
+<div class="urgency-bar" role="alert" aria-live="polite">
+  <span>🔴 חי</span> נציג פנוי עכשיו — השאירו פרטים ותקבלו מענה תוך שעה
+</div>
 
 <!-- ACCESSIBILITY WIDGET -->
 <button class="acc-btn" id="acc-btn" onclick="toggleAccPanel()" aria-label="פתח תפריט נגישות" aria-expanded="false" aria-controls="acc-panel">♿</button>
@@ -287,12 +317,58 @@
   </div>
 </section>
 
+<!-- REVIEWS SECTION -->
+<section class="reviews-section" aria-labelledby="reviews-title">
+  <h2 id="reviews-title">מה אומרים המנויים שלנו</h2>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"הייתי צריכה רופא בבית בשעה 11 בלילה — תוך 40 דקות הרופא היה אצלי. אף קופת חולים לא הייתה עושה את זה."</p>
+      <div class="review-author">
+        <div class="review-avatar">ר</div>
+        <div>
+          <div class="review-name">רחל כהן</div>
+          <div class="review-meta">גיל 67 • רמת גן • מנויה 2 שנים</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"קיבלתי החזר מלא על 8 טיפולי פיזיותרפיה. חסכתי מעל ₪1,000 בשנה. ממליץ לכל אחד מגיל 60."</p>
+      <div class="review-author">
+        <div class="review-avatar">מ</div>
+        <div>
+          <div class="review-name">משה לוי</div>
+          <div class="review-meta">גיל 72 • תל אביב • מנוי 3 שנים</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"תוך יומיים קיבלתי תור ל-MRI פרטי. בקופת החולים אמרו לי 4 חודשים. זה שינה לי את החיים ממש."</p>
+      <div class="review-author">
+        <div class="review-avatar">ש</div>
+        <div>
+          <div class="review-name">שרה ברגר</div>
+          <div class="review-meta">גיל 64 • חיפה • מנויה שנה</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FORM SECTION -->
 <main id="main-form" class="form-section">
   <div class="form-card">
 
     <!-- FORM -->
     <div id="form-wrap">
+      <div style="text-align:center;margin-bottom:14px">
+        <img src="https://platinum.org.il/wp-content/uploads/2022/07/logo.png" alt="פלטינום" style="height:38px;object-fit:contain" onerror="this.style.display='none'">
+      </div>
+      <div class="spots-wrap">
+        <span class="spots-dot"></span>נציג פנוי עכשיו — תפסו מקום לפני שיתמלא
+      </div>
       <h2>🛡️ מלאו שאלון התאמה קצר וגלו את הכיסוי שמגיע לכם</h2>
 
       <!-- Progress bar -->
@@ -393,8 +469,9 @@
         </div>
         <span id="consent-error" class="consent-error" role="alert">יש לאשר את ההסכמה להמשך</span>
 
-        <button class="next-btn" id="submit-btn" onclick="submitLead()" aria-label="שליחת הפרטים וקבלת הצעה">📩 שלח/י פרטים וקבל/י הצעה</button>
-        <p class="privacy-note">הפרטים שלך מאובטחים ולא יועברו לצד שלישי. <a href="#" onclick="openPrivacy(event)">מדיניות פרטיות</a></p>
+        <button class="next-btn" id="submit-btn" onclick="submitLead()" aria-label="שליחת הפרטים וקבלת הצעה">📩 שלח/י פרטים — נציג יחזור אליך תוך שעה</button>
+        <div class="no-commit"><span>✓ ללא התחייבות</span> &nbsp; <span>✓ ללא עלות</span> &nbsp; <span>✓ 100% פרטי</span></div>
+        <p class="privacy-note" style="margin-top:8px">הפרטים שלך מאובטחים ולא יועברו לצד שלישי. <a href="#" onclick="openPrivacy(event)">מדיניות פרטיות</a></p>
       </div>
     </div>
 
