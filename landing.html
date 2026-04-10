@@ -193,6 +193,10 @@
     /* High contrast focus for all focusable */
     a:focus,button:focus,input:focus,select:focus,textarea:focus{outline:2px solid #1d4ed8;outline-offset:2px}
 
+    @media(max-width:600px){
+      .header-spacer{display:none}
+      .header-logo{align-items:flex-start}
+    }
     @media(max-width:420px){
       .hero h1{font-size:1.6rem}
       .opts-grid{grid-template-columns:1fr}
@@ -244,7 +248,7 @@
 
 <!-- HEADER -->
 <header role="banner" class="header">
-  <div style="width:120px"></div>
+  <div class="header-spacer" style="width:120px"></div>
   <div class="header-logo">
     <img src="https://platinum.org.il/wp-content/uploads/2022/07/logo.png"
          alt="פלטינום כתב שירות — לוגו"
