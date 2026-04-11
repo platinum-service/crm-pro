@@ -505,9 +505,9 @@ tbody tr.total-row td strong{color:#d4af37}
         <tr>
           <th>שנה</th>
           <th>לקוחות חדשים</th>
-          <th>סה"כ לקוחות פעילים</th>
-          <th>הכנסה חודשית</th>
-          <th>הכנסה שנתית</th>
+          <th>לקוחות פעילים</th>
+          <th>עמלה חודשית (45%)</th>
+          <th>עמלות שנתיות</th>
           <th>השקעה שיווק</th>
           <th>רווח נקי</th>
         </tr>
@@ -516,38 +516,38 @@ tbody tr.total-row td strong{color:#d4af37}
         <tr>
           <td><strong>שנה 1 (2026)</strong></td>
           <td>110</td>
-          <td>110</td>
-          <td>₪27,280</td>
-          <td>₪163,680*</td>
+          <td>94</td>
+          <td>₪10,490</td>
+          <td>₪73,656*</td>
           <td>₪12,000</td>
-          <td><span class="badge-mid">₪151,680</span></td>
+          <td><span class="badge-mid">₪61,656</span></td>
         </tr>
         <tr>
           <td><strong>שנה 2 (2027)</strong></td>
           <td>180</td>
-          <td>270</td>
-          <td>₪66,960</td>
-          <td>₪803,520</td>
+          <td>233</td>
+          <td>₪26,003</td>
+          <td>₪246,442</td>
           <td>₪18,000</td>
-          <td><span class="badge-high">₪785,520</span></td>
+          <td><span class="badge-high">₪228,442</span></td>
         </tr>
         <tr>
           <td><strong>שנה 3 (2028)</strong></td>
           <td>250</td>
-          <td>490</td>
-          <td>₪121,520</td>
-          <td>₪1,458,240</td>
+          <td>411</td>
+          <td>₪45,868</td>
+          <td>₪479,390</td>
           <td>₪24,000</td>
-          <td><span class="badge-high">₪1,434,240</span></td>
+          <td><span class="badge-high">₪455,390</span></td>
         </tr>
         <tr style="background:#1a2744;color:#fff;font-weight:800">
           <td>סה"כ 3 שנים</td>
           <td>540</td>
           <td>—</td>
           <td>—</td>
-          <td>₪2,425,440</td>
+          <td>₪799,488</td>
           <td>₪54,000</td>
-          <td style="color:#d4af37">₪2,371,440</td>
+          <td style="color:#d4af37">₪745,488</td>
         </tr>
       </tbody>
     </table>
@@ -555,29 +555,28 @@ tbody tr.total-row td strong{color:#d4af37}
     <div class="notes" style="margin-top:20px">
       <h3>איך זה עובד — המנגנון:</h3>
       <ul>
-        <li>כל לקוח משלם ₪248/חודש — <strong>הכנסה חוזרת קבועה לשנים</strong></li>
-        <li>שנה 1: 110 לקוחות חדשים × ₪248 × ממוצע 6 חודשים = ₪163,680</li>
-        <li>שנה 2: 110 ישנים (שנה שלמה) + 180 חדשים = 270 לקוחות פעילים</li>
-        <li>שנה 3: הבסיס גדל — 490 לקוחות = ₪121,520 לחודש פסיבי</li>
-        <li>ההשקעה גדלה ב-₪6,000/שנה — הרווח גדל פי 10</li>
+        <li>עמלה חודשית לנציג: ₪248 × 45% = <strong>₪111.60 ללקוח</strong></li>
+        <li>שנה 1: 110 לקוחות × ₪111.60 × ממוצע 6 חודשים = ₪73,656</li>
+        <li>שנה 2: 94 ישנים (שנה שלמה) + 180 חדשים (6 חודשים) = ₪246,442</li>
+        <li>שנה 3: 233 ישנים + 250 חדשים = ₪479,390</li>
         <li>* בשנה 1 הכנסה חלקית כי לקוחות מצטרפים לאורך השנה</li>
       </ul>
     </div>
 
     <!-- Visual ROI -->
     <div style="margin-top:24px">
-      <div style="font-size:.9rem;font-weight:800;color:#1a2744;margin-bottom:12px">השוואת השקעה מול רווח:</div>
+      <div style="font-size:.9rem;font-weight:800;color:#1a2744;margin-bottom:12px">השוואת השקעה מול עמלות:</div>
       <div class="bar-row">
         <div class="bar-label" style="width:90px">השקעה</div>
-        <div class="bar-wrap"><div class="bar-fill" style="width:4%;background:linear-gradient(90deg,#e74c3c,#c0392b)"><span>₪54K</span></div></div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:7%;background:linear-gradient(90deg,#e74c3c,#c0392b)"><span>₪54K</span></div></div>
       </div>
       <div class="bar-row">
-        <div class="bar-label" style="width:90px">הכנסות</div>
-        <div class="bar-wrap"><div class="bar-fill" style="width:100%"><span>₪2,425,440</span></div></div>
+        <div class="bar-label" style="width:90px">עמלות</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:100%"><span>₪799,488</span></div></div>
       </div>
       <div class="bar-row">
         <div class="bar-label" style="width:90px">רווח נקי</div>
-        <div class="bar-wrap"><div class="bar-fill" style="width:98%;background:linear-gradient(90deg,#1a2744,#22c55e)"><span>₪2,371,440</span></div></div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:93%;background:linear-gradient(90deg,#1a2744,#22c55e)"><span>₪745,488</span></div></div>
       </div>
     </div>
   </div>
