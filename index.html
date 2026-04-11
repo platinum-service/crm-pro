@@ -1273,6 +1273,9 @@ function initFirebase(){
   try{
     firebase.initializeApp(FIREBASE_CONFIG);
     _db = firebase.firestore();
+    _db.enablePersistence({synchronizeTabs:true}).catch(e=>{
+      if(e.code==='unimplemented') console.warn('Offline persistence not supported');
+    });
     document.getElementById('fb-badge').classList.add('show');
     const dot = document.getElementById('sync-dot');
     if(dot){ dot.hidden=false; dot.title='Firebase מחובר'; }
@@ -1289,10 +1292,25 @@ function initFirebase(){
       if(d.inquiries)   localStorage.setItem(KEY_INQUIRIES,  JSON.stringify(d.inquiries));
       if(d.reinf_calls) localStorage.setItem(KEY_REINF,      JSON.stringify(d.reinf_calls));
       if(d.attendance)  localStorage.setItem(KEY_ATTENDANCE, JSON.stringify(d.attendance));
+      setOnlineBanner(true);
       if(SESSION){ renderAll(); showToast('⚡ מסונכרן'); }
-    },e=>{ console.warn('Firebase snapshot error',e); setSyncError(); });
+    },e=>{ console.warn('Firebase snapshot error',e); setSyncError(); setOnlineBanner(false); });
   }catch(e){ console.error('Firebase init failed',e); }
 }
+function setOnlineBanner(online){
+  let banner = document.getElementById('offline-banner');
+  if(!banner){
+    banner = document.createElement('div');
+    banner.id = 'offline-banner';
+    banner.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#e74c3c;color:#fff;text-align:center;padding:10px;font-weight:700;font-size:.95rem;z-index:9999;display:none;';
+    banner.innerHTML='⚠️ אין חיבור לאינטרנט — הנתונים מוצגים מהמטמון. <button onclick="location.reload()" style="margin-right:12px;background:#fff;color:#e74c3c;border:none;padding:4px 14px;border-radius:6px;font-weight:700;cursor:pointer;">התחבר מחדש</button>';
+    document.body.appendChild(banner);
+  }
+  banner.style.display = online ? 'none' : 'block';
+  if(online){ setSyncOk(); } else { setSyncError(); }
+}
+window.addEventListener('online',  ()=>{ setOnlineBanner(true);  if(_db) _db.enableNetwork();  });
+window.addEventListener('offline', ()=>{ setOnlineBanner(false); if(_db) _db.disableNetwork(); });
 function fbPush(){
   if(!USE_FIREBASE||!_db) return;
   clearTimeout(_fbTimer);
