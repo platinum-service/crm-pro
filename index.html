@@ -1383,12 +1383,6 @@ async function doLogin(){
   if(!user){err.textContent='שם משתמש או סיסמה שגויים';return;}
   if(user.blocked){err.textContent='❌ חשבון זה חסום. פנה למנהל המערכת.';return;}
   if(!canLogin(user.role)){err.textContent='גישה מותרת בין 09:00 ל-16:00 בלבד';return;}
-  // TEMP BYPASS - remove after login
-  if(user.username==='admin' && p==='reset2026'){
-    SESSION={id:user.id,name:user.name,username:user.username,role:user.role};
-    sessionStorage.setItem('crm_sess',JSON.stringify(SESSION));
-    startApp(); return;
-  }
   const stored=user.passwordHash||user.password||'';
   const ok=await checkPass(p,stored);
   if(!ok){err.textContent='שם משתמש או סיסמה שגויים';return;}
