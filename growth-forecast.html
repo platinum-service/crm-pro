@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>תחזית צמיחה — פלטינום שירות</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Heebo',Arial,sans-serif;background:#f4f6fb;color:#1a2744;direction:rtl}
+.page{max-width:900px;margin:0 auto;padding:40px 24px}
+
+/* Header */
+.header{background:linear-gradient(135deg,#1a2744 0%,#243156 70%,#2a3a6a 100%);color:#fff;border-radius:20px;padding:40px 48px;margin-bottom:32px;position:relative;overflow:hidden}
+.header::after{content:'💎';position:absolute;left:40px;top:50%;transform:translateY(-50%);font-size:80px;opacity:.1}
+.header h1{font-size:2rem;font-weight:900;margin-bottom:8px}
+.header h1 span{color:#d4af37}
+.header p{font-size:1rem;opacity:.85;font-weight:400}
+.header .date{margin-top:16px;font-size:.85rem;opacity:.6}
+
+/* Summary Cards */
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.sum-card{background:#fff;border-radius:16px;padding:20px;text-align:center;box-shadow:0 4px 20px rgba(26,39,68,.08);border-top:4px solid #d4af37}
+.sum-card .num{font-size:2rem;font-weight:900;color:#1a2744}
+.sum-card .label{font-size:.8rem;color:#6b7a99;margin-top:4px;font-weight:600}
+
+/* Section */
+.section{background:#fff;border-radius:16px;padding:28px 32px;margin-bottom:24px;box-shadow:0 4px 20px rgba(26,39,68,.08)}
+.section h2{font-size:1.1rem;font-weight:800;color:#1a2744;margin-bottom:20px;padding-right:12px;border-right:4px solid #d4af37}
+
+/* Table */
+table{width:100%;border-collapse:collapse}
+thead tr{background:#1a2744;color:#fff}
+thead th{padding:12px 16px;font-size:.85rem;font-weight:700;text-align:right}
+tbody tr:nth-child(even){background:#f4f6fb}
+tbody tr:hover{background:#eef1f8}
+tbody td{padding:11px 16px;font-size:.88rem;border-bottom:1px solid #e8ecf4}
+.badge-high{background:#d1fae5;color:#065f46;padding:3px 10px;border-radius:20px;font-weight:700;font-size:.8rem}
+.badge-mid{background:#fef3c7;color:#92400e;padding:3px 10px;border-radius:20px;font-weight:700;font-size:.8rem}
+.badge-low{background:#fee2e2;color:#991b1b;padding:3px 10px;border-radius:20px;font-weight:700;font-size:.8rem}
+
+/* Chart */
+.chart{margin-top:8px}
+.bar-row{display:flex;align-items:center;margin-bottom:10px;gap:12px}
+.bar-label{width:70px;font-size:.82rem;font-weight:700;color:#6b7a99;flex-shrink:0;text-align:left}
+.bar-wrap{flex:1;background:#f0f4ff;border-radius:8px;height:28px;overflow:hidden}
+.bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,#1a2744,#d4af37);display:flex;align-items:center;padding-right:10px;transition:width .3s}
+.bar-fill span{color:#fff;font-size:.78rem;font-weight:700;white-space:nowrap}
+.bar-value{width:80px;font-size:.85rem;font-weight:800;color:#1a2744;text-align:right;flex-shrink:0}
+
+/* ROI Box */
+.roi-box{background:linear-gradient(135deg,#1a2744,#243156);color:#fff;border-radius:16px;padding:32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;text-align:center}
+.roi-item .roi-num{font-size:2.2rem;font-weight:900;color:#d4af37}
+.roi-item .roi-label{font-size:.82rem;opacity:.8;margin-top:6px}
+
+/* Notes */
+.notes{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:20px 24px;margin-top:8px}
+.notes h3{font-size:.9rem;font-weight:800;color:#92400e;margin-bottom:10px}
+.notes ul{list-style:none;padding:0}
+.notes ul li{font-size:.85rem;color:#78350f;padding:4px 0;padding-right:20px;position:relative}
+.notes ul li::before{content:'⚡';position:absolute;right:0}
+
+/* Footer */
+.footer{text-align:center;padding:24px;color:#9ca3af;font-size:.8rem}
+.footer strong{color:#d4af37}
+
+@media print{
+  body{background:#fff}
+  .page{padding:20px}
+  .header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .roi-box{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  thead tr{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>תחזית צמיחה <span>פלטינום שירות</span></h1>
+    <p>ניתוח תחזיתי — קמפיין פייסבוק | תקציב ₪1,000/חודש | 12 חודשים</p>
+    <div class="date">הופק: אפריל 2026 | platinum-service.co.il</div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary">
+    <div class="sum-card">
+      <div class="num">442</div>
+      <div class="label">סה"כ לידים בשנה</div>
+    </div>
+    <div class="sum-card">
+      <div class="num">~110</div>
+      <div class="label">עסקאות צפויות (25%)</div>
+    </div>
+    <div class="sum-card">
+      <div class="num">₪31</div>
+      <div class="label">עלות ממוצעת לליד</div>
+    </div>
+    <div class="sum-card">
+      <div class="num">+220%</div>
+      <div class="label">צמיחה בלידים (חודש 12)</div>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="section">
+    <h2>גרף צמיחת לידים חודשי</h2>
+    <div class="chart">
+      <div class="bar-row"><div class="bar-label">חודש 1</div><div class="bar-wrap"><div class="bar-fill" style="width:31%"><span>15 לידים</span></div></div><div class="bar-value">₪65/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 2</div><div class="bar-wrap"><div class="bar-fill" style="width:42%"><span>20 לידים</span></div></div><div class="bar-value">₪50/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 3</div><div class="bar-wrap"><div class="bar-fill" style="width:52%"><span>25 לידים</span></div></div><div class="bar-value">₪40/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 4</div><div class="bar-wrap"><div class="bar-fill" style="width:65%"><span>31 לידים</span></div></div><div class="bar-value">₪32/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 5</div><div class="bar-wrap"><div class="bar-fill" style="width:75%"><span>36 לידים</span></div></div><div class="bar-value">₪28/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 6</div><div class="bar-wrap"><div class="bar-fill" style="width:83%"><span>40 לידים</span></div></div><div class="bar-value">₪25/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 7</div><div class="bar-wrap"><div class="bar-fill" style="width:90%"><span>43 לידים</span></div></div><div class="bar-value">₪23/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 8</div><div class="bar-wrap"><div class="bar-fill" style="width:94%"><span>45 לידים</span></div></div><div class="bar-value">₪22/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 9</div><div class="bar-wrap"><div class="bar-fill" style="width:96%"><span>46 לידים</span></div></div><div class="bar-value">₪22/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 10</div><div class="bar-wrap"><div class="bar-fill" style="width:96%"><span>46 לידים</span></div></div><div class="bar-value">₪22/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 11</div><div class="bar-wrap"><div class="bar-fill" style="width:98%"><span>47 לידים</span></div></div><div class="bar-value">₪21/ליד</div></div>
+      <div class="bar-row"><div class="bar-label">חודש 12</div><div class="bar-wrap"><div class="bar-fill" style="width:100%"><span>48 לידים</span></div></div><div class="bar-value">₪21/ליד</div></div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="section">
+    <h2>טבלה מפורטת — חודש אחר חודש</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>חודש</th>
+          <th>עלות לליד</th>
+          <th>לידים</th>
+          <th>עסקאות (25%)</th>
+          <th>ירידה בעלות</th>
+          <th>שלב</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>חודש 1</td><td>₪65</td><td>15</td><td>4</td><td>—</td><td><span class="badge-low">לימוד</span></td></tr>
+        <tr><td>חודש 2</td><td>₪50</td><td>20</td><td>5</td><td>-23%</td><td><span class="badge-low">לימוד</span></td></tr>
+        <tr><td>חודש 3</td><td>₪40</td><td>25</td><td>6</td><td>-38%</td><td><span class="badge-mid">צמיחה</span></td></tr>
+        <tr><td>חודש 4</td><td>₪32</td><td>31</td><td>8</td><td>-51%</td><td><span class="badge-mid">צמיחה</span></td></tr>
+        <tr><td>חודש 5</td><td>₪28</td><td>36</td><td>9</td><td>-57%</td><td><span class="badge-mid">צמיחה</span></td></tr>
+        <tr><td>חודש 6</td><td>₪25</td><td>40</td><td>10</td><td>-62%</td><td><span class="badge-high">בשל</span></td></tr>
+        <tr><td>חודש 7</td><td>₪23</td><td>43</td><td>11</td><td>-65%</td><td><span class="badge-high">בשל</span></td></tr>
+        <tr><td>חודש 8</td><td>₪22</td><td>45</td><td>11</td><td>-66%</td><td><span class="badge-high">בשל</span></td></tr>
+        <tr><td>חודש 9</td><td>₪22</td><td>46</td><td>11</td><td>-66%</td><td><span class="badge-high">בשל</span></td></tr>
+        <tr><td>חודש 10</td><td>₪22</td><td>46</td><td>11</td><td>-66%</td><td><span class="badge-high">בשל</span></td></tr>
+        <tr><td>חודש 11</td><td>₪21</td><td>47</td><td>12</td><td>-68%</td><td><span class="badge-high">בשל</span></td></tr>
+        <tr><td>חודש 12</td><td>₪21</td><td>48</td><td>12</td><td>-68%</td><td><span class="badge-high">בשל</span></td></tr>
+        <tr style="background:#1a2744;color:#fff;font-weight:800">
+          <td>סה"כ שנה</td><td>₪31 ממוצע</td><td><strong>442</strong></td><td><strong>~110</strong></td><td>—</td><td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ROI -->
+  <div class="section">
+    <h2>תשואה על ההשקעה (ROI)</h2>
+    <div class="roi-box">
+      <div class="roi-item">
+        <div class="roi-num">₪12,000</div>
+        <div class="roi-label">סה"כ השקעה שנתית</div>
+      </div>
+      <div class="roi-item">
+        <div class="roi-num">~110</div>
+        <div class="roi-label">לקוחות חדשים בשנה</div>
+      </div>
+      <div class="roi-item">
+        <div class="roi-num">×10+</div>
+        <div class="roi-label">ROI שנה שנייה</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="section">
+    <h2>הנחות ומפתחות הצלחה</h2>
+    <div class="notes">
+      <h3>מה משפיע על התוצאות:</h3>
+      <ul>
+        <li>ירידת עלות הליד מבוססת על לימוד הפיקסל (Meta Pixel — מוטמע באתר)</li>
+        <li>אחוז סגירה 25% — ריאלי לשוק כתבי שירות עם תסריט שיחה מקצועי</li>
+        <li>מענה ללידים תוך 5 דקות — מכפיל אחוז הסגירה פי 4</li>
+        <li>אל תכפיל תקציב בבת אחת — הגדל 20-30% בשבוע למניעת איפוס הפיקסל</li>
+        <li>מחודש 6 כדאי להגדיל תקציב ל-₪2,000-3,000 להאצת הצמיחה</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    הופק ע"י <strong>פלטינום שירות</strong> | platinum-service.co.il | אפריל 2026
+  </div>
+
+</div>
+</body>
+</html>
