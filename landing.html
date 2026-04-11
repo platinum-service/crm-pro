@@ -895,6 +895,11 @@
         createdAt: serverTimestamp()
       });
 
+      // פייסבוק פיקסל — אירוע Lead
+      fbq('track', 'Lead', { value: score, currency: 'ILS' });
+      // גוגל אנליטיקס — אירוע lead
+      gtag('event', 'generate_lead', { value: score });
+
       document.getElementById('form-wrap').style.display = 'none';
       document.getElementById('ty-score').textContent = `ניקוד ההתאמה שלך: ${score}/10`;
       const ty = document.getElementById('thankyou');
