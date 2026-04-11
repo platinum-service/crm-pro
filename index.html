@@ -8,81 +8,106 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+:root{
+  --navy:#1a2744;--navy-light:#243156;--gold:#d4af37;--gold-light:#f0d060;
+  --bg:#f4f6fb;--white:#ffffff;--text:#1a2744;--text-muted:#6b7a99;
+  --success:#22c55e;--error:#e74c3c;--warning:#f59e0b;--border:#e8ecf4;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;min-height:100vh}
-#pg-login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#6c63ff 0%,#4ade80 100%)}
-.login-card{background:#fff;border-radius:20px;padding:44px 48px;width:100%;max-width:400px;box-shadow:0 16px 48px rgba(0,0,0,.22);text-align:center}
-.login-logo{font-size:2.2rem;margin-bottom:6px}
-.login-card h1{color:#6c63ff;font-size:1.7rem;margin-bottom:4px}
-.login-card .sub{color:#888;font-size:.85rem;margin-bottom:28px}
+body{font-family:'Heebo','Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── LOGIN ── */
+#pg-login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a2744 0%,#243156 50%,#d4af37 100%)}
+.login-card{background:#fff;border-radius:24px;padding:48px 52px;width:100%;max-width:420px;box-shadow:0 24px 64px rgba(26,39,68,.30);text-align:center}
+.login-logo{font-size:2.4rem;margin-bottom:8px}
+.login-card h1{color:#1a2744;font-size:1.75rem;margin-bottom:4px;font-weight:800}
+.login-card .sub{color:#6b7a99;font-size:.87rem;margin-bottom:30px}
 .login-card .fg{text-align:right;margin-bottom:14px}
-.login-card label{display:block;font-size:.85rem;font-weight:700;color:#444;margin-bottom:5px}
-.login-card input{width:100%;padding:11px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:.95rem;background:#fafafa;color:#222;transition:border-color .2s}
-.login-card input:focus{outline:none;border-color:#6c63ff;background:#fff}
-.btn-login{width:100%;background:#6c63ff;color:#fff;border:none;padding:12px;border-radius:8px;font-size:1rem;font-weight:800;cursor:pointer;margin-top:8px;transition:background .2s}
-.btn-login:hover{background:#574fd6}
-.login-err{color:#dc3545;font-size:.83rem;margin-top:10px;min-height:18px}
+.login-card label{display:block;font-size:.85rem;font-weight:700;color:#1a2744;margin-bottom:5px}
+.login-card input{width:100%;padding:11px 14px;border:1.5px solid #e8ecf4;border-radius:10px;font-size:.95rem;background:#f4f6fb;color:#1a2744;transition:border-color .2s;font-family:inherit}
+.login-card input:focus{outline:none;border-color:#1a2744;background:#fff}
+.btn-login{width:100%;background:#d4af37;color:#1a2744;border:none;padding:13px;border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;margin-top:8px;transition:background .2s;letter-spacing:.3px}
+.btn-login:hover{background:#f0d060}
+.login-err{color:#e74c3c;font-size:.83rem;margin-top:10px;min-height:18px}
 .time-note{margin-top:14px;padding:10px 14px;background:#fff8e1;border:1px solid #fde68a;border-radius:8px;font-size:.78rem;color:#7c4a00}
 .fb-badge{margin-top:10px;padding:6px 12px;background:#e0f4ff;border:1px solid #3b82f6;border-radius:6px;font-size:.76rem;color:#1e3a5f;display:none}
 .fb-badge.show{display:block}
-#app-hdr{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:0 22px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;gap:12px}
-.hdr-brand{font-size:1.15rem;font-weight:900;color:#6c63ff;white-space:nowrap}
+
+/* ── HEADER ── */
+#app-hdr{background:#1a2744;box-shadow:0 2px 12px rgba(26,39,68,.35);padding:0 22px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;gap:12px}
+.hdr-brand{font-size:1.2rem;font-weight:900;color:#d4af37;white-space:nowrap;letter-spacing:.5px}
 .hdr-mid{display:flex;align-items:center;gap:16px;flex:1;justify-content:center}
-.hdr-user{font-size:.88rem;color:#444;font-weight:700}
-.hdr-clock{font-size:.85rem;color:#888;font-family:monospace;white-space:nowrap}
+.hdr-user{font-size:.88rem;color:rgba(255,255,255,.85);font-weight:700}
+.hdr-clock{font-size:.85rem;color:rgba(255,255,255,.55);font-family:monospace;white-space:nowrap}
 .hdr-warn{background:#fff3cd;color:#856404;padding:3px 12px;border-radius:12px;font-size:.75rem;font-weight:700}
-.btn-logout{background:none;border:1.5px solid #ddd;color:#666;padding:6px 16px;border-radius:7px;font-size:.83rem;cursor:pointer;font-weight:600;white-space:nowrap;transition:all .15s}
-.btn-logout:hover{border-color:#e74c3c;color:#e74c3c}
+.btn-logout{background:none;border:1.5px solid rgba(212,175,55,.5);color:#d4af37;padding:6px 16px;border-radius:7px;font-size:.83rem;cursor:pointer;font-weight:600;white-space:nowrap;transition:all .15s}
+.btn-logout:hover{border-color:#d4af37;background:rgba(212,175,55,.12);color:#f0d060}
 .sync-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;margin-left:4px;vertical-align:middle;flex-shrink:0}
 .sync-dot.syncing{background:#f59e0b;animation:sdpulse .8s infinite}
 .sync-dot.error{background:#e74c3c}
 @keyframes sdpulse{0%,100%{opacity:1}50%{opacity:.3}}
-.tab-nav{background:#fff;border-bottom:1.5px solid #ececec;padding:0 22px;display:flex;gap:2px;overflow-x:auto}
-.tab-btn{background:none;border:none;padding:14px 18px;font-size:.9rem;font-weight:700;color:#888;cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;margin-bottom:-1.5px}
-.tab-btn:hover{color:#6c63ff}
-.tab-btn.active{color:#6c63ff;border-bottom-color:#6c63ff}
+
+/* ── TAB NAV ── */
+.tab-nav{background:#1a2744;border-bottom:1.5px solid rgba(255,255,255,.08);padding:0 22px;display:flex;gap:2px;overflow-x:auto}
+.tab-btn{background:none;border:none;padding:16px 18px;font-size:.9rem;font-weight:700;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;margin-bottom:-1.5px;font-family:inherit}
+.tab-btn:hover{color:rgba(255,255,255,.85)}
+.tab-btn.active{color:#d4af37;border-bottom-color:#d4af37}
 .tab-pane{display:none;padding:24px 22px;max-width:1200px;margin:0 auto}
 .tab-pane.active{display:block}
-.card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:22px 26px;margin-bottom:20px}
-.card h2{font-size:1rem;color:#333;margin-bottom:16px;border-right:4px solid #6c63ff;padding-right:10px}
+
+/* ── CARDS ── */
+.card{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(26,39,68,.08);padding:22px 26px;margin-bottom:20px;border:1px solid #e8ecf4}
+.card h2{font-size:1rem;color:#1a2744;margin-bottom:16px;border-right:4px solid #d4af37;padding-right:10px;font-weight:800}
+
+/* ── STATS ── */
 .stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.stat-box{flex:1;min-width:110px;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:14px 10px;text-align:center}
-.stat-box .num{font-size:1.8rem;font-weight:900;color:#6c63ff}
-.stat-box .lbl{font-size:.77rem;color:#888;margin-top:4px}
+.stat-box{flex:1;min-width:110px;background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(26,39,68,.08);padding:16px 10px;text-align:center;border:1px solid #e8ecf4;border-top:3px solid #d4af37}
+.stat-box .num{font-size:1.9rem;font-weight:900;color:#1a2744}
+.stat-box .lbl{font-size:.77rem;color:#6b7a99;margin-top:4px}
 .sb-can .num{color:#6c757d}
-.sb-rev .num{color:#198754;font-size:1.3rem}
+.sb-rev .num{color:#198754;font-size:1.4rem}
 .sb-goal .num{color:#f59e0b}
+
+/* ── FORMS ── */
 .form-row{display:flex;gap:12px}
 .form-row .fg{flex:1}
 .fg{margin-bottom:14px}
-label{display:block;font-size:.86rem;font-weight:700;margin-bottom:5px;color:#444}
+label{display:block;font-size:.86rem;font-weight:700;margin-bottom:5px;color:#1a2744}
 label .req{color:#e74c3c;margin-right:2px}
-input[type=text],input[type=password],input[type=date],input[type=number],input[type=email],select,textarea{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.93rem;background:#fafafa;color:#222;transition:border-color .2s;font-family:inherit}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#6c63ff;background:#fff}
+input[type=text],input[type=password],input[type=date],input[type=number],input[type=email],select,textarea{width:100%;padding:9px 12px;border:1.5px solid #e8ecf4;border-radius:8px;font-size:.93rem;background:#f4f6fb;color:#1a2744;transition:border-color .2s;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#1a2744;background:#fff}
 input.inv{border-color:#e74c3c!important}
-.btn-pri{background:#6c63ff;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:.93rem;font-weight:800;cursor:pointer;transition:background .2s}
-.btn-pri:hover{background:#574fd6}
-.btn-pri.full{width:100%;padding:11px}
-.btn-sec{background:#f0f0f0;color:#555;border:none;border-radius:8px;padding:10px 18px;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .2s}
-.btn-sec:hover{background:#e0e0e0}
+
+/* ── BUTTONS ── */
+.btn-pri{background:#d4af37;color:#1a2744;border:none;border-radius:10px;padding:10px 22px;font-size:.93rem;font-weight:800;cursor:pointer;transition:background .2s;font-family:inherit}
+.btn-pri:hover{background:#f0d060}
+.btn-pri.full{width:100%;padding:12px}
+.btn-sec{background:#f4f6fb;color:#1a2744;border:1.5px solid #e8ecf4;border-radius:10px;padding:10px 18px;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-sec:hover{background:#e8ecf4;border-color:#1a2744}
+
+/* ── TABLES ── */
 .tbl-scroll{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.86rem;min-width:600px}
-thead th{background:#f7f7fb;padding:10px 12px;text-align:right;font-weight:700;color:#555;border-bottom:1.5px solid #ececec;cursor:pointer;user-select:none;white-space:nowrap}
-thead th:hover{color:#6c63ff}
+thead th{background:#f0f4ff;padding:10px 12px;text-align:right;font-weight:700;color:#1a2744;border-bottom:2px solid #1a2744;cursor:pointer;user-select:none;white-space:nowrap}
+thead th:hover{color:#d4af37}
 thead th.ns{cursor:default}
-thead th.ns:hover{color:#555}
-tbody tr{border-bottom:1px solid #f3f3f3;transition:background .1s}
-tbody tr:hover{background:#faf9ff}
+thead th.ns:hover{color:#1a2744}
+tbody tr{border-bottom:1px solid #e8ecf4;transition:background .1s}
+tbody tr:nth-child(even){background:#fafbff}
+tbody tr:hover{background:#f0f4ff}
 tbody td{padding:9px 12px;vertical-align:middle}
 .row-can{background:#f5f5f5;color:#999}
 .row-can td{opacity:.7}
 .row-can td:last-child{opacity:1}
 .empty-row td{text-align:center;color:#aaa;padding:28px;font-size:.9rem}
+
+/* ── BADGES ── */
 .badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.76rem;font-weight:800;white-space:nowrap}
-.b-closed{background:#d4edda;color:#1e7e34}
-.b-open{background:#f8d7da;color:#a71d2a}
-.b-cancelled{background:#e2e3e5;color:#6c757d}
+.b-closed{background:#d1fae5;color:#065f46}
+.b-open{background:#e0f2fe;color:#0369a1}
+.b-cancelled{background:#f3f4f6;color:#4b5563}
 .b-collection{background:#fef3c7;color:#92400e}
 .b-admin{background:#e8e0ff;color:#5a4fcf}
 .b-agent{background:#d1ecf1;color:#0c5460}
@@ -93,243 +118,282 @@ tbody td{padding:9px 12px;vertical-align:middle}
 .b-negotiating{background:#fef3c7;color:#d97706}
 .b-followup{background:#fff3cd;color:#856404}
 .b-overdue{background:#fecaca;color:#9f1239}
+
+/* ── ACTION BUTTONS ── */
 .ab{background:none;border:none;color:#bbb;cursor:pointer;font-size:.95rem;padding:3px 6px;border-radius:5px;transition:color .15s,background .15s;white-space:nowrap}
-.ab:hover{color:#6c63ff;background:#eeecff}
+.ab:hover{color:#1a2744;background:#e8ecf4}
 .ab.del:hover{color:#e74c3c;background:#fdecea}
 .ab.res:hover{color:#28a745;background:#eafaf1}
 .ab.wa:hover{color:#25d366;background:#e6faf0}
-.ab.sp:hover{color:#e67e22;background:#fef5e7}
+.ab.sp:hover{color:#d4af37;background:#fef9e7}
 .ab.mail:hover{color:#0ea5e9;background:#e0f2fe}
 .phone-cell{display:flex;align-items:center;gap:3px;white-space:nowrap}
 .email-cell{display:flex;align-items:center;gap:3px;white-space:nowrap;font-size:.82rem}
-.smart-paste-area{background:#f8f8ff;border:1.5px dashed #c4b5fd;border-radius:10px;padding:14px 16px;margin-bottom:16px}
-.smart-paste-area summary{font-size:.88rem;font-weight:700;color:#6c63ff;cursor:pointer;user-select:none}
-.smart-paste-area textarea{margin-top:10px;width:100%;border:1.5px solid #ddd;border-radius:8px;padding:9px 12px;font-size:.85rem;background:#fff;resize:vertical}
-.pay-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f3f3f3;font-size:.85rem}
+
+/* ── SMART PASTE ── */
+.smart-paste-area{background:#f4f6fb;border:1.5px dashed #d4af37;border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.smart-paste-area summary{font-size:.88rem;font-weight:700;color:#1a2744;cursor:pointer;user-select:none}
+.smart-paste-area textarea{margin-top:10px;width:100%;border:1.5px solid #e8ecf4;border-radius:8px;padding:9px 12px;font-size:.85rem;background:#fff;resize:vertical;font-family:inherit}
+
+/* ── PAY BARS ── */
+.pay-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #e8ecf4;font-size:.85rem}
 .pay-row:last-child{border-bottom:none}
-.pay-label{min-width:130px;color:#444;font-weight:600}
-.pay-bar-wrap{flex:1;background:#f0f0f0;border-radius:10px;height:8px;overflow:hidden}
-.pay-bar-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#6c63ff,#4ade80)}
-.pay-count{min-width:28px;text-align:left;font-weight:800;color:#6c63ff}
+.pay-label{min-width:130px;color:#1a2744;font-weight:600}
+.pay-bar-wrap{flex:1;background:#e8ecf4;border-radius:10px;height:8px;overflow:hidden}
+.pay-bar-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#1a2744,#d4af37)}
+.pay-count{min-width:28px;text-align:left;font-weight:800;color:#d4af37}
+
+/* ── AGENTS GRID ── */
 .agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
-.agent-card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:18px 20px}
-.agent-card .ac-name{font-size:1rem;font-weight:800;color:#333;margin-bottom:3px}
-.agent-card .ac-user{font-size:.8rem;color:#888;margin-bottom:12px}
-.agent-card .ac-row{display:flex;justify-content:space-between;font-size:.83rem;color:#555;margin-bottom:6px}
-.agent-card .ac-row span{font-weight:800;color:#6c63ff}
+.agent-card{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(26,39,68,.08);padding:18px 20px;border:1px solid #e8ecf4;border-right:4px solid #d4af37;transition:box-shadow .2s,transform .15s}
+.agent-card:hover{box-shadow:0 8px 32px rgba(26,39,68,.14);transform:translateY(-2px)}
+.agent-card .ac-name{font-size:1rem;font-weight:800;color:#1a2744;margin-bottom:3px}
+.agent-card .ac-user{font-size:.8rem;color:#6b7a99;margin-bottom:12px}
+.agent-card .ac-row{display:flex;justify-content:space-between;font-size:.83rem;color:#6b7a99;margin-bottom:6px}
+.agent-card .ac-row span{font-weight:800;color:#d4af37}
 .agent-card .ac-acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.btn-card{flex:1;padding:7px;border:1.5px solid #ddd;background:none;color:#555;border-radius:7px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;min-width:60px}
-.btn-card:hover{border-color:#6c63ff;color:#6c63ff;background:#eeecff}
+.btn-card{flex:1;padding:7px;border:1.5px solid #e8ecf4;background:none;color:#1a2744;border-radius:7px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;min-width:60px;font-family:inherit}
+.btn-card:hover{border-color:#d4af37;color:#d4af37;background:#fef9e7}
 .btn-card.d:hover{border-color:#fca5a5;color:#dc3545;background:#fdecea}
-.goal-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f3f3f3;flex-wrap:wrap}
+
+/* ── GOALS ── */
+.goal-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #e8ecf4;flex-wrap:wrap}
 .goal-item:last-child{border-bottom:none}
 .gi-info{min-width:160px}
-.gi-name{font-weight:800;font-size:.92rem;color:#333}
-.gi-period{font-size:.76rem;color:#888}
+.gi-name{font-weight:800;font-size:.92rem;color:#1a2744}
+.gi-period{font-size:.76rem;color:#6b7a99}
 .gi-targets{display:flex;gap:18px}
 .gi-t{text-align:center}
-.gi-t .tl{font-size:.72rem;color:#888}
-.gi-t .tv{font-size:1.05rem;font-weight:800;color:#6c63ff}
+.gi-t .tl{font-size:.72rem;color:#6b7a99}
+.gi-t .tv{font-size:1.05rem;font-weight:800;color:#d4af37}
 .gi-prog{flex:1;min-width:120px}
-.prog-lbl{font-size:.76rem;color:#888;margin-bottom:3px}
-.prog-track{background:#f0f0f0;border-radius:20px;height:9px;overflow:hidden}
-.prog-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#6c63ff,#4ade80);transition:width .4s}
+.prog-lbl{font-size:.76rem;color:#6b7a99;margin-bottom:3px}
+.prog-track{background:#e8ecf4;border-radius:20px;height:9px;overflow:hidden}
+.prog-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#1a2744,#d4af37);transition:width .4s}
+
+/* ── ANALYTICS ── */
 .an-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-.an-card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:18px 20px}
-.an-card h3{font-size:.93rem;color:#333;margin-bottom:12px;border-right:3px solid #6c63ff;padding-right:8px}
+.an-card{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(26,39,68,.08);padding:18px 20px;border:1px solid #e8ecf4}
+.an-card h3{font-size:.93rem;color:#1a2744;margin-bottom:12px;border-right:3px solid #d4af37;padding-right:8px;font-weight:800}
 .an-full{grid-column:1/-1}
 .kpi-row{display:flex;gap:10px}
-.kpi-b{flex:1;text-align:center;background:#f8f8ff;border-radius:10px;padding:11px 6px}
-.kpi-b .v{font-size:1.6rem;font-weight:900;color:#6c63ff}
-.kpi-b .s{font-size:.73rem;color:#888;margin-top:3px}
+.kpi-b{flex:1;text-align:center;background:#f4f6fb;border-radius:10px;padding:11px 6px;border:1px solid #e8ecf4}
+.kpi-b .v{font-size:1.6rem;font-weight:900;color:#1a2744}
+.kpi-b .s{font-size:.73rem;color:#6b7a99;margin-top:3px}
 .ch-badge{display:inline-block;padding:3px 14px;border-radius:20px;font-weight:800;font-size:.83rem}
 .ch-up{background:#d4edda;color:#1e7e34}
 .ch-down{background:#f8d7da;color:#a71d2a}
 .ch-same{background:#e9ecef;color:#555}
-.conv-track{background:#f0f0f0;border-radius:20px;height:14px;margin:8px 0 4px;overflow:hidden}
-.conv-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#6c63ff,#4ade80);transition:width .5s}
+.conv-track{background:#e8ecf4;border-radius:20px;height:14px;margin:8px 0 4px;overflow:hidden}
+.conv-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#1a2744,#d4af37);transition:width .5s}
 .tips-list{list-style:none}
 .tips-list li{padding:8px 12px;margin-bottom:6px;border-radius:8px;font-size:.84rem;line-height:1.5;border-right:3px solid}
 .t-warn{background:#fff8e1;border-color:#f59e0b;color:#7c4a00}
 .t-info{background:#e8f4fd;border-color:#3b82f6;color:#1e3a5f}
 .t-good{background:#d4edda;border-color:#1e7e34;color:#1a4731}
-.best-box{text-align:center;background:linear-gradient(135deg,#6c63ff11,#4ade8011);border:1.5px solid #6c63ff33;border-radius:12px;padding:14px}
+.best-box{text-align:center;background:linear-gradient(135deg,rgba(26,39,68,.05),rgba(212,175,55,.08));border:1.5px solid rgba(212,175,55,.3);border-radius:12px;padding:14px}
 .best-box .bc{font-size:1.8rem}
-.best-box .bn{font-size:1rem;font-weight:800;color:#6c63ff;margin:4px 0}
-.best-box .bv{font-size:.8rem;color:#555}
-.my-goal{background:linear-gradient(135deg,#6c63ff11,#4ade8011);border:1.5px solid #6c63ff33;border-radius:14px;padding:18px;margin-bottom:18px}
-.my-goal .mg-title{font-weight:800;font-size:.95rem;color:#333;margin-bottom:12px}
+.best-box .bn{font-size:1rem;font-weight:800;color:#d4af37;margin:4px 0}
+.best-box .bv{font-size:.8rem;color:#6b7a99}
+.my-goal{background:linear-gradient(135deg,rgba(26,39,68,.04),rgba(212,175,55,.06));border:1.5px solid rgba(212,175,55,.25);border-radius:14px;padding:18px;margin-bottom:18px}
+.my-goal .mg-title{font-weight:800;font-size:.95rem;color:#1a2744;margin-bottom:12px}
 .mg-row{display:flex;gap:14px;flex-wrap:wrap}
 .mg-item{flex:1;min-width:120px}
-.mg-item .ml{font-size:.76rem;color:#666;margin-bottom:3px}
-.mg-item .mn{font-size:1.3rem;font-weight:900;color:#6c63ff;margin-bottom:4px}
-.mg-item .mt{background:#e0e0e0;border-radius:10px;height:9px;overflow:hidden}
-.mg-item .mf{height:100%;border-radius:10px;background:linear-gradient(90deg,#6c63ff,#4ade80)}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center;padding:16px}
+.mg-item .ml{font-size:.76rem;color:#6b7a99;margin-bottom:3px}
+.mg-item .mn{font-size:1.3rem;font-weight:900;color:#d4af37;margin-bottom:4px}
+.mg-item .mt{background:#e8ecf4;border-radius:10px;height:9px;overflow:hidden}
+.mg-item .mf{height:100%;border-radius:10px;background:linear-gradient(90deg,#1a2744,#d4af37)}
+
+/* ── MODALS ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;padding:16px}
 .modal-bg.open{display:flex}
-.modal{background:#fff;border-radius:14px;padding:26px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.2);position:relative}
-.modal h2{margin-bottom:16px;font-size:1.05rem;color:#333}
+.modal{background:#fff;border-radius:16px;padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 12px 48px rgba(26,39,68,.25);position:relative}
+.modal h2{margin-bottom:16px;font-size:1.05rem;color:#1a2744;font-weight:800}
 .modal-x{position:absolute;top:12px;left:14px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#aaa}
-.modal-x:hover{color:#333}
+.modal-x:hover{color:#1a2744}
 .modal-acts{display:flex;gap:10px;margin-top:12px}
-.btn-mcancel{flex:1;background:#f0f0f0;color:#555;border:none;padding:10px;border-radius:8px;font-size:.93rem;cursor:pointer;font-weight:700}
-.btn-mcancel:hover{background:#e0e0e0}
-.btn-msave{flex:2;background:#6c63ff;color:#fff;border:none;padding:10px;border-radius:8px;font-size:.93rem;cursor:pointer;font-weight:800}
-.btn-msave:hover{background:#574fd6}
+.btn-mcancel{flex:1;background:#f4f6fb;color:#1a2744;border:1.5px solid #e8ecf4;padding:10px;border-radius:8px;font-size:.93rem;cursor:pointer;font-weight:700;font-family:inherit}
+.btn-mcancel:hover{background:#e8ecf4}
+.btn-msave{flex:2;background:#d4af37;color:#1a2744;border:none;padding:10px;border-radius:8px;font-size:.93rem;cursor:pointer;font-weight:800;font-family:inherit}
+.btn-msave:hover{background:#f0d060}
+
+/* ── PERF TABLE ── */
 .perf-tbl{width:100%;border-collapse:collapse;font-size:.85rem}
-.perf-tbl th,.perf-tbl td{padding:9px 12px;text-align:right;border-bottom:1px solid #f3f3f3}
-.perf-tbl th{background:#f7f7fb;font-weight:700;color:#555}
-.bar-wrap{background:#f0f0f0;border-radius:10px;height:7px;min-width:60px;overflow:hidden;display:inline-block;width:80px}
-.bar-fill{height:100%;border-radius:10px;background:#6c63ff}
+.perf-tbl th,.perf-tbl td{padding:9px 12px;text-align:right;border-bottom:1px solid #e8ecf4}
+.perf-tbl th{background:#f0f4ff;font-weight:700;color:#1a2744}
+.bar-wrap{background:#e8ecf4;border-radius:10px;height:7px;min-width:60px;overflow:hidden;display:inline-block;width:80px}
+.bar-fill{height:100%;border-radius:10px;background:#d4af37}
 @keyframes urgent-blink{0%,100%{background:#fff5f5}50%{background:#ffcccc}}
 .row-urgent{animation:urgent-blink 1.8s infinite}
 .row-urgent:hover{animation:none;background:#fdecea}
+
+/* ── MISC BADGES ── */
 .b-product{background:#e0f4ff;color:#0369a1}
 .b-agentreq{background:#fef9c3;color:#854d0e}
 .b-cancelreq{background:#ffe4e6;color:#9f1239}
 .b-handled{background:#d4edda;color:#1e7e34}
 .b-team{background:#fef3c7;color:#92400e}
-.team-goal-box{background:linear-gradient(135deg,#f59e0b11,#fbbf2422);border:1.5px solid #f59e0b44;border-radius:14px;padding:18px 20px;margin-bottom:16px}
+
+/* ── TEAM GOAL BOX ── */
+.team-goal-box{background:linear-gradient(135deg,rgba(245,158,11,.07),rgba(251,191,36,.14));border:1.5px solid rgba(245,158,11,.3);border-radius:14px;padding:18px 20px;margin-bottom:16px}
 .team-goal-box .tg-title{font-weight:900;font-size:1rem;color:#92400e;margin-bottom:10px}
 .tg-row{display:flex;gap:14px;flex-wrap:wrap}
-.tg-item{flex:1;min-width:130px;background:#fff;border-radius:10px;padding:12px 14px}
-.tg-item .tl{font-size:.76rem;color:#888;margin-bottom:3px}
+.tg-item{flex:1;min-width:130px;background:#fff;border-radius:10px;padding:12px 14px;border:1px solid #e8ecf4}
+.tg-item .tl{font-size:.76rem;color:#6b7a99;margin-bottom:3px}
 .tg-item .tv{font-size:1.2rem;font-weight:900;color:#f59e0b;margin-bottom:5px}
 .tg-item .tr{background:#f0e9d0;border-radius:10px;height:8px;overflow:hidden}
 .tg-item .tf{height:100%;border-radius:10px;background:linear-gradient(90deg,#f59e0b,#fbbf24)}
-.ticket-item{padding:12px 14px;margin-bottom:8px;border-radius:10px;border:1px solid #ececec;background:#fafafa}
+
+/* ── TICKETS ── */
+.ticket-item{padding:12px 14px;margin-bottom:8px;border-radius:10px;border:1px solid #e8ecf4;background:#f4f6fb}
 .ticket-item .ti-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;flex-wrap:wrap;gap:6px}
-.ticket-item .ti-note{font-size:.84rem;color:#555;line-height:1.5}
+.ticket-item .ti-note{font-size:.84rem;color:#1a2744;line-height:1.5}
 .ticket-item .ti-meta{font-size:.76rem;color:#aaa;margin-top:4px}
-.closer-badge{display:inline-block;padding:3px 12px;background:#e8e0ff;color:#5a4fcf;border-radius:20px;font-size:.78rem;font-weight:800}
+.closer-badge{display:inline-block;padding:3px 12px;background:rgba(212,175,55,.15);color:#1a2744;border-radius:20px;font-size:.78rem;font-weight:800;border:1px solid rgba(212,175,55,.4)}
+
+/* ── PRESENCE ── */
 .status-dot{display:inline-block;width:9px;height:9px;border-radius:50%;flex-shrink:0;vertical-align:middle}
 .dot-online{background:#22c55e;box-shadow:0 0 5px #22c55e99}
 .dot-break{background:#f59e0b;box-shadow:0 0 5px #f59e0b99}
 .dot-offline{background:#9ca3af}
 .presence-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px}
-.pres-card{border:1.5px solid #ececec;border-radius:10px;padding:11px 14px}
-.pres-name{font-weight:800;font-size:.88rem;display:flex;align-items:center;gap:6px;margin-bottom:3px}
-.pres-status{font-size:.76rem;color:#888}
+.pres-card{border:1.5px solid #e8ecf4;border-radius:10px;padding:11px 14px;background:#fff}
+.pres-name{font-weight:800;font-size:.88rem;display:flex;align-items:center;gap:6px;margin-bottom:3px;color:#1a2744}
+.pres-status{font-size:.76rem;color:#6b7a99}
 .pres-break{font-size:.76rem;color:#f59e0b;font-weight:700;margin-top:2px}
-.btn-break-hdr{background:none;border:1.5px solid #f59e0b;color:#d97706;padding:5px 13px;border-radius:7px;font-size:.81rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s}
+.btn-break-hdr{background:none;border:1.5px solid #f59e0b;color:#d97706;padding:5px 13px;border-radius:7px;font-size:.81rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:inherit}
 .btn-break-hdr:hover{background:#fff8e1}
 .btn-break-hdr.on-break{background:#f59e0b;color:#fff;border-color:#f59e0b}
 .break-timer-hdr{font-size:.8rem;color:#f59e0b;font-weight:800;font-family:monospace;white-space:nowrap}
 .comm-box{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;border-radius:9px;padding:9px 13px;margin-top:9px}
 .comm-box .cv{font-size:1.1rem;font-weight:900;color:#16a34a}
 .comm-box .cl{font-size:.75rem;color:#4ade80;margin-top:2px}
+
 /* ── FOLLOW-UP BANNER ── */
 .followup-banner{background:linear-gradient(90deg,#fffbeb,#fff);border:1.5px solid #f59e0b;border-radius:12px;padding:14px 18px;margin-bottom:16px}
 .followup-banner .fb-title{font-weight:800;font-size:.9rem;color:#92400e;margin-bottom:8px}
 .followup-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #fde68a;font-size:.84rem;flex-wrap:wrap}
 .followup-item:last-child{border-bottom:none}
-.fi-name{font-weight:700;color:#333;flex:1;min-width:100px}
+.fi-name{font-weight:700;color:#1a2744;flex:1;min-width:100px}
 .fi-date{font-size:.78rem;white-space:nowrap;color:#d97706;font-weight:700}
 .fi-overdue{color:#dc3545!important}
-.fi-note{color:#888;font-size:.78rem;flex:1}
+.fi-note{color:#6b7a99;font-size:.78rem;flex:1}
+
 /* ── NOTES ── */
-.note-item{padding:10px 12px;margin-bottom:6px;border-radius:8px;background:#f8f8ff;border-right:3px solid #6c63ff}
-.note-text{font-size:.85rem;color:#333;line-height:1.5;word-break:break-word}
+.note-item{padding:10px 12px;margin-bottom:6px;border-radius:8px;background:#f4f6fb;border-right:3px solid #d4af37}
+.note-text{font-size:.85rem;color:#1a2744;line-height:1.5;word-break:break-word}
 .note-meta{font-size:.73rem;color:#aaa;margin-top:4px}
 .note-add{display:flex;gap:8px;margin-top:12px}
-.note-add textarea{flex:1;padding:8px 11px;border:1.5px solid #ddd;border-radius:8px;font-size:.85rem;background:#fafafa;resize:none;font-family:inherit;height:60px}
-.note-add textarea:focus{outline:none;border-color:#6c63ff;background:#fff}
+.note-add textarea{flex:1;padding:8px 11px;border:1.5px solid #e8ecf4;border-radius:8px;font-size:.85rem;background:#f4f6fb;resize:none;font-family:inherit;height:60px}
+.note-add textarea:focus{outline:none;border-color:#1a2744;background:#fff}
+
 /* ── AUDIT LOG ── */
-.audit-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid #f3f3f3;font-size:.8rem;color:#555}
+.audit-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid #e8ecf4;font-size:.8rem;color:#6b7a99}
 .audit-item:last-child{border-bottom:none}
 .audit-icon{font-size:.9rem;flex-shrink:0;margin-top:2px}
 .audit-text{flex:1;line-height:1.5}
 .audit-time{font-size:.72rem;color:#aaa;white-space:nowrap}
-/* ── IMPORT ── */
-.import-drop{border:2px dashed #c4b5fd;border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .2s;background:#f8f8ff}
-.import-drop:hover,.import-drop.drag-over{border-color:#6c63ff;background:#eeecff}
-.import-drop .id-icon{font-size:2.5rem;margin-bottom:8px}
-.import-drop .id-txt{font-size:.9rem;color:#6c63ff;font-weight:700}
-.import-drop .id-sub{font-size:.78rem;color:#aaa;margin-top:4px}
-.import-preview{max-height:260px;overflow-y:auto;margin-top:12px;border:1px solid #ececec;border-radius:8px}
-.import-preview table{width:100%;font-size:.78rem}
-.import-preview th{background:#f7f7fb;padding:6px 10px;font-weight:700;color:#555;text-align:right;position:sticky;top:0}
-.import-preview td{padding:5px 10px;border-bottom:1px solid #f3f3f3}
-/* ── TOAST ── */
-#sync-toast{position:fixed;bottom:22px;right:22px;background:#333;color:#fff;padding:9px 18px;border-radius:10px;font-size:.82rem;pointer-events:none;opacity:0;transition:opacity .3s;z-index:999;display:flex;align-items:center;gap:7px}
-/* ══ FEATURE CSS ══ */
-/* Dark Mode */
-body.dark-mode{background:#1a1b2e;color:#e0e0e0}
-body.dark-mode #app-hdr{background:#16213e;box-shadow:0 2px 8px rgba(0,0,0,.4)}
-body.dark-mode .tab-nav{background:#16213e;border-bottom-color:#2a2a4a}
-body.dark-mode .tab-btn{color:#aaa}
-body.dark-mode .tab-btn.active{color:#a78bfa;border-bottom-color:#a78bfa}
-body.dark-mode .tab-btn:hover{color:#a78bfa}
-body.dark-mode .card,.dark-mode .an-card,.dark-mode .stat-box,.dark-mode .agent-card,.dark-mode .tg-item,.dark-mode .my-goal,.dark-mode .kpi-b{background:#16213e;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-body.dark-mode .card{background:#16213e}
-body.dark-mode .an-card{background:#16213e}
-body.dark-mode .stat-box{background:#16213e}
-body.dark-mode .agent-card{background:#16213e}
-body.dark-mode .kpi-b{background:#1e2a4a}
-body.dark-mode input[type=text],body.dark-mode input[type=password],body.dark-mode input[type=date],body.dark-mode input[type=number],body.dark-mode input[type=email],body.dark-mode select,body.dark-mode textarea{background:#1e2a4a;color:#e0e0e0;border-color:#3a3a6a}
-body.dark-mode table thead th{background:#1e2a4a;color:#aaa;border-bottom-color:#3a3a6a}
-body.dark-mode table tbody tr:hover{background:#1e2a4a}
-body.dark-mode table tbody tr{border-bottom-color:#2a2a4a}
-body.dark-mode .modal{background:#16213e;color:#e0e0e0}
-body.dark-mode .modal h2{color:#e0e0e0}
-body.dark-mode .btn-sec{background:#1e2a4a;color:#aaa}
-body.dark-mode .btn-sec:hover{background:#2a3a6a}
-body.dark-mode .btn-mcancel{background:#1e2a4a;color:#aaa}
-body.dark-mode .hdr-brand{color:#a78bfa}
-body.dark-mode .hdr-user{color:#bbb}
-body.dark-mode .hdr-clock{color:#888}
-body.dark-mode .note-item{background:#1e2a4a;border-right-color:#a78bfa}
-body.dark-mode .ticket-item{background:#1e2a4a;border-color:#3a3a6a}
-body.dark-mode .followup-banner{background:linear-gradient(90deg,#2a2000,#1e1a00);border-color:#d97706}
-body.dark-mode .pres-card{border-color:#3a3a6a;background:#1e2a4a}
-body.dark-mode .login-card{background:#16213e;color:#e0e0e0}
-body.dark-mode label{color:#bbb}
-body.dark-mode .card h2{color:#bbb}
-body.dark-mode .an-card h3{color:#bbb}
-body.dark-mode #pg-login{background:linear-gradient(135deg,#4a3fff 0%,#22c55e 100%)}
-body.dark-mode .team-goal-box{background:linear-gradient(135deg,#2a1a00,#1e1000)}
-body.dark-mode .my-goal{background:linear-gradient(135deg,#1e1a4a,#1a2a1a)}
-body.dark-mode .import-drop{background:#1e2a4a;border-color:#5a4fcf}
-.dark-toggle{background:none;border:1.5px solid #ddd;padding:5px 11px;border-radius:7px;font-size:1rem;cursor:pointer;transition:all .15s}
-body.dark-mode .dark-toggle{border-color:#5a4fcf;background:#1e2a4a}
 
-/* Global Search */
+/* ── IMPORT ── */
+.import-drop{border:2px dashed #d4af37;border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .2s;background:#f4f6fb}
+.import-drop:hover,.import-drop.drag-over{border-color:#1a2744;background:#e8ecf4}
+.import-drop .id-icon{font-size:2.5rem;margin-bottom:8px}
+.import-drop .id-txt{font-size:.9rem;color:#d4af37;font-weight:700}
+.import-drop .id-sub{font-size:.78rem;color:#aaa;margin-top:4px}
+.import-preview{max-height:260px;overflow-y:auto;margin-top:12px;border:1px solid #e8ecf4;border-radius:8px}
+.import-preview table{width:100%;font-size:.78rem}
+.import-preview th{background:#f0f4ff;padding:6px 10px;font-weight:700;color:#1a2744;text-align:right;position:sticky;top:0}
+.import-preview td{padding:5px 10px;border-bottom:1px solid #e8ecf4}
+
+/* ── TOAST ── */
+#sync-toast{position:fixed;bottom:22px;right:22px;background:#1a2744;color:#fff;padding:9px 18px;border-radius:10px;font-size:.82rem;pointer-events:none;opacity:0;transition:opacity .3s;z-index:999;display:flex;align-items:center;gap:7px}
+
+/* ══ DARK MODE ══ */
+body.dark-mode{background:#0f1729;color:#e0e0e0}
+body.dark-mode #app-hdr{background:#0f1729;box-shadow:0 2px 12px rgba(0,0,0,.5)}
+body.dark-mode .tab-nav{background:#0f1729;border-bottom-color:rgba(255,255,255,.06)}
+body.dark-mode .tab-btn{color:rgba(255,255,255,.45)}
+body.dark-mode .tab-btn.active{color:#d4af37;border-bottom-color:#d4af37}
+body.dark-mode .tab-btn:hover{color:rgba(255,255,255,.8)}
+body.dark-mode .card{background:#1a2744;box-shadow:0 2px 10px rgba(0,0,0,.3);border-color:#243156}
+body.dark-mode .an-card{background:#1a2744;border-color:#243156}
+body.dark-mode .stat-box{background:#1a2744;border-color:#243156;border-top-color:#d4af37}
+body.dark-mode .agent-card{background:#1a2744;border-color:#243156}
+body.dark-mode .kpi-b{background:#243156;border-color:#2d3e6a}
+body.dark-mode input[type=text],body.dark-mode input[type=password],body.dark-mode input[type=date],body.dark-mode input[type=number],body.dark-mode input[type=email],body.dark-mode select,body.dark-mode textarea{background:#243156;color:#e0e0e0;border-color:#2d3e6a}
+body.dark-mode table thead th{background:#243156;color:#d4af37;border-bottom-color:#2d3e6a}
+body.dark-mode table tbody tr:nth-child(even){background:#1e2d50}
+body.dark-mode table tbody tr:hover{background:#243156}
+body.dark-mode table tbody tr{border-bottom-color:#243156}
+body.dark-mode .modal{background:#1a2744;color:#e0e0e0;border:1px solid #243156}
+body.dark-mode .modal h2{color:#e0e0e0}
+body.dark-mode .btn-sec{background:#243156;color:#e0e0e0;border-color:#2d3e6a}
+body.dark-mode .btn-sec:hover{background:#2d3e6a}
+body.dark-mode .btn-mcancel{background:#243156;color:#e0e0e0;border-color:#2d3e6a}
+body.dark-mode .hdr-brand{color:#d4af37}
+body.dark-mode .hdr-user{color:rgba(255,255,255,.75)}
+body.dark-mode .hdr-clock{color:rgba(255,255,255,.45)}
+body.dark-mode .note-item{background:#243156;border-right-color:#d4af37}
+body.dark-mode .ticket-item{background:#243156;border-color:#2d3e6a}
+body.dark-mode .followup-banner{background:linear-gradient(90deg,#2a2000,#1e1a00);border-color:#d97706}
+body.dark-mode .pres-card{border-color:#2d3e6a;background:#243156}
+body.dark-mode .login-card{background:#1a2744;color:#e0e0e0}
+body.dark-mode label{color:#bbb}
+body.dark-mode .card h2{color:#d4af37}
+body.dark-mode .an-card h3{color:#d4af37}
+body.dark-mode #pg-login{background:linear-gradient(135deg,#0f1729 0%,#1a2744 50%,#d4af37 100%)}
+body.dark-mode .team-goal-box{background:linear-gradient(135deg,#2a1a00,#1e1000)}
+body.dark-mode .my-goal{background:linear-gradient(135deg,rgba(26,39,68,.5),rgba(212,175,55,.06));border-color:rgba(212,175,55,.2)}
+body.dark-mode .import-drop{background:#243156;border-color:#d4af37}
+body.dark-mode .tg-item{background:#243156}
+body.dark-mode .chart-card{background:#1a2744}
+body.dark-mode .chart-card h3{color:#d4af37}
+body.dark-mode .perf-tbl th{background:#243156;color:#d4af37}
+body.dark-mode .perf-tbl td{border-bottom-color:#243156}
+body.dark-mode .att-row-today{background:#0a1f10}
+.dark-toggle{background:none;border:1.5px solid rgba(212,175,55,.5);color:#d4af37;padding:5px 11px;border-radius:7px;font-size:1rem;cursor:pointer;transition:all .15s}
+body.dark-mode .dark-toggle{border-color:#d4af37;background:rgba(212,175,55,.1)}
+
+/* ── GLOBAL SEARCH ── */
 .hdr-search-wrap{position:relative;display:flex;align-items:center}
-.hdr-search-input{padding:5px 11px 5px 28px;border:1.5px solid #ddd;border-radius:20px;font-size:.83rem;background:#fafafa;width:180px;transition:width .2s;outline:none}
-body.dark-mode .hdr-search-input{background:#1e2a4a;border-color:#3a3a6a;color:#e0e0e0}
-.hdr-search-input:focus{width:240px;border-color:#6c63ff}
-.hdr-search-icon{position:absolute;left:8px;font-size:.85rem;color:#aaa;pointer-events:none}
-.search-dropdown{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border:1.5px solid #ececec;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:300;max-height:380px;overflow-y:auto;min-width:320px}
-body.dark-mode .search-dropdown{background:#16213e;border-color:#3a3a6a}
-.search-result-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid #f3f3f3;transition:background .1s}
-body.dark-mode .search-result-item{border-bottom-color:#2a2a4a}
-.search-result-item:hover{background:#f0efff}
-body.dark-mode .search-result-item:hover{background:#1e2a4a}
+.hdr-search-input{padding:5px 11px 5px 28px;border:1.5px solid rgba(255,255,255,.2);border-radius:20px;font-size:.83rem;background:rgba(255,255,255,.1);width:180px;transition:width .2s,background .2s;outline:none;color:#fff;font-family:inherit}
+.hdr-search-input::placeholder{color:rgba(255,255,255,.45)}
+body.dark-mode .hdr-search-input{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:#e0e0e0}
+.hdr-search-input:focus{width:240px;border-color:#d4af37;background:rgba(255,255,255,.15)}
+.hdr-search-icon{position:absolute;left:8px;font-size:.85rem;color:rgba(255,255,255,.5);pointer-events:none}
+.search-dropdown{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border:1.5px solid #e8ecf4;border-radius:12px;box-shadow:0 8px 24px rgba(26,39,68,.15);z-index:300;max-height:380px;overflow-y:auto;min-width:320px}
+body.dark-mode .search-dropdown{background:#1a2744;border-color:#243156}
+.search-result-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid #e8ecf4;transition:background .1s}
+body.dark-mode .search-result-item{border-bottom-color:#243156}
+.search-result-item:hover{background:#f0f4ff}
+body.dark-mode .search-result-item:hover{background:#243156}
 .search-result-item:last-child{border-bottom:none}
-.sri-title{font-weight:700;font-size:.88rem;color:#333}
+.sri-title{font-weight:700;font-size:.88rem;color:#1a2744}
 body.dark-mode .sri-title{color:#e0e0e0}
-.sri-sub{font-size:.76rem;color:#888;margin-top:2px}
-.sri-badge{font-size:.7rem;background:#e8e0ff;color:#5a4fcf;padding:1px 7px;border-radius:10px;font-weight:800}
+.sri-sub{font-size:.76rem;color:#6b7a99;margin-top:2px}
+.sri-badge{font-size:.7rem;background:rgba(212,175,55,.15);color:#d4af37;padding:1px 7px;border-radius:10px;font-weight:800}
 .search-no-results{padding:18px;text-align:center;color:#aaa;font-size:.85rem}
 
-/* Saved Filters */
-.saved-filters-area{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 18px;border-bottom:1.5px solid #f0f0f0;background:#fafafa}
-body.dark-mode .saved-filters-area{background:#1e2a4a;border-bottom-color:#2a2a4a}
-.sf-pill{padding:3px 12px;background:#e8e0ff;color:#5a4fcf;border:none;border-radius:20px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
-.sf-pill:hover{background:#d4c9ff}
+/* ── SAVED FILTERS ── */
+.saved-filters-area{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 18px;border-bottom:1.5px solid #e8ecf4;background:#f4f6fb}
+body.dark-mode .saved-filters-area{background:#243156;border-bottom-color:#2d3e6a}
+.sf-pill{padding:3px 12px;background:rgba(212,175,55,.15);color:#1a2744;border:none;border-radius:20px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
+body.dark-mode .sf-pill{color:#d4af37}
+.sf-pill:hover{background:rgba(212,175,55,.25)}
 .sf-pill .sf-x{font-size:.7rem;opacity:.7;margin-right:2px}
 .sf-pill .sf-x:hover{opacity:1;color:#dc3545}
-.btn-save-filter{padding:4px 12px;background:#6c63ff;color:#fff;border:none;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;white-space:nowrap}
-.btn-save-filter:hover{background:#574fd6}
+.btn-save-filter{padding:4px 12px;background:#d4af37;color:#1a2744;border:none;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;white-space:nowrap;font-family:inherit}
+.btn-save-filter:hover{background:#f0d060}
+
 /* ── UX IMPROVEMENTS ── */
 tr.tr-closed td{background:#f0fdf4}
 tr.tr-cancelled td{background:#f9f9f9;color:#999}
 tr.tr-cancelled td .badge{opacity:.7}
 tr.tr-collection td{background:#fffbeb}
-.qflt-btn{padding:5px 14px;border-radius:20px;border:1.5px solid #ddd;background:#fff;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
-.qflt-btn:hover{border-color:#6c63ff;color:#6c63ff}
-.qflt-btn.qf-active{background:#6c63ff;color:#fff;border-color:#6c63ff}
-.qflt-btn.qf-closed{border-color:#16a34a;color:#16a34a}.qflt-btn.qf-closed.qf-active{background:#16a34a}
+.qflt-btn{padding:5px 14px;border-radius:20px;border:1.5px solid #e8ecf4;background:#fff;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;font-family:inherit}
+.qflt-btn:hover{border-color:#1a2744;color:#1a2744}
+.qflt-btn.qf-active{background:#1a2744;color:#fff;border-color:#1a2744}
+.qflt-btn.qf-closed{border-color:#16a34a;color:#16a34a}.qflt-btn.qf-closed.qf-active{background:#16a34a;color:#fff}
 .qflt-btn.qf-open{border-color:#e74c3c;color:#e74c3c}.qflt-btn.qf-open.qf-active{background:#e74c3c;color:#fff}
 .qflt-btn.qf-cancelled{border-color:#888;color:#888}.qflt-btn.qf-cancelled.qf-active{background:#888;color:#fff}
 .qflt-btn.qf-collection{border-color:#d97706;color:#d97706}.qflt-btn.qf-collection.qf-active{background:#d97706;color:#fff}
@@ -343,105 +407,106 @@ tr.tr-collection td{background:#fffbeb}
 .punch-banner{background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;padding:11px 18px;margin:0 0 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.9rem;font-weight:700;color:#856404}
 .followup-banner-top{background:#e8f4fd;border:1.5px solid #3b82f6;border-radius:10px;padding:11px 18px;margin:0 0 14px;font-size:.88rem;color:#1e40af}
 .agent-top-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.ats-box{flex:1;min-width:100px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);padding:12px;text-align:center}
-.ats-box .ats-n{font-size:1.6rem;font-weight:900;color:#6c63ff}
-.ats-box .ats-l{font-size:.75rem;color:#888;margin-top:3px}
-.cust-row-click{cursor:pointer}.cust-row-click:hover td{background:rgba(108,99,255,.04)!important}
-.extra-fields-toggle{background:none;border:1.5px dashed #ddd;border-radius:8px;width:100%;padding:8px;font-size:.83rem;color:#888;cursor:pointer;margin:8px 0;text-align:center;font-weight:700}
-.extra-fields-toggle:hover{border-color:#6c63ff;color:#6c63ff}
+.ats-box{flex:1;min-width:100px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(26,39,68,.08);padding:12px;text-align:center;border:1px solid #e8ecf4}
+.ats-box .ats-n{font-size:1.6rem;font-weight:900;color:#d4af37}
+.ats-box .ats-l{font-size:.75rem;color:#6b7a99;margin-top:3px}
+.cust-row-click{cursor:pointer}.cust-row-click:hover td{background:rgba(26,39,68,.04)!important}
+.extra-fields-toggle{background:none;border:1.5px dashed #e8ecf4;border-radius:8px;width:100%;padding:8px;font-size:.83rem;color:#6b7a99;cursor:pointer;margin:8px 0;text-align:center;font-weight:700;font-family:inherit}
+.extra-fields-toggle:hover{border-color:#d4af37;color:#d4af37}
 .extra-fields{display:none}
 .extra-fields.open{display:block}
 .rf-cust-search{position:relative}
-.rf-cust-dropdown{position:absolute;top:100%;right:0;left:0;background:#fff;border:1.5px solid #ddd;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:100;max-height:200px;overflow-y:auto;display:none}
+.rf-cust-dropdown{position:absolute;top:100%;right:0;left:0;background:#fff;border:1.5px solid #e8ecf4;border-radius:8px;box-shadow:0 4px 16px rgba(26,39,68,.1);z-index:100;max-height:200px;overflow-y:auto;display:none}
 .rf-cust-dropdown.show{display:block}
-.rf-cust-opt{padding:9px 13px;cursor:pointer;font-size:.85rem;border-bottom:1px solid #f0f0f0}
-.rf-cust-opt:hover{background:#f0f0ff}
+.rf-cust-opt{padding:9px 13px;cursor:pointer;font-size:.85rem;border-bottom:1px solid #e8ecf4}
+.rf-cust-opt:hover{background:#f0f4ff}
 
-/* Calendar View */
+/* ── CALENDAR VIEW ── */
 .cal-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.cal-nav button{background:none;border:1.5px solid #ddd;padding:6px 14px;border-radius:7px;cursor:pointer;font-size:.9rem;font-weight:700;color:#555}
-body.dark-mode .cal-nav button{border-color:#3a3a6a;color:#aaa}
-.cal-nav button:hover{border-color:#6c63ff;color:#6c63ff}
-.cal-title{font-size:1.1rem;font-weight:900;color:#333;flex:1;text-align:center}
+.cal-nav button{background:none;border:1.5px solid #e8ecf4;padding:6px 14px;border-radius:7px;cursor:pointer;font-size:.9rem;font-weight:700;color:#1a2744;font-family:inherit}
+body.dark-mode .cal-nav button{border-color:#2d3e6a;color:#bbb}
+.cal-nav button:hover{border-color:#d4af37;color:#d4af37}
+.cal-title{font-size:1.1rem;font-weight:900;color:#1a2744;flex:1;text-align:center}
 body.dark-mode .cal-title{color:#e0e0e0}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.cal-dow{text-align:center;font-size:.76rem;font-weight:800;color:#888;padding:6px 0}
-.cal-day{background:#fafafa;border:1px solid #ececec;border-radius:6px;min-height:70px;padding:4px;position:relative;cursor:pointer;transition:background .1s}
-body.dark-mode .cal-day{background:#1e2a4a;border-color:#2a2a4a}
-.cal-day:hover{background:#f0efff}
-body.dark-mode .cal-day:hover{background:#2a3a6a}
+.cal-dow{text-align:center;font-size:.76rem;font-weight:800;color:#6b7a99;padding:6px 0}
+.cal-day{background:#f4f6fb;border:1px solid #e8ecf4;border-radius:6px;min-height:70px;padding:4px;position:relative;cursor:pointer;transition:background .1s}
+body.dark-mode .cal-day{background:#243156;border-color:#2d3e6a}
+.cal-day:hover{background:#e8ecf4}
+body.dark-mode .cal-day:hover{background:#2d3e6a}
 .cal-day.other-month{opacity:.35}
-.cal-day.today{border-color:#6c63ff;background:#f0efff}
-body.dark-mode .cal-day.today{background:#2a2a5a}
-.cal-day-num{font-size:.78rem;font-weight:700;color:#444;margin-bottom:3px}
+.cal-day.today{border-color:#d4af37;background:rgba(212,175,55,.08)}
+body.dark-mode .cal-day.today{background:rgba(212,175,55,.1)}
+.cal-day-num{font-size:.78rem;font-weight:700;color:#1a2744;margin-bottom:3px}
 body.dark-mode .cal-day-num{color:#bbb}
 .cal-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin:1px}
 .cal-dot-today{background:#f59e0b}
 .cal-dot-overdue{background:#e74c3c}
-.cal-dot-future{background:#6c63ff}
+.cal-dot-future{background:#d4af37}
 .cal-dots{display:flex;flex-wrap:wrap;gap:1px}
 
-/* Visual Timeline */
+/* ── VISUAL TIMELINE ── */
 .timeline-wrap{padding:4px 0}
 .tl-item{display:flex;gap:12px;padding:10px 0;position:relative}
-.tl-item:not(:last-child)::after{content:'';position:absolute;right:16px;top:38px;bottom:-10px;width:2px;background:#ececec}
-body.dark-mode .tl-item::after{background:#2a2a4a}
+.tl-item:not(:last-child)::after{content:'';position:absolute;right:16px;top:38px;bottom:-10px;width:2px;background:#e8ecf4}
+body.dark-mode .tl-item::after{background:#243156}
 .tl-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;z-index:1}
-.tl-created{background:#d4edda;color:#1e7e34}
-.tl-edited{background:#e8e0ff;color:#5a4fcf}
+.tl-created{background:#d1fae5;color:#065f46}
+.tl-edited{background:rgba(212,175,55,.15);color:#d4af37}
 .tl-ticket{background:#fde8e8;color:#9f1239}
 .tl-note{background:#e0f4ff;color:#0369a1}
 .tl-body{flex:1}
-.tl-text{font-size:.86rem;color:#333;font-weight:600}
+.tl-text{font-size:.86rem;color:#1a2744;font-weight:600}
 body.dark-mode .tl-text{color:#e0e0e0}
 .tl-meta{font-size:.73rem;color:#aaa;margin-top:3px}
 
-/* Auto Backup */
-.backup-info{font-size:.72rem;color:#888;text-align:center;white-space:nowrap}
-body.dark-mode .backup-info{color:#666}
+/* ── AUTO BACKUP ── */
+.backup-info{font-size:.72rem;color:rgba(255,255,255,.5);text-align:center;white-space:nowrap}
+body.dark-mode .backup-info{color:rgba(255,255,255,.35)}
 
-/* WA Templates Manager */
-#wa-templates-modal .tpl-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f3f3f3}
+/* ── WA TEMPLATES ── */
+#wa-templates-modal .tpl-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #e8ecf4}
 #wa-templates-modal .tpl-item:last-child{border-bottom:none}
 #wa-templates-modal .tpl-name{font-weight:700;font-size:.88rem;min-width:100px}
-#wa-templates-modal .tpl-body{flex:1;font-size:.8rem;color:#555;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#wa-templates-modal .tpl-body{flex:1;font-size:.8rem;color:#6b7a99;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 body.dark-mode #wa-templates-modal .tpl-body{color:#aaa}
 
-/* Enhanced Charts */
+/* ── ENHANCED CHARTS ── */
 .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 @media(max-width:700px){.charts-grid{grid-template-columns:1fr}}
-.chart-card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:18px 20px}
-body.dark-mode .chart-card{background:#16213e}
-.chart-card h3{font-size:.93rem;color:#333;margin-bottom:12px;border-right:3px solid #6c63ff;padding-right:8px}
-body.dark-mode .chart-card h3{color:#bbb}
+.chart-card{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(26,39,68,.08);padding:18px 20px;border:1px solid #e8ecf4}
+body.dark-mode .chart-card{background:#1a2744;border-color:#243156}
+.chart-card h3{font-size:.93rem;color:#1a2744;margin-bottom:12px;border-right:3px solid #d4af37;padding-right:8px;font-weight:800}
+body.dark-mode .chart-card h3{color:#d4af37}
 
-/* Team Leader Dashboard */
+/* ── TEAM LEADER DASHBOARD ── */
 #t-team-leader .tl-stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .team-perf-indicator{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:20px;font-size:.78rem;font-weight:800}
 .team-perf-good{background:#d4edda;color:#1e7e34}
 .team-perf-warn{background:#fff3cd;color:#856404}
 .team-perf-bad{background:#fde8e8;color:#9f1239}
-/* ══ INQUIRIES & REINFORCEMENT CALLS ══ */
+
+/* ── INQUIRIES & REINFORCEMENT CALLS ── */
 .inq-tbl td,.reinf-tbl td{padding:8px 10px;vertical-align:middle}
 .inq-notes-cell{min-width:140px}
-.inq-notes-input{width:100%;padding:5px 8px;border:1.5px solid #ddd;border-radius:7px;font-size:.82rem;background:#fafafa;font-family:inherit;resize:none;min-height:38px}
-.inq-notes-input:focus{outline:none;border-color:#6c63ff;background:#fff}
-.inq-status-sel{padding:5px 8px;border:1.5px solid #ddd;border-radius:7px;font-size:.82rem;background:#fafafa;font-family:inherit}
-.inq-status-sel:focus{outline:none;border-color:#6c63ff}
+.inq-notes-input{width:100%;padding:5px 8px;border:1.5px solid #e8ecf4;border-radius:7px;font-size:.82rem;background:#f4f6fb;font-family:inherit;resize:none;min-height:38px}
+.inq-notes-input:focus{outline:none;border-color:#1a2744;background:#fff}
+.inq-status-sel{padding:5px 8px;border:1.5px solid #e8ecf4;border-radius:7px;font-size:.82rem;background:#f4f6fb;font-family:inherit}
+.inq-status-sel:focus{outline:none;border-color:#1a2744}
 .b-inq-open{background:#fde8e8;color:#9f1239}
 .b-inq-done{background:#d4edda;color:#1e7e34}
 .b-inq-skip{background:#f3f4f6;color:#6b7280}
-.reinf-done-chk{width:18px;height:18px;cursor:pointer;accent-color:#6c63ff}
-.reinf-add-form{background:#f8f8ff;border:1.5px solid #e0dcff;border-radius:10px;padding:16px 18px;margin-bottom:18px}
-.reinf-add-form h3{font-size:.92rem;color:#6c63ff;font-weight:800;margin-bottom:12px}
-body.dark-mode .inq-notes-input{background:#1e2a4a;color:#e0e0e0;border-color:#3a3a6a}
-body.dark-mode .inq-status-sel{background:#1e2a4a;color:#e0e0e0;border-color:#3a3a6a}
-body.dark-mode .reinf-add-form{background:#1e2a4a;border-color:#3a3a6a}
-/* ══ ATTENDANCE CSS ══ */
+.reinf-done-chk{width:18px;height:18px;cursor:pointer;accent-color:#d4af37}
+.reinf-add-form{background:#f4f6fb;border:1.5px solid #e8ecf4;border-radius:10px;padding:16px 18px;margin-bottom:18px}
+.reinf-add-form h3{font-size:.92rem;color:#d4af37;font-weight:800;margin-bottom:12px}
+body.dark-mode .inq-notes-input{background:#243156;color:#e0e0e0;border-color:#2d3e6a}
+body.dark-mode .inq-status-sel{background:#243156;color:#e0e0e0;border-color:#2d3e6a}
+body.dark-mode .reinf-add-form{background:#243156;border-color:#2d3e6a}
+
+/* ── ATTENDANCE CSS ── */
 .att-still-working{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:20px;background:#d1fae5;color:#065f46;font-size:.76rem;font-weight:800}
 .att-row-today{background:#f0fdf4}
 body.dark-mode .att-row-today{background:#0a2a1a}
-/* ══ END FEATURE CSS ══ */
 
 /* ── PRINT ── */
 @media print{
@@ -455,6 +520,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
   thead th{background:#f0f0f0!important;-webkit-print-color-adjust:exact}
   .badge{border:1px solid #ccc}
 }
+
 /* ── MOBILE ── */
 @media(max-width:700px){
   .an-grid{grid-template-columns:1fr}.an-full{grid-column:1}.kpi-row{flex-wrap:wrap}
@@ -501,7 +567,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
 <!-- ══ APP ══ -->
 <div id="pg-app" hidden>
   <div id="app-hdr">
-    <div class="hdr-brand">🏥 הראשונים בבריאות וסיעוד</div>
+    <div class="hdr-brand">💎 פלטינום CRM</div>
     <div class="hdr-mid">
       <div class="hdr-user" id="hdr-user"></div>
       <div class="hdr-clock" id="hdr-clock"></div>
@@ -523,10 +589,10 @@ body.dark-mode .att-row-today{background:#0a2a1a}
     </div>
     <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()" title="מצב כהה">🌙</button>
     <div style="display:flex;flex-direction:column;align-items:center" id="backup-area" hidden>
-      <button class="btn-logout" onclick="autoBackup()" style="border-color:#6c63ff;color:#6c63ff">💾 גיבוי</button>
+      <button class="btn-logout" onclick="autoBackup()" style="border-color:#d4af37;color:#d4af37">💾 גיבוי</button>
       <div class="backup-info" id="backup-ts"></div>
     </div>
-    <button class="btn-logout" onclick="openModal('profile-modal')" style="border-color:#6c63ff;color:#6c63ff">⚙️ פרופיל</button>
+    <button class="btn-logout" onclick="openModal('profile-modal')" style="border-color:#d4af37;color:#d4af37">⚙️ פרופיל</button>
     <button class="btn-logout" onclick="doLogout()">התנתק</button>
   </div>
 
@@ -585,7 +651,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
         <div style="text-align:center;margin-top:10px" id="adm-badge"></div>
       </div>
       <div class="an-card"><h3>🎯 יחס המרה כולל</h3>
-        <div class="v" id="adm-conv" style="font-size:2rem;font-weight:900;color:#6c63ff;text-align:center">0%</div>
+        <div class="v" id="adm-conv" style="font-size:2rem;font-weight:900;color:#1a2744;text-align:center">0%</div>
         <div class="conv-track"><div class="conv-fill" id="adm-conv-fill" style="width:0%"></div></div>
         <div style="font-size:.8rem;color:#888;text-align:center" id="adm-conv-sub"></div>
       </div>
@@ -622,7 +688,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
       <div id="a-extra" class="extra-fields">
       <div class="form-row"><div class="fg"><label>כתובת</label><input type="text" id="a-address"/></div><div class="fg"><label>אימייל</label><input type="email" id="a-email"/></div></div>
       <div class="form-row"><div class="fg"><label>אמצעי תשלום</label><select id="a-payment" onchange="onPaymentChange('a')"><option value="">— לא נבחר —</option><option value="credit">💳 כרטיס אשראי</option><option value="standing">🔄 הוראת קבע</option></select></div><div class="fg"><label>סכום עסקה (₪)</label><input type="text" id="a-amount" placeholder="0"/></div></div>
-      <div id="a-card-wrap" style="display:none"><div style="background:#f0f0ff;border:1.5px solid #c4b5fd;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#6c63ff;margin-bottom:10px">💳 פרטי כרטיס אשראי</div><div class="form-row"><div class="fg"><label>4 ספרות אחרונות</label><input type="text" id="a-card-last4" maxlength="4" placeholder="1234"/></div><div class="fg"><label>תוקף (MM/YY)</label><input type="text" id="a-card-expiry" maxlength="5" placeholder="12/27"/></div></div><div class="form-row"><div class="fg"><label>שם בעל הכרטיס</label><input type="text" id="a-card-holder"/></div><div class="fg"><label>סוג כרטיס</label><select id="a-card-type"><option value="">— בחר —</option><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="amex">American Express</option><option value="isracard">ישראכרט</option><option value="diners">דיינרס</option></select></div></div></div></div>
+      <div id="a-card-wrap" style="display:none"><div style="background:rgba(212,175,55,.06);border:1.5px solid rgba(212,175,55,.3);border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#d4af37;margin-bottom:10px">💳 פרטי כרטיס אשראי</div><div class="form-row"><div class="fg"><label>4 ספרות אחרונות</label><input type="text" id="a-card-last4" maxlength="4" placeholder="1234"/></div><div class="fg"><label>תוקף (MM/YY)</label><input type="text" id="a-card-expiry" maxlength="5" placeholder="12/27"/></div></div><div class="form-row"><div class="fg"><label>שם בעל הכרטיס</label><input type="text" id="a-card-holder"/></div><div class="fg"><label>סוג כרטיס</label><select id="a-card-type"><option value="">— בחר —</option><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="amex">American Express</option><option value="isracard">ישראכרט</option><option value="diners">דיינרס</option></select></div></div></div></div>
       <div id="a-so-wrap" style="display:none"><div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#16a34a;margin-bottom:10px">🔄 פרטי הוראת קבע</div><div class="form-row"><div class="fg"><label>שם הבנק</label><input type="text" id="a-so-bank" placeholder="הפועלים, לאומי..."/></div><div class="fg"><label>מספר סניף</label><input type="text" id="a-so-branch" placeholder="123"/></div></div><div class="form-row"><div class="fg"><label>מספר חשבון</label><input type="text" id="a-so-account"/></div><div class="fg"><label>יום חיוב בחודש</label><input type="number" id="a-so-day" min="1" max="31" placeholder="1"/></div></div></div></div>
       <div class="form-row"><div class="fg"><label>שם הנציג שסגר</label><input type="text" id="a-agent"/></div><div class="fg" id="a-pipeline-wrap"><label>שלב Pipeline</label><select id="a-pipeline"><option value="">— לא צוין —</option><option value="new">🆕 ליד חדש</option><option value="contacted">📞 יצירת קשר</option><option value="demo">🖥️ הצגת מוצר</option><option value="negotiating">🤝 מו"מ</option></select></div></div>
       <div class="form-row" id="a-mdate-wrap"><div class="fg"><label>תאריך יצירת קשר</label><input type="date" id="a-mdate"/></div><div class="fg"><label>תאריך התחלת חוזה</label><input type="date" id="a-cdate"/></div></div>
@@ -740,7 +806,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
       <div id="m-extra" class="extra-fields">
       <div class="form-row"><div class="fg"><label>כתובת</label><input type="text" id="m-address"/></div><div class="fg"><label>אימייל</label><input type="email" id="m-email"/></div></div>
       <div class="form-row"><div class="fg"><label>אמצעי תשלום</label><select id="m-payment" onchange="onPaymentChange('m')"><option value="">— לא נבחר —</option><option value="credit">💳 כרטיס אשראי</option><option value="standing">🔄 הוראת קבע</option></select></div><div class="fg"><label>שם הנציג שסגר</label><input type="text" id="m-agent"/></div></div>
-      <div id="m-card-wrap" style="display:none"><div style="background:#f0f0ff;border:1.5px solid #c4b5fd;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#6c63ff;margin-bottom:10px">💳 פרטי כרטיס אשראי</div><div class="form-row"><div class="fg"><label>4 ספרות אחרונות</label><input type="text" id="m-card-last4" maxlength="4"/></div><div class="fg"><label>תוקף (MM/YY)</label><input type="text" id="m-card-expiry" maxlength="5" placeholder="12/27"/></div></div><div class="form-row"><div class="fg"><label>שם בעל הכרטיס</label><input type="text" id="m-card-holder"/></div><div class="fg"><label>סוג כרטיס</label><select id="m-card-type"><option value="">— בחר —</option><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="amex">American Express</option><option value="isracard">ישראכרט</option><option value="diners">דיינרס</option></select></div></div></div></div>
+      <div id="m-card-wrap" style="display:none"><div style="background:rgba(212,175,55,.06);border:1.5px solid rgba(212,175,55,.3);border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#d4af37;margin-bottom:10px">💳 פרטי כרטיס אשראי</div><div class="form-row"><div class="fg"><label>4 ספרות אחרונות</label><input type="text" id="m-card-last4" maxlength="4"/></div><div class="fg"><label>תוקף (MM/YY)</label><input type="text" id="m-card-expiry" maxlength="5" placeholder="12/27"/></div></div><div class="form-row"><div class="fg"><label>שם בעל הכרטיס</label><input type="text" id="m-card-holder"/></div><div class="fg"><label>סוג כרטיס</label><select id="m-card-type"><option value="">— בחר —</option><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="amex">American Express</option><option value="isracard">ישראכרט</option><option value="diners">דיינרס</option></select></div></div></div></div>
       <div id="m-so-wrap" style="display:none"><div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#16a34a;margin-bottom:10px">🔄 פרטי הוראת קבע</div><div class="form-row"><div class="fg"><label>שם הבנק</label><input type="text" id="m-so-bank"/></div><div class="fg"><label>מספר סניף</label><input type="text" id="m-so-branch"/></div></div><div class="form-row"><div class="fg"><label>מספר חשבון</label><input type="text" id="m-so-account"/></div><div class="fg"><label>יום חיוב</label><input type="number" id="m-so-day" min="1" max="31"/></div></div></div></div>
       <div class="form-row" id="m-pipeline-wrap"><div class="fg"><label>שלב Pipeline</label><select id="m-pipeline"><option value="">— לא צוין —</option><option value="new">🆕 ליד חדש</option><option value="contacted">📞 יצירת קשר</option><option value="demo">🖥️ הצגת מוצר</option><option value="negotiating">🤝 מו"מ</option></select></div></div>
       <div class="form-row" id="m-mdate-wrap"><div class="fg"><label>תאריך יצירת קשר</label><input type="date" id="m-mdate"/></div><div class="fg"><label>תאריך התחלת חוזה</label><input type="date" id="m-cdate"/></div></div>
@@ -803,7 +869,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
         <div style="text-align:center;margin-top:10px" id="ag-badge"></div>
       </div>
       <div class="an-card"><h3>🎯 יחס המרה שלי</h3>
-        <div class="v" id="ag-conv" style="font-size:2rem;font-weight:900;color:#6c63ff;text-align:center">0%</div>
+        <div class="v" id="ag-conv" style="font-size:2rem;font-weight:900;color:#1a2744;text-align:center">0%</div>
         <div class="conv-track"><div class="conv-fill" id="ag-conv-fill" style="width:0%"></div></div>
         <div style="font-size:.8rem;color:#888;text-align:center" id="ag-conv-sub"></div>
       </div>
@@ -1038,7 +1104,7 @@ body.dark-mode .att-row-today{background:#0a2a1a}
     <div class="form-row"><div class="fg"><label>שם לקוח <span class="req">*</span></label><input type="text" id="e-name"/></div><div class="fg"><label>ת.ז <span class="req">*</span></label><input type="text" id="e-id" maxlength="9"/></div></div>
     <div class="form-row"><div class="fg"><label>טלפון</label><input type="text" id="e-phone"/></div><div class="fg"><label>כתובת</label><input type="text" id="e-address"/></div></div>
     <div class="form-row"><div class="fg"><label>אימייל</label><input type="email" id="e-email"/></div><div class="fg"><label>אמצעי תשלום</label><select id="e-payment" onchange="onPaymentChange('e')"><option value="">— לא נבחר —</option><option value="credit">💳 כרטיס אשראי</option><option value="standing">🔄 הוראת קבע</option></select></div></div>
-    <div id="e-card-wrap" style="display:none"><div style="background:#f0f0ff;border:1.5px solid #c4b5fd;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#6c63ff;margin-bottom:10px">💳 פרטי כרטיס אשראי</div><div class="form-row"><div class="fg"><label>4 ספרות אחרונות</label><input type="text" id="e-card-last4" maxlength="4" placeholder="1234"/></div><div class="fg"><label>תוקף (MM/YY)</label><input type="text" id="e-card-expiry" maxlength="5" placeholder="12/27"/></div></div><div class="form-row"><div class="fg"><label>שם בעל הכרטיס</label><input type="text" id="e-card-holder"/></div><div class="fg"><label>סוג כרטיס</label><select id="e-card-type"><option value="">— בחר —</option><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="amex">American Express</option><option value="isracard">ישראכרט</option><option value="diners">דיינרס</option></select></div></div></div></div>
+    <div id="e-card-wrap" style="display:none"><div style="background:rgba(212,175,55,.06);border:1.5px solid rgba(212,175,55,.3);border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#d4af37;margin-bottom:10px">💳 פרטי כרטיס אשראי</div><div class="form-row"><div class="fg"><label>4 ספרות אחרונות</label><input type="text" id="e-card-last4" maxlength="4" placeholder="1234"/></div><div class="fg"><label>תוקף (MM/YY)</label><input type="text" id="e-card-expiry" maxlength="5" placeholder="12/27"/></div></div><div class="form-row"><div class="fg"><label>שם בעל הכרטיס</label><input type="text" id="e-card-holder"/></div><div class="fg"><label>סוג כרטיס</label><select id="e-card-type"><option value="">— בחר —</option><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="amex">American Express</option><option value="isracard">ישראכרט</option><option value="diners">דיינרס</option></select></div></div></div></div>
     <div id="e-so-wrap" style="display:none"><div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:.82rem;font-weight:800;color:#16a34a;margin-bottom:10px">🔄 פרטי הוראת קבע</div><div class="form-row"><div class="fg"><label>שם הבנק</label><input type="text" id="e-so-bank"/></div><div class="fg"><label>מספר סניף</label><input type="text" id="e-so-branch"/></div></div><div class="form-row"><div class="fg"><label>מספר חשבון</label><input type="text" id="e-so-account"/></div><div class="fg"><label>יום חיוב</label><input type="number" id="e-so-day" min="1" max="31"/></div></div></div></div>
     <div class="form-row">
       <div class="fg"><label>סטטוס</label><select id="e-status" onchange="onStatusChange('e')"><option value="closed">סגר</option><option value="open">לא סגר</option><option value="cancelled">בוטל</option><option value="collection_issue">⚠️ בעיית גבייה</option></select></div>
@@ -1830,7 +1896,7 @@ function renderAgentTopStats(){
     <div class="ats-box"><div class="ats-n" style="color:#16a34a">${todayClose}</div><div class="ats-l">סגירות היום</div></div>
     <div class="ats-box"><div class="ats-n">${monthClose}</div><div class="ats-l">סגירות החודש</div></div>
     <div class="ats-box"><div class="ats-n" style="color:#16a34a;font-size:1.2rem">₪${comm.amount.toLocaleString('he-IL')}</div><div class="ats-l">עמלה שלי (${comm.rate}%)</div></div>
-    <div class="ats-box"><div class="ats-n" style="color:#6c63ff">${custs.length}</div><div class="ats-l">סה"כ לקוחות</div></div>`;
+    <div class="ats-box"><div class="ats-n" style="color:#d4af37">${custs.length}</div><div class="ats-l">סה"כ לקוחות</div></div>`;
 }
 function showPunchBanner(){
   if(!SESSION) return;
@@ -1966,7 +2032,7 @@ function custRow(c, users, mode){
   const actions=`
     ${isCan?`<button class="ab res" onclick="restoreCust(${c.id})" title="שחזר">↩</button>`:''}
     ${canViewAll()?`<button class="ab" style="color:#3b82f6" onclick="openNewTicket(${c.id})" title="פנייה חדשה">📋</button>`:''}
-    <button class="ab" onclick="showHistory(${c.id})" title="היסטוריה/הערות" style="${ticketCount||noteCount?'color:#6c63ff':''}">📂${ticketCount?`<sup style="font-size:.65rem">${ticketCount}</sup>`:''}</button>
+    <button class="ab" onclick="showHistory(${c.id})" title="היסטוריה/הערות" style="${ticketCount||noteCount?'color:#d4af37':''}">📂${ticketCount?`<sup style="font-size:.65rem">${ticketCount}</sup>`:''}</button>
     <button class="ab sp" onclick="openSpouseModal(${c.id})" title="הוסף מבוטח נוסף">👫 +</button>
     <button class="ab" onclick="openEdit(${c.id})" title="עריכה">✏️</button>
     <button class="ab del" onclick="delCustomer(${c.id})" title="מחק">🗑️</button>`;
@@ -2086,13 +2152,13 @@ function renderAgents(){
     const isAdminUser=a.role==='admin';
     const blockedBadge=a.blocked?'<span style="background:#fde8e8;color:#9f1239;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:800;margin-right:6px">🔒 חסום</span>':'';
     const shiftBadge=isShift?'<span style="background:#fff3e0;color:#e65100;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:800;margin-right:6px">⭐ מנהל משמרת</span>':'';
-    const adminBadge=isAdminUser?'<span style="background:#ede9fe;color:#6c63ff;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:800;margin-right:6px">👑 מנהל</span>':'';
+    const adminBadge=isAdminUser?'<span style="background:rgba(212,175,55,.15);color:#d4af37;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:800;margin-right:6px;border:1px solid rgba(212,175,55,.3)">👑 מנהל</span>':'';
     const adminOnlyBtns=isAdmin()&&!isAdminUser?`
       <button class="btn-card" onclick="toggleBlock(${a.id})" style="${a.blocked?'border-color:#198754;color:#198754':'border-color:#f59e0b;color:#d97706'}">${a.blocked?'🔓 שחרר':'🔒 חסום'}</button>
-      <button class="btn-card" onclick="toggleShiftManager(${a.id})" style="${isShift?'border-color:#6c63ff;color:#6c63ff':'border-color:#e65100;color:#e65100'}">${isShift?'👤 הורד לנציג':'⭐ מנהל משמרת'}</button>
+      <button class="btn-card" onclick="toggleShiftManager(${a.id})" style="${isShift?'border-color:#d4af37;color:#d4af37':'border-color:#e65100;color:#e65100'}">${isShift?'👤 הורד לנציג':'⭐ מנהל משמרת'}</button>
       <button class="btn-card d" onclick="delAgent(${a.id})">🗑️ מחק</button>`:'';
     const editBtn=isAdmin()?`<button class="btn-card" onclick="openEditAgent(${a.id})">✏️ עריכה / עמלה</button>`:'';
-    return `<div class="agent-card" style="${a.blocked?'opacity:.65':''}${isShift?';border:1.5px solid #ffcc80':''}${isAdminUser?';border:1.5px solid #c4b5fd':''}">
+    return `<div class="agent-card" style="${a.blocked?'opacity:.65':''}${isShift?';border-color:#d4af37':''}${isAdminUser?';border-color:rgba(212,175,55,.5)':''}">
       <div class="ac-name">${escH(a.name)} ${adminBadge}${shiftBadge}${blockedBadge}</div>
       <div class="ac-user">👤 ${escH(a.username)} &nbsp;<span class="status-dot ${dotCls}"></span> <span style="font-size:.73rem;color:#888">${statusLabel}</span></div>
       <div class="ac-row">סגירות החודש <span>${closedMonth}</span></div>
@@ -2205,7 +2271,7 @@ function renderDashboard(){
     <div class="stat-box sb-can"><div class="num">${custs.filter(c=>c.status==='cancelled').length}</div><div class="lbl">ביטולים</div></div>
     <div class="stat-box" style="border-top:3px solid #d97706"><div class="num" style="color:#d97706">${custs.filter(c=>c.status==='collection_issue').length}</div><div class="lbl">⚠️ בעיות גבייה</div></div>
     <div class="stat-box sb-rev"><div class="num">₪${active.reduce((s,c)=>s+(c.amount||0),0).toLocaleString('he-IL')}</div><div class="lbl">הכנסות (גבוי בפועל)</div></div>
-    <div class="stat-box" style="border-top:3px solid #6c63ff"><div class="num" style="color:#6c63ff">${todayClosures}</div><div class="lbl">סגירות היום 📅</div></div>`;
+    <div class="stat-box" style="border-top:3px solid #d4af37"><div class="num" style="color:#d4af37">${todayClosures}</div><div class="lbl">סגירות היום 📅</div></div>`;
   renderFollowUpBanner(custs);
   const md=buildMonthMap(custs);
   const {curKey,prevKey}=curPrevKeys();
@@ -2252,7 +2318,7 @@ function renderAgentStats(){
   document.getElementById('agent-stats').innerHTML=`
     <div class="stat-box"><div class="num">${custs.length}</div><div class="lbl">הלקוחות שלי</div></div>
     <div class="stat-box"><div class="num">${custs.filter(c=>c.status==='closed').length}</div><div class="lbl">עסקאות שסגרתי</div></div>
-    <div class="stat-box" style="border-top:3px solid #6c63ff"><div class="num" style="color:#6c63ff">${myTodayClosures}</div><div class="lbl">סגירות היום 📅</div></div>
+    <div class="stat-box" style="border-top:3px solid #d4af37"><div class="num" style="color:#d4af37">${myTodayClosures}</div><div class="lbl">סגירות היום 📅</div></div>
     <div class="stat-box sb-can"><div class="num">${custs.filter(c=>c.status==='cancelled').length}</div><div class="lbl">ביטולים</div></div>
     ${myCollection>0?`<div class="stat-box" style="border-top:3px solid #d97706"><div class="num" style="color:#d97706">${myCollection}</div><div class="lbl">⚠️ בעיות גבייה</div></div>`:''}
     <div class="stat-box sb-rev"><div class="num">₪${active.reduce((s,c)=>s+(c.amount||0),0).toLocaleString('he-IL')}</div><div class="lbl">הכנסות גבויות</div></div>
@@ -2300,10 +2366,10 @@ function renderLeaderboard(){
     return list.map((a,i)=>{
       if(i>0&&a.count===0) return '';
       const med=i<3?medals[i]:`${i+1}.`;
-      const bg=a.isMe?'background:#eeecff;border-right:3px solid #6c63ff':'background:#fafafa';
+      const bg=a.isMe?'background:rgba(212,175,55,.12);border-right:3px solid #d4af37':'background:#fafafa';
       return `<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;margin-bottom:5px;${bg}">
         <span style="min-width:28px;font-size:1.05rem">${med}</span>
-        <span style="flex:1;font-weight:${a.isMe?900:700};color:${a.isMe?'#6c63ff':'#333'}">${escH(a.name)}${a.isMe?' (אתה)':''}</span>
+        <span style="flex:1;font-weight:${a.isMe?900:700};color:${a.isMe?'#d4af37':'#333'}">${escH(a.name)}${a.isMe?' (אתה)':''}</span>
         <span style="font-weight:800;color:#333;font-size:.88rem">${a.count} סגירות</span>
         ${a.amount>0?`<span style="font-size:.78rem;color:#16a34a;font-weight:800">₪${a.amount.toLocaleString('he-IL')}</span>`:''}
       </div>`;
@@ -2313,11 +2379,11 @@ function renderLeaderboard(){
   const monthRank=buildRank(c=>{ const p=parseHeDate(c.date); return p&&p.key===curKey; });
   el.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
     <div>
-      <div style="font-weight:800;font-size:.9rem;color:#333;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #6c63ff33">📅 היום</div>
+      <div style="font-weight:800;font-size:.9rem;color:#1a2744;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid rgba(212,175,55,.35)">📅 היום</div>
       ${renderRank(todayRank)}
     </div>
     <div>
-      <div style="font-weight:800;font-size:.9rem;color:#333;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #6c63ff33">📆 החודש</div>
+      <div style="font-weight:800;font-size:.9rem;color:#1a2744;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid rgba(212,175,55,.35)">📆 החודש</div>
       ${renderRank(monthRank)}
     </div>
   </div>`;
@@ -2424,14 +2490,14 @@ function drawChart(canvasId,keys,md,curKey){
   keys.forEach((k,i)=>{
     const val=md[k]?.closed||0,x=pL+i*(barW+gap),bH=Math.max(val>0?3:0,val/maxV*cH),y=pT+cH-bH,isCur=k===curKey;
     const grd=ctx.createLinearGradient(0,y,0,pT+cH);
-    if(isCur){grd.addColorStop(0,'#6c63ff');grd.addColorStop(1,'#a78bfa');}
-    else{grd.addColorStop(0,'#a78bfa66');grd.addColorStop(1,'#6c63ff33');}
+    if(isCur){grd.addColorStop(0,'#d4af37');grd.addColorStop(1,'#1a2744');}
+    else{grd.addColorStop(0,'#1a274466');grd.addColorStop(1,'#d4af3733');}
     ctx.fillStyle=grd;ctx.beginPath();
     if(ctx.roundRect) ctx.roundRect(x,y,barW,bH,[3,3,0,0]); else ctx.rect(x,y,barW,bH);
     ctx.fill();
-    if(val>0){ctx.fillStyle=isCur?'#6c63ff':'#888';ctx.font=`${isCur?'bold':'normal'} 11px Segoe UI`;ctx.textAlign='center';ctx.fillText(val,x+barW/2,y-4);}
+    if(val>0){ctx.fillStyle=isCur?'#1a2744':'#888';ctx.font=`${isCur?'bold':'normal'} 11px Heebo,Segoe UI`;ctx.textAlign='center';ctx.fillText(val,x+barW/2,y-4);}
     const[yr,mo]=k.split('-');
-    ctx.fillStyle=isCur?'#6c63ff':'#888';ctx.font=`${isCur?'bold':'normal'} 10px Segoe UI`;ctx.textAlign='center';ctx.fillText(mAbbr[+mo-1],x+barW/2,pT+cH+14);
+    ctx.fillStyle=isCur?'#1a2744':'#888';ctx.font=`${isCur?'bold':'normal'} 10px Heebo,Segoe UI`;ctx.textAlign='center';ctx.fillText(mAbbr[+mo-1],x+barW/2,pT+cH+14);
     ctx.fillStyle='#bbb';ctx.font='9px Segoe UI';ctx.fillText(yr,x+barW/2,pT+cH+26);
   });
 }
@@ -2583,8 +2649,8 @@ function switchHistoryTab(tab){
   ['tickets','notes','audit'].forEach(t=>{
     document.getElementById('history-'+t).style.display=t===tab?'block':'none';
     const btn=document.getElementById('htab-'+t);
-    if(btn) btn.style.background=t===tab?'#6c63ff':'';
-    if(btn) btn.style.color=t===tab?'#fff':'';
+    if(btn) btn.style.background=t===tab?'#d4af37':'';
+    if(btn) btn.style.color=t===tab?'#1a2744':'';
   });
   if(tab==='notes') renderNotes(_historyCustomerId);
   if(tab==='audit') renderAuditLog(_historyCustomerId);
@@ -3729,7 +3795,7 @@ switchHistoryTab=function(tab){
       const el=document.getElementById('history-'+t);
       if(el) el.style.display=t===tab?'block':'none';
       const btn=document.getElementById('htab-'+t);
-      if(btn){btn.style.background=t===tab?'#6c63ff':'';btn.style.color=t===tab?'#fff':'';}
+      if(btn){btn.style.background=t===tab?'#d4af37':'';btn.style.color=t===tab?'#1a2744':'';}
     });
     renderTimeline(_historyCustomerId);
   } else {
@@ -4321,13 +4387,13 @@ function renderAttendance(){
     const breaksCell=fmtMs(breakMs);
     const agentCell=isAdmin_?`<td>${escH(e.agentName||'—')}</td>`:'';
     const actionsCell=isAdmin_?`<td style="white-space:nowrap">
-      <button class="ab" onclick="openEditAttendance(${e.id})" title="עריכה" style="background:#ede9fe;color:#6c63ff;border:none;padding:4px 9px;border-radius:6px;font-size:.8rem;cursor:pointer;font-weight:700">✏️</button>
+      <button class="ab" onclick="openEditAttendance(${e.id})" title="עריכה" style="background:rgba(212,175,55,.12);color:#d4af37;border:none;padding:4px 9px;border-radius:6px;font-size:.8rem;cursor:pointer;font-weight:700">✏️</button>
       <button class="ab del" onclick="deleteAttendance(${e.id})" title="מחק" style="margin-right:4px">🗑️</button>
     </td>`:'';
     return `<tr class="${isToday?'att-row-today':''}">
       <td style="font-size:.84rem;white-space:nowrap">${escH(e.date)}</td>
       ${agentCell}
-      <td style="font-size:.84rem;white-space:nowrap;font-weight:700;color:#6c63ff">${fmtTime(e.clockIn)}</td>
+      <td style="font-size:.84rem;white-space:nowrap;font-weight:700;color:#1a2744">${fmtTime(e.clockIn)}</td>
       <td style="font-size:.84rem;white-space:nowrap">${clockOutCell}</td>
       <td style="font-size:.84rem">${hoursGross}</td>
       <td style="font-size:.84rem;color:#f59e0b">${breaksCell}</td>
