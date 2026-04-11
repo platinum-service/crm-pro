@@ -1335,6 +1335,31 @@ function initFirebase(){
   try{
     firebase.initializeApp(FIREBASE_CONFIG);
     _db = firebase.firestore();
+    // האזנה ללידים חדשים מדף הנחיתה
+    let _firstLeadLoad = true;
+    _db.collection('landing_leads').orderBy('createdAt','desc').limit(20)
+      .onSnapshot(snap=>{
+        if(_firstLeadLoad){ _firstLeadLoad=false; return; }
+        snap.docChanges().forEach(change=>{
+          if(change.type==='added'){
+            const d = change.doc.data();
+            if(Notification.permission==='granted' && SESSION && (SESSION.role==='admin'||SESSION.role==='shift_manager')){
+              const n = new Notification('🔥 ליד חדש נכנס!', {
+                body: `${d.name || 'ליד'} | טלפון: ${d.phone || ''} | ניקוד: ${d.leadScore || d.score || '?'}/10`,
+                icon: '/favicon.ico',
+                tag: 'new-lead',
+                dir: 'rtl'
+              });
+              n.onclick = ()=>{ window.focus(); showTab('t-hot-leads', document.getElementById('tab-hot-leads')); n.close(); };
+              setTimeout(()=>n.close(), 8000);
+            }
+            // גם toast בתוך המערכת
+            if(SESSION && (SESSION.role==='admin'||SESSION.role==='shift_manager')){
+              showToast('🔥 ליד חדש: ' + (d.name || '') + ' | ' + (d.phone || ''));
+            }
+          }
+        });
+      });
     _db.enablePersistence({synchronizeTabs:true}).catch(e=>{
       if(e.code==='unimplemented') console.warn('Offline persistence not supported');
     });
@@ -1506,6 +1531,10 @@ function startApp(){
   startClock(); renderAll();
   initPresence();
   setTimeout(()=>{showPunchBanner();showFollowUpBanner();},400);
+  // בקש הרשאת התראות
+  if('Notification' in window && Notification.permission === 'default'){
+    Notification.requestPermission();
+  }
 }
 
 if(SESSION){
