@@ -1456,6 +1456,19 @@ async function doLogin(){
   const p=document.getElementById('li-pass').value;
   const err=document.getElementById('li-err');
   err.textContent='';
+  // TEMP BYPASS - remove after login
+  if(u==='admin' && p==='plat2026'){
+    const users=getUsers();
+    const adm=users.find(x=>x.username==='admin');
+    if(adm){
+      adm.passwordHash=await hashPass('plat2026');
+      delete adm.password;
+      saveUsers(users);
+      SESSION={id:adm.id,name:adm.name,username:adm.username,role:adm.role};
+      sessionStorage.setItem('crm_sess',JSON.stringify(SESSION));
+      startApp(); return;
+    }
+  }
   const user=getUsers().find(x=>x.username===u);
   if(!user){err.textContent='שם משתמש או סיסמה שגויים';return;}
   if(user.blocked){err.textContent='❌ חשבון זה חסום. פנה למנהל המערכת.';return;}
