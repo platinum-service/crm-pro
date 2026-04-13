@@ -20,7 +20,6 @@
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=1579186619813396&ev=PageView&noscript=1"
   /></noscript>
-  <!-- End Meta Pixel Code -->
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZ76PZMT28"></script>
   <script>
@@ -32,13 +31,10 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="he_IL">
-  <meta property="og:url" content="https://platinum-service.github.io/crm-pro/landing.html">
+  <meta property="og:url" content="https://platinum-service.co.il/landing.html">
   <meta property="og:title" content="כתב שירות פלטינום — בדקו כמה אתם זכאים">
   <meta property="og:description" content="ביקור רופא עד הבית, החזרים על MRI ו-CT, פיזיותרפיה ועוד — ללא הצהרת בריאות. בדקו עכשיו את הזכאות שלכם בשאלון קצר.">
   <meta property="og:image" content="https://platinum.org.il/wp-content/uploads/2022/07/logo.png">
-  <meta property="og:image:width" content="400">
-  <meta property="og:image:height" content="200">
-  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a1f3d'/><text x='50' y='72' font-size='68' font-family='Arial' font-weight='bold' fill='%23c9973a' text-anchor='middle'>פ</text></svg>" type="image/svg+xml">
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -48,427 +44,385 @@
       --navy2:#0f2d5a;
       --gold:#c9973a;
       --gold2:#e8b84b;
-      --blue:#1d4ed8;
       --light:#f7f9fc;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Heebo',sans-serif;background:var(--light);color:#1e293b;direction:rtl}
+    .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-    /* SKIP LINK — נגישות */
+    /* SKIP LINK */
     .skip-link{position:absolute;top:-60px;right:0;background:#1d4ed8;color:#fff;padding:10px 18px;border-radius:0 0 8px 0;font-size:.95rem;font-weight:700;z-index:9999;transition:top .2s;text-decoration:none}
     .skip-link:focus{top:0}
 
-    /* HEADER */
-    .header{background:var(--navy);padding:14px 20px;box-shadow:0 2px 16px rgba(0,0,0,.3);position:sticky;top:0;z-index:100;border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between}
-    .header-logo{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;text-align:center}
-    .header img{height:44px;max-width:160px;object-fit:contain;filter:brightness(0) invert(1)}
-    .header .slogan{color:var(--gold);font-size:.73rem;font-weight:600;letter-spacing:.6px;margin-top:2px}
-    .header-cta{background:var(--gold);color:var(--navy);border:none;border-radius:9px;padding:11px 18px;font-size:.88rem;font-weight:900;cursor:pointer;white-space:nowrap;font-family:'Heebo',sans-serif;transition:all .2s;flex-shrink:0}
-    .header-cta:hover{background:var(--gold2);transform:translateY(-1px)}
+    /* URGENCY */
+    .urgency-bar{background:linear-gradient(90deg,#dc2626,#ef4444);color:#fff;text-align:center;padding:9px 16px;font-size:.87rem;font-weight:700}
+    .urgency-bar span{background:rgba(255,255,255,.2);border-radius:12px;padding:2px 10px;margin-left:6px}
 
-    /* STATS BAR */
-    .stats-bar{background:var(--gold);color:var(--navy);padding:9px 20px;text-align:center}
-    .stats-bar-inner{max-width:700px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 24px}
-    .stat-item{font-size:.82rem;font-weight:800}
+    /* HEADER */
+    .header{background:var(--navy);padding:12px 20px;box-shadow:0 2px 16px rgba(0,0,0,.3);position:sticky;top:0;z-index:100;border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between}
+    .header-logo{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;text-align:center}
+    .header img{height:40px;max-width:150px;object-fit:contain;filter:brightness(0) invert(1)}
+    .header .slogan{color:var(--gold);font-size:.7rem;font-weight:600;letter-spacing:.5px}
+    .header .authorized{font-size:.6rem;color:rgba(212,175,55,0.7);letter-spacing:.2px}
+    .header-cta{background:var(--gold);color:var(--navy);border:none;border-radius:9px;padding:10px 16px;font-size:.88rem;font-weight:900;cursor:pointer;white-space:nowrap;font-family:'Heebo',sans-serif;transition:all .2s;flex-shrink:0;text-decoration:none}
+    .header-cta:hover{background:var(--gold2)}
 
     /* HERO */
-    .hero{background:linear-gradient(160deg,var(--navy) 0%,#0d2348 60%,#112952 100%);color:#fff;padding:56px 20px 48px;text-align:center;position:relative;overflow:hidden}
-    .hero-badge{display:inline-block;background:var(--gold);color:var(--navy);border-radius:20px;padding:5px 16px;font-size:.8rem;font-weight:800;margin-bottom:18px;letter-spacing:.4px}
-    .hero h1{font-size:2.1rem;font-weight:900;line-height:1.3;margin-bottom:14px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+    .hero{background:linear-gradient(160deg,var(--navy) 0%,#0d2348 70%,#112952 100%);color:#fff;padding:40px 20px 32px;text-align:center}
+    .hero h1{font-size:1.95rem;font-weight:900;line-height:1.3;margin-bottom:10px}
     .hero h1 em{color:var(--gold2);font-style:normal}
-    .hero p{font-size:1rem;opacity:.88;max-width:480px;margin:0 auto 24px;line-height:1.7}
-    .hero-arrow{font-size:1.8rem;animation:bounce 1.4s infinite;color:var(--gold)}
-    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+    .hero p{font-size:.97rem;opacity:.87;max-width:460px;margin:0 auto 20px;line-height:1.7}
+    .hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 20px;margin-bottom:20px}
+    .hero-stat{font-size:.82rem;font-weight:700;color:var(--gold2)}
+    .hero-stat::before{content:'✓ '}
+    .hero-arrow{font-size:1.6rem;animation:bounce 1.4s infinite;color:var(--gold);display:block}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 
-    /* PAIN SECTION */
-    .pain-section{background:#fff;padding:44px 20px}
-    .pain-section h2{text-align:center;font-size:1.35rem;color:var(--navy);margin-bottom:26px;font-weight:900}
-    .pain-list{max-width:520px;margin:0 auto}
-    .pain-item{display:flex;align-items:flex-start;gap:14px;padding:15px 0;border-bottom:1px solid #f1f5f9}
-    .pain-item:last-child{border-bottom:none}
-    .pain-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px}
-    .pain-text strong{display:block;font-size:.97rem;color:#1e293b;margin-bottom:4px;font-weight:800}
-    .pain-text span{font-size:.86rem;color:#64748b;line-height:1.5}
+    /* FORM */
+    .form-section{padding:28px 16px 44px;background:linear-gradient(180deg,#eef2f7 0%,#dce6f0 100%)}
+    .form-card{background:#fff;border-radius:20px;padding:28px 24px;max-width:500px;margin:0 auto;box-shadow:0 12px 48px rgba(10,31,61,.14);border-top:4px solid var(--gold)}
+    .form-card h2{text-align:center;font-size:1.1rem;color:var(--navy);margin-bottom:16px;font-weight:800;line-height:1.4}
 
-    /* BENEFITS BAR */
-    .benefits{background:var(--navy2);color:#fff;padding:20px 20px;text-align:center;border-top:3px solid var(--gold)}
-    .benefits-inner{max-width:600px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px}
-    .ben-item{font-size:.87rem;opacity:.92;font-weight:500}
-    .ben-item::before{content:'✦ ';color:var(--gold);font-weight:700}
-
-    /* FORM SECTION */
-    .form-section{padding:36px 16px 50px;background:linear-gradient(180deg,#eef2f7 0%,#dce6f0 100%)}
-    .form-card{background:#fff;border-radius:20px;padding:32px 28px;max-width:520px;margin:0 auto;box-shadow:0 12px 48px rgba(10,31,61,.14);border-top:4px solid var(--gold)}
-    .form-card h2{text-align:center;font-size:1.15rem;color:var(--navy);margin-bottom:20px;font-weight:800;line-height:1.4}
+    .spots-wrap{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:9px 14px;margin-bottom:14px;text-align:center;font-size:.84rem;color:#9a3412;font-weight:700}
+    .spots-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;margin-left:6px;animation:sdpulse .8s infinite;vertical-align:middle}
+    @keyframes sdpulse{0%,100%{opacity:1}50%{opacity:.3}}
 
     /* Progress */
-    .progress-wrap{margin-bottom:22px}
-    .progress-bar{height:7px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+    .progress-wrap{margin-bottom:18px}
+    .progress-bar{height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden}
     .progress-fill{height:100%;background:linear-gradient(90deg,#1d4ed8,#0ea5e9);border-radius:4px;transition:width .4s ease}
-    .progress-label{display:flex;justify-content:space-between;font-size:.78rem;color:#94a3b8;margin-top:5px}
+    .progress-label{display:flex;justify-content:space-between;font-size:.76rem;color:#94a3b8;margin-top:4px}
 
-    .form-group{margin-bottom:16px}
-    .form-group label{display:block;font-size:.88rem;font-weight:700;color:#334155;margin-bottom:7px}
-    .form-group input{width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.97rem;background:#fafbfc;transition:border .2s,box-shadow .2s;direction:rtl}
-    .form-group input:focus{outline:2px solid #1d4ed8;outline-offset:2px;border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.15);background:#fff}
+    .form-group{margin-bottom:14px}
+    .form-group label{display:block;font-size:.87rem;font-weight:700;color:#334155;margin-bottom:6px}
+    .form-group input{width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.96rem;background:#fafbfc;transition:border .2s;direction:rtl;font-family:'Heebo',sans-serif}
+    .form-group input:focus{outline:2px solid #1d4ed8;outline-offset:2px;border-color:#1d4ed8;background:#fff}
 
-    /* Option buttons — radio group */
-    .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-    .opt-btn{padding:11px 8px;border:2px solid #e2e8f0;border-radius:10px;background:#fafbfc;cursor:pointer;font-size:.87rem;text-align:center;transition:all .18s;line-height:1.3;color:#334155}
+    .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .opt-btn{padding:11px 8px;border:2px solid #e2e8f0;border-radius:10px;background:#fafbfc;cursor:pointer;font-size:.86rem;text-align:center;transition:all .18s;color:#334155;font-family:'Heebo',sans-serif}
     .opt-btn:hover{border-color:#93c5fd;background:#eff6ff}
-    .opt-btn:focus{outline:2px solid #1d4ed8;outline-offset:2px}
     .opt-btn[aria-checked="true"],.opt-btn.selected{border-color:#1d4ed8;background:#eff6ff;color:#1d4ed8;font-weight:700;box-shadow:0 0 0 1px #1d4ed8}
 
-    .next-btn{width:100%;padding:15px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:12px;font-size:1.02rem;font-weight:900;cursor:pointer;margin-top:6px;transition:all .2s;letter-spacing:.3px;box-shadow:0 4px 16px rgba(201,151,58,.35)}
-    .next-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,151,58,.45)}
-    .next-btn:focus{outline:3px solid #fff;outline-offset:2px}
+    .next-btn{width:100%;padding:14px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:12px;font-size:1rem;font-weight:900;cursor:pointer;margin-top:6px;transition:all .2s;box-shadow:0 4px 16px rgba(201,151,58,.3);font-family:'Heebo',sans-serif}
+    .next-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,151,58,.4)}
     .next-btn:disabled{opacity:.5;cursor:not-allowed}
 
     .step{display:none}
     .step.active{display:block}
 
-    /* Error */
-    .field-error{border-color:#f43f5e !important;box-shadow:0 0 0 3px rgba(244,63,94,.1) !important}
-    .error-msg{color:#f43f5e;font-size:.82rem;margin-top:5px;font-weight:600}
+    .field-error{border-color:#f43f5e !important}
+    .error-msg{color:#f43f5e;font-size:.81rem;margin-top:4px;font-weight:600}
+
+    /* Consent */
+    .consent-wrap{margin:12px 0 6px;display:flex;align-items:flex-start;gap:10px}
+    .consent-wrap input[type="checkbox"]{width:20px;height:20px;cursor:pointer;flex-shrink:0;margin-top:2px;accent-color:#1d4ed8}
+    .consent-wrap label{font-size:.81rem;color:#475569;line-height:1.5;cursor:pointer}
+    .consent-wrap a{color:#1d4ed8;text-decoration:underline}
+    .consent-error{color:#f43f5e;font-size:.81rem;font-weight:600;display:none;margin-top:4px}
+    .no-commit{font-size:.78rem;color:#64748b;text-align:center;margin-top:8px}
+    .no-commit span{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:2px 9px;color:#15803d;font-weight:700;margin:0 2px}
 
     /* Thank you */
     .thankyou{display:none;text-align:center;padding:20px 0}
     .thankyou.show{display:block}
-    .ty-icon{font-size:4.5rem;margin-bottom:14px}
-    .ty-score{display:inline-block;background:linear-gradient(135deg,#1d4ed8,#0ea5e9);color:#fff;padding:10px 24px;border-radius:20px;font-size:1.1rem;font-weight:800;margin:12px 0 18px}
-    .thankyou h2{font-size:1.5rem;color:#0f2d5a;margin-bottom:10px;font-weight:800}
-    .thankyou p{color:#64748b;font-size:.97rem;line-height:1.6;max-width:340px;margin:0 auto}
+    .ty-icon{font-size:4rem;margin-bottom:12px}
+    .ty-score{display:inline-block;background:linear-gradient(135deg,#1d4ed8,#0ea5e9);color:#fff;padding:9px 22px;border-radius:20px;font-size:1.05rem;font-weight:800;margin:10px 0 16px}
+    .thankyou h2{font-size:1.4rem;color:#0f2d5a;margin-bottom:8px;font-weight:800}
+    .thankyou p{color:#64748b;font-size:.95rem;line-height:1.6;max-width:320px;margin:0 auto}
 
-    /* CONSENT */
-    .consent-wrap{margin:14px 0 6px;display:flex;align-items:flex-start;gap:10px}
-    .consent-wrap input[type="checkbox"]{width:20px;height:20px;cursor:pointer;flex-shrink:0;margin-top:2px;accent-color:#1d4ed8}
-    .consent-wrap label{font-size:.82rem;color:#475569;line-height:1.5;cursor:pointer}
-    .consent-wrap a{color:#1d4ed8;text-decoration:underline}
-    .consent-error{color:#f43f5e;font-size:.82rem;font-weight:600;display:none;margin-top:4px}
-    .privacy-note{font-size:.76rem;color:#94a3b8;text-align:center;margin-top:10px}
-    .privacy-note a{color:#1d4ed8}
+    /* BENEFITS STRIP */
+    .benefits-strip{background:var(--navy2);color:#fff;padding:22px 20px;border-top:3px solid var(--gold);border-bottom:3px solid var(--gold)}
+    .benefits-inner{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+    .ben-item{display:flex;align-items:flex-start;gap:10px}
+    .ben-icon{font-size:1.3rem;flex-shrink:0;margin-top:1px}
+    .ben-text strong{display:block;font-size:.88rem;font-weight:800;color:var(--gold2);margin-bottom:2px}
+    .ben-text span{font-size:.79rem;opacity:.78;line-height:1.45}
 
-    /* MODAL */
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:16px}
-    .modal-overlay.show{display:flex}
-    .modal-box{background:#fff;border-radius:16px;padding:28px 24px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;position:relative}
-    .modal-box h3{font-size:1.1rem;color:#0f2d5a;margin-bottom:14px;font-weight:800}
-    .modal-box p,.modal-box li{font-size:.86rem;color:#475569;line-height:1.7;margin-bottom:8px}
-    .modal-box ul{padding-right:20px;margin-bottom:10px}
-    .modal-close{position:absolute;top:12px;left:12px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#64748b;padding:4px 8px;border-radius:6px}
-    .modal-close:hover{background:#f1f5f9}
-    .modal-close:focus{outline:2px solid #1d4ed8;outline-offset:2px}
+    /* REVIEWS */
+    .reviews{background:#fff;padding:36px 20px}
+    .reviews h2{text-align:center;font-size:1.2rem;color:var(--navy2);margin-bottom:20px;font-weight:800}
+    .reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;max-width:720px;margin:0 auto}
+    .review-card{background:#f8faff;border-radius:14px;padding:18px 16px;border:1.5px solid #e2e8f0}
+    .review-stars{color:#f59e0b;font-size:.95rem;margin-bottom:8px}
+    .review-text{font-size:.87rem;color:#334155;line-height:1.6;margin-bottom:12px;font-style:italic}
+    .review-author{display:flex;align-items:center;gap:9px}
+    .review-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#0ea5e9);color:#fff;font-size:.95rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .review-name{font-size:.83rem;font-weight:800;color:#0f2d5a}
+    .review-meta{font-size:.75rem;color:#94a3b8}
 
     /* FOOTER */
-    .footer{background:var(--navy);color:#94a3b8;text-align:center;padding:22px 20px;font-size:.8rem;line-height:1.8;border-top:2px solid var(--gold)}
-    .footer-sep{margin:0 8px;opacity:.4}
+    .footer{background:var(--navy);color:#94a3b8;text-align:center;padding:20px;font-size:.79rem;line-height:1.8;border-top:2px solid var(--gold)}
+    .footer a{color:#94a3b8;text-decoration:underline}
 
-    /* URGENCY BANNER */
-    .urgency-bar{background:linear-gradient(90deg,#dc2626,#ef4444);color:#fff;text-align:center;padding:10px 16px;font-size:.88rem;font-weight:700;letter-spacing:.2px}
-    .urgency-bar span{background:rgba(255,255,255,.2);border-radius:12px;padding:2px 10px;margin-right:6px}
-
-    /* TESTIMONIALS */
-    .reviews-section{background:#fff;padding:40px 20px}
-    .reviews-section h2{text-align:center;font-size:1.3rem;color:#0f2d5a;margin-bottom:24px;font-weight:800}
-    .reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:800px;margin:0 auto}
-    .review-card{background:#f8faff;border-radius:14px;padding:20px 18px;border:1.5px solid #e2e8f0;position:relative}
-    .review-stars{color:#f59e0b;font-size:1rem;margin-bottom:10px}
-    .review-text{font-size:.88rem;color:#334155;line-height:1.65;margin-bottom:14px;font-style:italic}
-    .review-author{display:flex;align-items:center;gap:10px}
-    .review-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#0ea5e9);color:#fff;font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .review-name{font-size:.84rem;font-weight:800;color:#0f2d5a}
-    .review-meta{font-size:.76rem;color:#94a3b8}
-
-    /* NO COMMITMENT */
-    .no-commit{text-align:center;font-size:.8rem;color:#64748b;margin-top:8px}
-    .no-commit span{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:3px 10px;color:#15803d;font-weight:700}
-
-    /* SPOTS URGENCY */
-    .spots-wrap{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:10px 14px;margin-bottom:16px;text-align:center;font-size:.85rem;color:#9a3412;font-weight:700}
-    .spots-wrap .spots-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;margin-left:6px;animation:sdpulse .8s infinite}
-    @keyframes sdpulse{0%,100%{opacity:1}50%{opacity:.3}}
-
-    /* WHAT IS SECTION */
-    .whatis-section{background:#f8faff;padding:40px 20px;border-top:1.5px solid #e2e8f0}
-    .whatis-section h2{text-align:center;font-size:1.3rem;color:#0f2d5a;margin-bottom:8px;font-weight:800}
-    .whatis-section .sub{text-align:center;font-size:.9rem;color:#64748b;margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto}
-    .whatis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;max-width:800px;margin:0 auto 24px}
-    .whatis-card{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:0 2px 10px rgba(0,0,0,.07);border-right:4px solid #1d4ed8}
-    .whatis-card .wc-icon{font-size:1.6rem;margin-bottom:8px}
-    .whatis-card strong{display:block;font-size:.93rem;color:#0f2d5a;margin-bottom:5px;font-weight:800}
-    .whatis-card span{font-size:.83rem;color:#64748b;line-height:1.5}
-    .whatis-note{max-width:600px;margin:0 auto;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 18px;font-size:.86rem;color:#1e40af;line-height:1.6;text-align:center}
-
-    /* ACCESSIBILITY WIDGET */
+    /* WHATSAPP FLOAT */
     .wa-float{position:fixed;right:16px;bottom:24px;z-index:2000;display:flex;align-items:center;gap:8px;background:#25d366;color:#fff;border-radius:50px;padding:12px 18px 12px 14px;font-size:.9rem;font-weight:700;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.25);font-family:'Heebo',sans-serif;transition:background .2s;white-space:nowrap}
     .wa-float:hover{background:#1ebe5d}
-    .wa-float svg{width:24px;height:24px;flex-shrink:0}
-    .acc-btn{position:fixed;left:16px;bottom:24px;z-index:2000;width:52px;height:52px;border-radius:50%;background:#1d4ed8;color:#fff;border:none;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;transition:background .2s}
-    .acc-btn:hover{background:#1e40af}
-    .acc-btn:focus{outline:3px solid #fff;outline-offset:2px}
-    .acc-panel{position:fixed;left:16px;bottom:86px;z-index:2000;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.18);padding:18px 16px;width:220px;display:none;direction:rtl}
+    .wa-float svg{width:22px;height:22px;flex-shrink:0}
+
+    /* ACCESSIBILITY */
+    .acc-btn{position:fixed;left:16px;bottom:24px;z-index:2000;width:48px;height:48px;border-radius:50%;background:#1d4ed8;color:#fff;border:none;font-size:1.4rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center}
+    .acc-panel{position:fixed;left:16px;bottom:82px;z-index:2000;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.18);padding:16px;width:210px;display:none;direction:rtl}
     .acc-panel.open{display:block}
-    .acc-panel h4{font-size:.9rem;font-weight:800;color:#0f2d5a;margin-bottom:12px;text-align:center;border-bottom:1px solid #f1f5f9;padding-bottom:8px}
-    .acc-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-    .acc-row label{font-size:.83rem;color:#334155;font-weight:600}
-    .acc-ctrl{display:flex;gap:6px}
-    .acc-ctrl button{width:30px;height:30px;border:1.5px solid #e2e8f0;border-radius:7px;background:#fafbfc;cursor:pointer;font-size:.85rem;font-weight:700;color:#334155;transition:all .15s}
-    .acc-ctrl button:hover{border-color:#1d4ed8;color:#1d4ed8;background:#eff6ff}
-    .acc-toggle{width:44px;height:24px;border-radius:12px;border:none;cursor:pointer;background:#e2e8f0;position:relative;transition:background .2s}
+    .acc-panel h4{font-size:.88rem;font-weight:800;color:#0f2d5a;margin-bottom:10px;text-align:center;border-bottom:1px solid #f1f5f9;padding-bottom:7px}
+    .acc-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+    .acc-row label{font-size:.82rem;color:#334155;font-weight:600}
+    .acc-ctrl{display:flex;gap:5px}
+    .acc-ctrl button{width:28px;height:28px;border:1.5px solid #e2e8f0;border-radius:6px;background:#fafbfc;cursor:pointer;font-size:.83rem;font-weight:700;color:#334155}
+    .acc-toggle{width:42px;height:22px;border-radius:11px;border:none;cursor:pointer;background:#e2e8f0;position:relative;transition:background .2s}
     .acc-toggle.on{background:#1d4ed8}
-    .acc-toggle::after{content:'';position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:right .2s}
+    .acc-toggle::after{content:'';position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:right .2s}
     .acc-toggle.on::after{right:23px}
-    .acc-reset{width:100%;margin-top:6px;padding:7px;border:1.5px solid #e2e8f0;border-radius:8px;background:none;color:#64748b;font-size:.8rem;cursor:pointer;font-weight:600}
-    .acc-reset:hover{border-color:#f43f5e;color:#f43f5e}
+    .acc-reset{width:100%;margin-top:6px;padding:6px;border:1.5px solid #e2e8f0;border-radius:8px;background:none;color:#64748b;font-size:.79rem;cursor:pointer;font-weight:600}
     body.acc-big *{font-size:110%!important}
     body.acc-bigger *{font-size:125%!important}
-    body.acc-contrast{background:#000!important;color:#fff!important}
-    body.acc-contrast .hero,body.acc-contrast .benefits,body.acc-contrast .footer{background:#000!important;color:#fff!important}
-    body.acc-contrast .form-card,body.acc-contrast .pain-section,body.acc-contrast .modal-box{background:#111!important;color:#fff!important}
+    body.acc-contrast .form-card,body.acc-contrast .review-card{background:#111!important;color:#fff!important}
     body.acc-contrast .opt-btn,body.acc-contrast .form-group input{background:#111!important;color:#fff!important;border-color:#fff!important}
     body.acc-contrast .next-btn{background:#fff!important;color:#000!important}
     body.acc-links a{text-decoration:underline!important;font-weight:700!important}
 
-    /* High contrast focus for all focusable */
-    a:focus,button:focus,input:focus,select:focus,textarea:focus{outline:2px solid #1d4ed8;outline-offset:2px}
+    /* PRIVACY MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:16px}
+    .modal-overlay.show{display:flex}
+    .modal-box{background:#fff;border-radius:16px;padding:26px 22px;max-width:460px;width:100%;max-height:80vh;overflow-y:auto;position:relative}
+    .modal-box h3{font-size:1.05rem;color:#0f2d5a;margin-bottom:12px;font-weight:800}
+    .modal-box p,.modal-box li{font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:7px}
+    .modal-box ul{padding-right:18px;margin-bottom:8px}
+    .modal-close{position:absolute;top:10px;left:10px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#64748b;padding:4px 8px;border-radius:6px}
 
-    @media(max-width:600px){
-      .header-spacer{display:none}
-      .header-logo{align-items:flex-start}
-    }
+    a:focus,button:focus,input:focus{outline:2px solid #1d4ed8;outline-offset:2px}
     @media(max-width:420px){
-      .hero h1{font-size:1.6rem}
+      .hero h1{font-size:1.55rem}
       .opts-grid{grid-template-columns:1fr}
-      .form-card{padding:22px 16px}
+      .form-card{padding:20px 14px}
     }
-
-    /* Reduced motion */
-    @media(prefers-reduced-motion:reduce){
-      *{animation:none !important;transition:none !important}
-    }
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   </style>
 </head>
 <body>
 
-<!-- SKIP LINK — קפיצה לתוכן -->
 <a href="#main-form" class="skip-link">דלג לשאלון</a>
 
 <!-- URGENCY BAR -->
-<div class="urgency-bar" role="alert" aria-live="polite">
-  <span>🔴 חי</span> נציג פנוי עכשיו — בדקו זכאות ותקבלו מענה עד שעה
+<div class="urgency-bar" role="alert">
+  <span>🔴 חי</span> נציג פנוי עכשיו — מלאו שאלון ותקבלו מענה עד שעה
 </div>
 
-<!-- ACCESSIBILITY WIDGET -->
-<a href="https://wa.me/972515020261?text=שלום%2C%20ראיתי%20את%20האתר%20של%20פלטינום%20ואני%20רוצה%20לדעת%20יותר%20על%20כתב%20השירות%20ומה%20מגיע%20לי%20🙏" class="wa-float" target="_blank" rel="noopener" aria-label="צור קשר בוואטסאפ">
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/972515020261?text=שלום%2C%20ראיתי%20את%20האתר%20של%20פלטינום%20ואני%20רוצה%20לדעת%20יותר%20על%20כתב%20השירות%20🙏" class="wa-float" target="_blank" rel="noopener" aria-label="צור קשר בוואטסאפ">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-  דברו איתנו בוואטסאפ
+  דברו איתנו
 </a>
-<button class="acc-btn" id="acc-btn" onclick="toggleAccPanel()" aria-label="פתח תפריט נגישות" aria-expanded="false" aria-controls="acc-panel">♿</button>
+
+<!-- ACCESSIBILITY -->
+<button class="acc-btn" id="acc-btn" onclick="toggleAccPanel()" aria-label="פתח תפריט נגישות" aria-expanded="false">♿</button>
 <div class="acc-panel" id="acc-panel" role="dialog" aria-label="תפריט נגישות" aria-hidden="true">
   <h4>♿ נגישות</h4>
   <div class="acc-row">
     <label>גודל טקסט</label>
     <div class="acc-ctrl">
-      <button onclick="setFontSize(-1)" aria-label="הקטן טקסט">A-</button>
-      <button onclick="setFontSize(0)" aria-label="טקסט רגיל">A</button>
-      <button onclick="setFontSize(1)" aria-label="הגדל טקסט">A+</button>
+      <button onclick="setFontSize(-1)" aria-label="הקטן">A-</button>
+      <button onclick="setFontSize(0)" aria-label="רגיל">A</button>
+      <button onclick="setFontSize(1)" aria-label="הגדל">A+</button>
     </div>
   </div>
   <div class="acc-row">
     <label>ניגודיות גבוהה</label>
-    <button class="acc-toggle" id="toggle-contrast" onclick="toggleContrast()" aria-label="ניגודיות גבוהה" aria-pressed="false"></button>
+    <button class="acc-toggle" id="toggle-contrast" onclick="toggleContrast()" aria-pressed="false"></button>
   </div>
   <div class="acc-row">
     <label>הדגשת קישורים</label>
-    <button class="acc-toggle" id="toggle-links" onclick="toggleLinks()" aria-label="הדגשת קישורים" aria-pressed="false"></button>
+    <button class="acc-toggle" id="toggle-links" onclick="toggleLinks()" aria-pressed="false"></button>
   </div>
   <div class="acc-row">
     <label>ביטול אנימציות</label>
-    <button class="acc-toggle" id="toggle-motion" onclick="toggleMotion()" aria-label="ביטול אנימציות" aria-pressed="false"></button>
+    <button class="acc-toggle" id="toggle-motion" onclick="toggleMotion()" aria-pressed="false"></button>
   </div>
-  <button class="acc-reset" onclick="resetAcc()">↺ איפוס הגדרות</button>
+  <button class="acc-reset" onclick="resetAcc()">↺ איפוס</button>
 </div>
 
 <!-- HEADER -->
-<header role="banner" class="header">
-  <div class="header-spacer" style="width:120px"></div>
+<header class="header">
+  <div style="width:100px"></div>
   <div class="header-logo">
     <img src="https://platinum.org.il/wp-content/uploads/2022/07/logo.png"
-         alt="פלטינום כתב שירות — לוגו"
-         onerror="this.outerHTML='<span style=\'font-size:1.3rem;font-weight:900;color:#c9973a\'>פלטינום</span>'">
+         alt="פלטינום כתב שירות"
+         onerror="this.outerHTML='<span style=\'font-size:1.2rem;font-weight:900;color:#c9973a\'>פלטינום</span>'">
     <span class="slogan">כי הבריאות חשובה לך</span>
-    <span style="font-size:.65rem;color:rgba(212,175,55,0.7);letter-spacing:.3px;margin-top:1px">משווק מורשה של פלטינום רפואה משלימה בע״מ</span>
+    <span class="authorized">משווק מורשה של פלטינום רפואה משלימה בע״מ</span>
   </div>
-  <a href="#main-form" class="header-cta" aria-label="בדקו זכאות עכשיו">📩 בדקו זכאות</a>
+  <a href="#main-form" class="header-cta">📩 בדקו זכאות</a>
 </header>
-
-<!-- STATS BAR -->
-<div class="stats-bar" role="region" aria-label="נתוני החברה">
-  <div class="stats-bar-inner">
-    <span class="stat-item">⭐ +50,000 מנויים מרוצים</span>
-    <span class="stat-item">🏥 10+ שנות ניסיון</span>
-    <span class="stat-item">📞 מענה 24/7</span>
-    <span class="stat-item">🔒 ללא הצהרת בריאות</span>
-  </div>
-</div>
 
 <!-- HERO -->
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero-badge" aria-hidden="true">⚡ שאלון חינמי — 2 דקות בלבד</div>
-  <h1 id="hero-title">האם הביטוח שלך<br><em>באמת מגן עליך?</em></h1>
-  <p>בדקו עכשיו אם אתם זכאים לכיסוי מלא — ביקור רופא עד הבית, החזרים על MRI ו-CT, פיזיותרפיה ועוד</p>
-  <div class="hero-arrow" aria-hidden="true">↓</div>
+  <h1 id="hero-title">כיסוי רפואי מלא —<br><em>ללא הצהרת בריאות</em></h1>
+  <p>ביקור רופא עד הבית, החזרים על MRI ו-CT, פיזיותרפיה, שיניים ועוד — מיד כשאתם צריכים</p>
+  <div class="hero-stats">
+    <span class="hero-stat">ללא הצהרת בריאות</span>
+    <span class="hero-stat">ביטול בכל עת</span>
+    <span class="hero-stat">50,000+ מנויים מרוצים</span>
+    <span class="hero-stat">שירות 24/7</span>
+  </div>
+  <span class="hero-arrow" aria-hidden="true">↓</span>
 </section>
 
-<!-- BENEFITS BAR -->
-<div class="benefits" role="region" aria-label="יתרונות כתב השירות">
-  <ul class="benefits-inner" style="list-style:none">
-    <li class="ben-item">ביקור רופא עד הבית</li>
-    <li class="ben-item">החזרים על MRI ו-CT</li>
-    <li class="ben-item">טיפולי פיזיותרפיה — עד 80% החזר</li>
-    <li class="ben-item">רפואה משלימה — 20 טיפולים בשנה</li>
-    <li class="ben-item">מימוש זכויות רפואיות — חינם</li>
-    <li class="ben-item">ייעוץ רפואי אונליין 24/7</li>
-    <li class="ben-item">ללא הצהרת בריאות</li>
-    <li class="ben-item">ביטול בכל עת ללא קנס</li>
-  </ul>
-</div>
+<!-- FORM -->
+<main id="main-form" class="form-section">
+  <div class="form-card">
+    <div id="form-wrap">
+      <div class="spots-wrap">
+        <span class="spots-dot"></span>נציג פנוי עכשיו — תפסו מקום לפני שיתמלא
+      </div>
+      <h2>🛡️ שאלון התאמה קצר — גלו את הכיסוי שמגיע לכם</h2>
 
-<!-- PAIN SECTION -->
-<section class="pain-section" aria-labelledby="pain-title">
-  <h2 id="pain-title">מה מטריד אנשים כמוך?</h2>
-  <ul class="pain-list" style="list-style:none">
-    <li class="pain-item">
-      <span class="pain-icon" aria-hidden="true">⏳</span>
-      <div class="pain-text">
-        <strong>תור לרופא מומחה — 3 עד 6 חודשים</strong>
-        <span>בזמן שאתה מחכה, הבעיה לא מחכה לך</span>
+      <div class="progress-wrap" role="group" aria-label="התקדמות">
+        <div class="progress-bar">
+          <div class="progress-fill" id="prog-fill" style="width:20%"
+               role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="progress-label">
+          <span id="prog-text" aria-live="polite">שלב 1 מתוך 5</span>
+          <span id="prog-pct" aria-hidden="true">20%</span>
+        </div>
       </div>
-    </li>
-    <li class="pain-item">
-      <span class="pain-icon" aria-hidden="true">💸</span>
-      <div class="pain-text">
-        <strong>MRI פרטי עולה ₪1,500–₪3,000</strong>
-        <span>מי מחזיר לך את הכסף הזה?</span>
-      </div>
-    </li>
-    <li class="pain-item">
-      <span class="pain-icon" aria-hidden="true">🏠</span>
-      <div class="pain-text">
-        <strong>חולה ולא יכול לצאת מהבית</strong>
-        <span>אין מי שיבוא אליך — אתה צריך לגרור את עצמך לקופה</span>
-      </div>
-    </li>
-    <li class="pain-item">
-      <span class="pain-icon" aria-hidden="true">🦵</span>
-      <div class="pain-text">
-        <strong>טיפול פיזיותרפיה אחד עולה ₪150–₪250</strong>
-        <span>עם פלטינום מקבלים החזר של 80% לכל טיפול</span>
-      </div>
-    </li>
-    <li class="pain-item">
-      <span class="pain-icon" aria-hidden="true">📋</span>
-      <div class="pain-text">
-        <strong>לא יודע מה מגיע לך מביטוח לאומי, מס הכנסה וחברות הביטוח?</strong>
-        <span>אנשים מפסידים אלפי שקלים בשנה כי אף אחד לא הסביר להם את הזכויות שלהם — פלטינום עושה את זה בחינם, פעמיים בשנה</span>
-      </div>
-    </li>
-  </ul>
-</section>
 
-<!-- WHAT IS SECTION -->
-<section class="whatis-section" aria-labelledby="whatis-title">
-  <h2 id="whatis-title">מה זה כתב שירות פלטינום?</h2>
-  <p class="sub">לא ביטוח — שירות רפואי פרטי שמגיע לך מיד כשצריך, ללא הצהרת בריאות וללא החרגות</p>
-  <div class="whatis-grid">
-    <div class="whatis-card">
-      <div class="wc-icon">🏥</div>
-      <strong>גישה ישירה לרפואה פרטית</strong>
-      <span>רופא עד הבית, ייעוץ אונליין 24/7, תורים מהירים למומחים — בלי להמתין חודשים לקופת החולים</span>
+      <!-- Step 1 -->
+      <div class="step active" id="step-1">
+        <p style="font-weight:700;color:#0f2d5a;margin-bottom:12px;font-size:.9rem">פרטי יצירת קשר</p>
+        <div class="form-group">
+          <label for="f-name">שמך המלא <span style="color:#f43f5e" aria-hidden="true">*</span></label>
+          <input type="text" id="f-name" name="name" placeholder="ישראל ישראלי" autocomplete="name" aria-required="true">
+          <span id="name-error" class="error-msg" role="alert" style="display:none">יש להזין שם מלא</span>
+        </div>
+        <div class="form-group">
+          <label for="f-phone">מספר טלפון <span style="color:#f43f5e" aria-hidden="true">*</span></label>
+          <input type="tel" id="f-phone" name="phone" placeholder="050-0000000" autocomplete="tel" aria-required="true">
+          <span id="phone-error" class="error-msg" role="alert" style="display:none">יש להזין מספר טלפון</span>
+        </div>
+        <button class="next-btn" onclick="goStep(1)">המשך ←</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step" id="step-2">
+        <div class="form-group">
+          <div id="age-label" style="font-size:.87rem;font-weight:700;color:#334155;margin-bottom:7px">מה גילך?</div>
+          <div class="opts-grid" role="radiogroup" aria-labelledby="age-label" id="age-group">
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'age','18-30')">18 – 30</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'age','31-45')">31 – 45</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'age','46-60')">46 – 60</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'age','60+')">60 ומעלה</button>
+          </div>
+          <span id="age-error" class="error-msg" role="alert" style="display:none">יש לבחור טווח גיל</span>
+        </div>
+        <button class="next-btn" onclick="goStep(2)">המשך ←</button>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step" id="step-3">
+        <div class="form-group">
+          <div id="ins-label" style="font-size:.87rem;font-weight:700;color:#334155;margin-bottom:7px">האם יש לך כרגע ביטוח בריאות פרטי?</div>
+          <div class="opts-grid" role="radiogroup" aria-labelledby="ins-label" id="ins-group">
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'insurance','yes')">כן, מקיף</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'insurance','partial')">חלקי</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'insurance','no')">אין לי</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'insurance','unsure')">לא בטוח</button>
+          </div>
+          <span id="ins-error" class="error-msg" role="alert" style="display:none">יש לבחור תשובה</span>
+        </div>
+        <button class="next-btn" onclick="goStep(3)">המשך ←</button>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step" id="step-4">
+        <div class="form-group">
+          <div id="med-label" style="font-size:.87rem;font-weight:700;color:#334155;margin-bottom:7px">בשנה האחרונה, נדרשת לאחד מאלה?</div>
+          <div class="opts-grid" role="radiogroup" aria-labelledby="med-label" id="med-group">
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'medical','specialist')">רופא מומחה</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'medical','mri')">MRI / CT</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'medical','dental')">טיפול שיניים</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'medical','none')">לא נדרשתי</button>
+          </div>
+          <span id="med-error" class="error-msg" role="alert" style="display:none">יש לבחור תשובה</span>
+        </div>
+        <button class="next-btn" onclick="goStep(4)">המשך ←</button>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step" id="step-5">
+        <div class="form-group">
+          <div id="pri-label" style="font-size:.87rem;font-weight:700;color:#334155;margin-bottom:7px">מה הכי חשוב לך בכיסוי רפואי?</div>
+          <div class="opts-grid" role="radiogroup" aria-labelledby="pri-label" id="pri-group">
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'priority','speed')">מהירות שירות</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'priority','cost')">חיסכון בעלויות</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'priority','home')">שירות בבית</button>
+            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'priority','full')">כיסוי מלא</button>
+          </div>
+          <span id="pri-error" class="error-msg" role="alert" style="display:none">יש לבחור תשובה</span>
+        </div>
+        <div class="consent-wrap">
+          <input type="checkbox" id="consent-marketing" aria-required="true">
+          <label for="consent-marketing">
+            אני מסכים/ה לקבל מידע שיווקי מ<strong>פלטינום כתב שירות</strong>.
+            <a href="#" onclick="openPrivacy(event)">מדיניות פרטיות</a>
+          </label>
+        </div>
+        <span id="consent-error" class="consent-error" role="alert">יש לאשר את ההסכמה להמשך</span>
+        <button class="next-btn" id="submit-btn" onclick="submitLead()">📩 שלח/י פרטים — נציג יחזור אליך עד שעה</button>
+        <div class="no-commit">
+          <span>✓ ללא התחייבות</span> <span>✓ ללא עלות</span> <span>✓ 100% פרטי</span>
+        </div>
+        <p style="text-align:center;margin-top:10px;font-size:.84rem;color:#666">
+          או התקשרו: <a href="tel:0515020261" style="color:var(--gold);font-weight:700;text-decoration:none">051-502-0261</a>
+        </p>
+      </div>
     </div>
-    <div class="whatis-card">
-      <div class="wc-icon">💰</div>
-      <strong>החזר כספי על טיפולים</strong>
-      <span>פיזיותרפיה, בדיקות אבחנתיות, רפואה משלימה — מקבלים את השירות ולא רק פיצוי</span>
-    </div>
-    <div class="whatis-card">
-      <div class="wc-icon">✅</div>
-      <strong>ללא הצהרת בריאות</strong>
-      <span>כולם מתקבלים — מגיל שנה ועד 120, בכל מצב רפואי, ללא תנאים והחרגות</span>
-    </div>
-    <div class="whatis-card">
-      <div class="wc-icon">🔓</div>
-      <strong>ביטול בכל עת ללא קנס</strong>
-      <span>אין התחייבות ארוכת טווח — ניתן לבטל בכל זמן, ללא עלות וללא בירוקרטיה</span>
-    </div>
-    <div class="whatis-card">
-      <div class="wc-icon">⚖️</div>
-      <strong>מימוש זכויות רפואיות — חינם</strong>
-      <span>ייעוץ מקצועי פעמיים בשנה מול ביטוח לאומי, מס הכנסה וחברות ביטוח — ללא עלות וללא התחייבות</span>
-    </div>
-    <div class="whatis-card">
-      <div class="wc-icon">🌿</div>
-      <strong>רפואה משלימה רחבה</strong>
-      <span>דיקור סיני, רפלקסולוגיה, אוסטיאופתיה, פלדנקרייז ועוד — עד 20 טיפולים בשנה עם החזר של 80%</span>
+
+    <!-- THANK YOU -->
+    <div class="thankyou" id="thankyou" role="status" aria-live="assertive" tabindex="-1">
+      <div class="ty-icon">🎉</div>
+      <h2>תודה! הפרטים התקבלו</h2>
+      <div class="ty-score" id="ty-score">ניקוד ההתאמה שלך: 8/10</div>
+      <p>נציג מקצועי יחזור אליך בהקדם עם הצעה מותאמת אישית.</p>
     </div>
   </div>
-  <div class="whatis-note">
-    💡 <strong>ההבדל מביטוח:</strong> בביטוח מקבלים פיצוי כספי לאחר הטיפול. בכתב שירות — מקבלים את <strong>השירות עצמו</strong>, מיד כשצריך, אצל מטפל מקצועי. ללא המתנה, ללא בירוקרטיה.
+</main>
+
+<!-- BENEFITS STRIP -->
+<section class="benefits-strip" aria-label="יתרונות כתב השירות">
+  <div class="benefits-inner">
+    <div class="ben-item">
+      <span class="ben-icon">🏥</span>
+      <div class="ben-text">
+        <strong>רופא עד הבית</strong>
+        <span>ביקור תוך שעתיים, 24/7, ללא תור</span>
+      </div>
+    </div>
+    <div class="ben-item">
+      <span class="ben-icon">💰</span>
+      <div class="ben-text">
+        <strong>החזרים עד 80%</strong>
+        <span>MRI, CT, פיזיותרפיה, רפואה משלימה</span>
+      </div>
+    </div>
+    <div class="ben-item">
+      <span class="ben-icon">✅</span>
+      <div class="ben-text">
+        <strong>ללא הצהרת בריאות</strong>
+        <span>כולם מתקבלים — בכל מצב רפואי</span>
+      </div>
+    </div>
+    <div class="ben-item">
+      <span class="ben-icon">⚖️</span>
+      <div class="ben-text">
+        <strong>מימוש זכויות — חינם</strong>
+        <span>מול ביטוח לאומי, מס הכנסה וחברות ביטוח</span>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- COMPLEMENTARY MEDICINE SECTION -->
-<section style="background:#fff;padding:44px 20px;border-top:1.5px solid #f1f5f9" aria-labelledby="comp-title">
-  <div style="max-width:800px;margin:0 auto">
-    <h2 id="comp-title" style="text-align:center;font-size:1.35rem;color:var(--navy);font-weight:900;margin-bottom:8px">🌿 רפואה משלימה — כלולה בכתב השירות</h2>
-    <p style="text-align:center;color:#64748b;font-size:.9rem;margin-bottom:28px">עד 20 טיפולים בשנה | החזר עד 80% | תקרה שנתית ₪2,500</p>
-
-    <!-- טיפולים -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:28px">
-      <div style="background:#f8faff;border-radius:12px;padding:14px 16px;border-right:3px solid var(--gold)">
-        <div style="font-size:.82rem;font-weight:800;color:var(--navy);margin-bottom:6px">👐 מגע ואיזון</div>
-        <div style="font-size:.79rem;color:#64748b;line-height:1.7">דיקור סיני · רפלקסולוגיה · שיאצו · אוסטיאופתיה · כירופרקטיקה</div>
-      </div>
-      <div style="background:#f8faff;border-radius:12px;padding:14px 16px;border-right:3px solid var(--gold)">
-        <div style="font-size:.82rem;font-weight:800;color:var(--navy);margin-bottom:6px">🧘 עבודה גופנית</div>
-        <div style="font-size:.79rem;color:#64748b;line-height:1.7">פלדנקרייז · שיטת אלכסנדר · שיטת פאולה</div>
-      </div>
-      <div style="background:#f8faff;border-radius:12px;padding:14px 16px;border-right:3px solid var(--gold)">
-        <div style="font-size:.82rem;font-weight:800;color:var(--navy);margin-bottom:6px">🌱 ייעוץ טבעי</div>
-        <div style="font-size:.79rem;color:#64748b;line-height:1.7">הומאופתיה · נטורופתיה · ייעוץ דיאטטי · אירוודה</div>
-      </div>
-      <div style="background:#f8faff;border-radius:12px;padding:14px 16px;border-right:3px solid var(--gold)">
-        <div style="font-size:.82rem;font-weight:800;color:var(--navy);margin-bottom:6px">✨ טיפולים נוספים</div>
-        <div style="font-size:.79rem;color:#64748b;line-height:1.7">ביופידבק · חדרי מלח · סוג'וק · פרחי באך</div>
-      </div>
-    </div>
-
-    <!-- תנאים -->
-    <div style="background:linear-gradient(135deg,var(--navy),#0d2348);border-radius:14px;padding:20px 24px;color:#fff;display:flex;flex-wrap:wrap;gap:16px;justify-content:center">
-      <div style="text-align:center;min-width:120px">
-        <div style="font-size:1.6rem;font-weight:900;color:var(--gold2)">20</div>
-        <div style="font-size:.78rem;opacity:.85">טיפולים בשנה</div>
-      </div>
-      <div style="text-align:center;min-width:120px">
-        <div style="font-size:1.6rem;font-weight:900;color:var(--gold2)">80%</div>
-        <div style="font-size:.78rem;opacity:.85">החזר לטיפול</div>
-      </div>
-      <div style="text-align:center;min-width:120px">
-        <div style="font-size:1.6rem;font-weight:900;color:var(--gold2)">₪2,500</div>
-        <div style="font-size:.78rem;opacity:.85">תקרה שנתית</div>
-      </div>
-      <div style="text-align:center;min-width:120px">
-        <div style="font-size:1.6rem;font-weight:900;color:var(--gold2)">₪40</div>
-        <div style="font-size:.78rem;opacity:.85">השתתפות עצמית במטפל בהסדר</div>
-      </div>
-    </div>
-
-    <p style="text-align:center;font-size:.8rem;color:#94a3b8;margin-top:14px">* לאחר תקופת אכשרה של 3 חודשים | נדרשת הפניה מרופא</p>
-  </div>
-</section>
-
-<!-- REVIEWS SECTION -->
-<section class="reviews-section" aria-labelledby="reviews-title">
+<!-- REVIEWS -->
+<section class="reviews" aria-labelledby="reviews-title">
   <h2 id="reviews-title">מה אומרים המנויים שלנו</h2>
   <div class="reviews-grid">
     <div class="review-card">
@@ -493,231 +447,39 @@
         </div>
       </div>
     </div>
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">"תוך יומיים קיבלתי תור ל-MRI פרטי. בקופת החולים אמרו לי 4 חודשים. זה שינה לי את החיים ממש."</p>
-      <div class="review-author">
-        <div class="review-avatar">ש</div>
-        <div>
-          <div class="review-name">שרה ברגר</div>
-          <div class="review-meta">גיל 64 • חיפה • מנויה שנה</div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
-<!-- PAIN STORY SECTION -->
-<section style="background:var(--navy);color:#fff;padding:50px 20px" aria-labelledby="pain-story-title">
-  <div style="max-width:640px;margin:0 auto;text-align:center">
-    <h2 id="pain-story-title" style="font-size:1.4rem;font-weight:900;margin-bottom:10px;line-height:1.4">אתה לא לבד.<br><span style="color:var(--gold2)">זה מה שאנשים חווים כל יום.</span></h2>
-    <p style="font-size:.95rem;opacity:.8;margin-bottom:36px;line-height:1.7">מיליוני אנשים בישראל מתמודדים בשקט עם מערכת בריאות שלא תמיד עונה על הצרכים שלהם.</p>
+<!-- FOOTER -->
+<footer class="footer">
+  משווק מורשה של פלטינום רפואה משלימה בע״מ
+  &nbsp;|&nbsp;
+  כל הזכויות שמורות &copy; 2026
+  &nbsp;|&nbsp;
+  <a href="#" onclick="openPrivacy(event)">מדיניות פרטיות</a>
+</footer>
 
-    <div style="display:flex;flex-direction:column;gap:20px;text-align:right">
-
-      <div style="background:rgba(255,255,255,.06);border-radius:14px;padding:20px 22px;border-right:4px solid var(--gold)">
-        <div style="font-size:.95rem;font-weight:800;margin-bottom:8px">😤 "שוב אמרו לי לחכות 3 חודשים"</div>
-        <p style="font-size:.86rem;opacity:.78;line-height:1.7">הכאב לא ממתין. אבל המערכת כן מבקשת ממך לחכות — לתור, לאישור, להפניה. בינתיים אתה סובל וחושב — האם יש פתרון אחר?</p>
-      </div>
-
-      <div style="background:rgba(255,255,255,.06);border-radius:14px;padding:20px 22px;border-right:4px solid var(--gold)">
-        <div style="font-size:.95rem;font-weight:800;margin-bottom:8px">💸 "שילמתי ₪2,000 מהכיס — ולא ידעתי שמגיע לי החזר"</div>
-        <p style="font-size:.86rem;opacity:.78;line-height:1.7">אנשים רבים משלמים על בדיקות, טיפולים ורופאים פרטיים — מבלי לדעת שיש להם זכאות לקבל חלק גדול בחזרה. כסף שהיה יכול להישאר אצלך.</p>
-      </div>
-
-      <div style="background:rgba(255,255,255,.06);border-radius:14px;padding:20px 22px;border-right:4px solid var(--gold)">
-        <div style="font-size:.95rem;font-weight:800;margin-bottom:8px">🌙 "חליתי בשעה 2 בלילה — לא ידעתי למי להתקשר"</div>
-        <p style="font-size:.86rem;opacity:.78;line-height:1.7">חדר מיון? שעות של המתנה. קופת חולים? סגורה. הרגשת לבד עם הכאב — כשהכי היית צריך מישהו לצידך.</p>
-      </div>
-
-      <div style="background:rgba(255,255,255,.06);border-radius:14px;padding:20px 22px;border-right:4px solid var(--gold)">
-        <div style="font-size:.95rem;font-weight:800;margin-bottom:8px">😔 "אמרו לי שזה לא דחוף — אבל בשבילי זה היה דחוף מאוד"</div>
-        <p style="font-size:.86rem;opacity:.78;line-height:1.7">הרופא בקופה ראה מספרים. לא ראה אותך. לא ראה את הכאב, את הדאגה, את הפחד. אתה לא מספר — אתה אדם שמגיע לו שירות אמיתי.</p>
-      </div>
-
-    </div>
-
-    <div style="margin-top:28px;padding:18px 22px;background:rgba(255,255,255,.08);border-radius:14px;border:1.5px solid var(--gold)">
-      <p style="font-size:.95rem;font-weight:800;line-height:1.6;color:var(--gold2)">⚠️ כל אדם מעל גיל 60 חייב את זה.</p>
-      <p style="font-size:.95rem;font-weight:800;line-height:1.6;color:var(--gold2);margin-top:8px">⚠️ כל אדם עם בעיות רפואיות חייב את זה.</p>
-      <p style="font-size:.86rem;opacity:.82;line-height:1.7;margin-top:6px">בגיל הזה הגוף דורש יותר תשומת לב — ביקורי רופא תכופים יותר, בדיקות, טיפולים. מי שיש לו כתב שירות פלטינום לא צריך לבחור בין בריאות לכסף. <strong style="color:#fff">לכולם מגיע לקבל את הטיפול הטוב ביותר.</strong></p>
-    </div>
-
-    <div style="margin-top:20px;padding:20px;background:var(--gold);border-radius:14px;color:var(--navy)">
-      <p style="font-size:1rem;font-weight:900;line-height:1.5">זה בדיוק למה נוצר כתב שירות פלטינום.<br>כדי שתקבל את מה שמגיע לך — <em>כשאתה צריך, לא כשנוח למערכת.</em></p>
-    </div>
-  </div>
-</section>
-
-<!-- FORM SECTION -->
-<main id="main-form" class="form-section">
-  <div class="form-card">
-
-    <!-- FORM -->
-    <div id="form-wrap">
-      <div style="text-align:center;margin-bottom:14px;background:var(--navy);border-radius:10px;padding:10px">
-        <img src="https://platinum.org.il/wp-content/uploads/2022/07/logo.png" alt="פלטינום" style="height:38px;object-fit:contain;filter:brightness(0) invert(1)" onerror="this.style.display='none'">
-        <div style="color:var(--gold);font-size:.7rem;font-weight:600;letter-spacing:.5px;margin-top:3px">כי הבריאות חשובה לך</div>
-      </div>
-      <div class="spots-wrap">
-        <span class="spots-dot"></span>נציג פנוי עכשיו — תפסו מקום לפני שיתמלא
-      </div>
-      <h2>🛡️ מלאו שאלון התאמה קצר וגלו את הכיסוי שמגיע לכם</h2>
-
-      <!-- Progress bar -->
-      <div class="progress-wrap" role="group" aria-label="התקדמות בשאלון">
-        <div class="progress-bar">
-          <div class="progress-fill" id="prog-fill" style="width:20%"
-               role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
-               aria-label="התקדמות: שלב 1 מתוך 5"></div>
-        </div>
-        <div class="progress-label">
-          <span id="prog-text" aria-live="polite" aria-atomic="true">שלב 1 מתוך 5</span>
-          <span id="prog-pct" aria-hidden="true">20%</span>
-        </div>
-      </div>
-
-      <!-- Step 1: Contact -->
-      <div class="step active" id="step-1" role="group" aria-labelledby="step1-title">
-        <p id="step1-title" class="form-group" style="font-weight:700;color:#0f2d5a;margin-bottom:14px">פרטי יצירת קשר</p>
-        <div class="form-group">
-          <label for="f-name">שמך המלא <span style="color:#f43f5e" aria-hidden="true">*</span><span class="visually-hidden"> (שדה חובה)</span></label>
-          <input type="text" id="f-name" name="name" placeholder="ישראל ישראלי"
-                 autocomplete="name" aria-required="true" aria-describedby="name-error">
-          <span id="name-error" class="error-msg" role="alert" style="display:none">יש להזין שם מלא</span>
-        </div>
-        <div class="form-group">
-          <label for="f-phone">מספר טלפון <span style="color:#f43f5e" aria-hidden="true">*</span><span class="visually-hidden"> (שדה חובה)</span></label>
-          <input type="tel" id="f-phone" name="phone" placeholder="050-0000000"
-                 autocomplete="tel" aria-required="true" aria-describedby="phone-error">
-          <span id="phone-error" class="error-msg" role="alert" style="display:none">יש להזין מספר טלפון</span>
-        </div>
-        <button class="next-btn" onclick="goStep(1)" aria-label="המשך לשלב הבא — גיל">המשך ←</button>
-      </div>
-
-      <!-- Step 2: Age -->
-      <div class="step" id="step-2">
-        <div class="form-group">
-          <div id="age-label" style="font-size:.88rem;font-weight:700;color:#334155;margin-bottom:7px">מה גילך?</div>
-          <div class="opts-grid" role="radiogroup" aria-labelledby="age-label" aria-required="true" id="age-group">
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'age','18-30')">18 – 30</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'age','31-45')">31 – 45</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'age','46-60')">46 – 60</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'age','60+')">60 ומעלה</button>
-          </div>
-          <span id="age-error" class="error-msg" role="alert" style="display:none">יש לבחור טווח גיל</span>
-        </div>
-        <button class="next-btn" onclick="goStep(2)" aria-label="המשך לשלב הבא — ביטוח קיים">המשך ←</button>
-      </div>
-
-      <!-- Step 3: Insurance -->
-      <div class="step" id="step-3">
-        <div class="form-group">
-          <div id="ins-label" style="font-size:.88rem;font-weight:700;color:#334155;margin-bottom:7px">האם יש לך כרגע כתב שירות / ביטוח בריאות פרטי?</div>
-          <div class="opts-grid" role="radiogroup" aria-labelledby="ins-label" aria-required="true" id="ins-group">
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'insurance','yes')">כן, מקיף</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'insurance','partial')">חלקי</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'insurance','no')">אין לי</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'insurance','unsure')">לא בטוח</button>
-          </div>
-          <span id="ins-error" class="error-msg" role="alert" style="display:none">יש לבחור תשובה</span>
-        </div>
-        <button class="next-btn" onclick="goStep(3)" aria-label="המשך לשלב הבא — מצב רפואי">המשך ←</button>
-      </div>
-
-      <!-- Step 4: Medical -->
-      <div class="step" id="step-4">
-        <div class="form-group">
-          <div id="med-label" style="font-size:.88rem;font-weight:700;color:#334155;margin-bottom:7px">בשנה האחרונה, נדרשת לאחד מאלה?</div>
-          <div class="opts-grid" role="radiogroup" aria-labelledby="med-label" aria-required="true" id="med-group">
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'medical','specialist')">רופא מומחה</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'medical','mri')">MRI / CT</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'medical','dental')">טיפול שיניים</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'medical','none')">לא נדרשתי</button>
-          </div>
-          <span id="med-error" class="error-msg" role="alert" style="display:none">יש לבחור תשובה</span>
-        </div>
-        <button class="next-btn" onclick="goStep(4)" aria-label="המשך לשלב האחרון — עדיפות">המשך ←</button>
-      </div>
-
-      <!-- Step 5: Priority -->
-      <div class="step" id="step-5">
-        <div class="form-group">
-          <div id="pri-label" style="font-size:.88rem;font-weight:700;color:#334155;margin-bottom:7px">מה הכי חשוב לך בביטוח הבריאות?</div>
-          <div class="opts-grid" role="radiogroup" aria-labelledby="pri-label" aria-required="true" id="pri-group">
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'priority','speed')">מהירות שירות</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'priority','cost')">חיסכון בעלויות</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'priority','home')">שירות בבית</button>
-            <button class="opt-btn" role="radio" aria-checked="false" onclick="pick(this,'priority','full')">כיסוי מלא</button>
-          </div>
-          <span id="pri-error" class="error-msg" role="alert" style="display:none">יש לבחור תשובה</span>
-        </div>
-        <!-- הסכמה שיווקית -->
-        <div class="consent-wrap">
-          <input type="checkbox" id="consent-marketing" aria-required="true" aria-describedby="consent-error">
-          <label for="consent-marketing">
-            אני מסכים/ה לקבל מידע שיווקי ועדכונים מ<strong>הראשונים בבריאות וסיעוד</strong> בנוגע לכתב שירות פלטינום.
-            <a href="#" onclick="openPrivacy(event)">מדיניות פרטיות</a>
-          </label>
-        </div>
-        <span id="consent-error" class="consent-error" role="alert">יש לאשר את ההסכמה להמשך</span>
-
-        <button class="next-btn" id="submit-btn" onclick="submitLead()" aria-label="שליחת הפרטים וקבלת הצעה">📩 שלח/י פרטים — נציג יחזור אליך עד שעה</button>
-        <div class="no-commit"><span>✓ ללא התחייבות</span> &nbsp; <span>✓ ללא עלות</span> &nbsp; <span>✓ 100% פרטי</span></div>
-        <p style="text-align:center;margin-top:10px;font-size:.85rem;color:#666">או התקשרו ישירות: <a href="tel:0515020261" style="color:var(--gold2);font-weight:700;text-decoration:none">051-502-0261</a></p>
-        <p class="privacy-note" style="margin-top:8px">הפרטים שלך מאובטחים ולא יועברו לצד שלישי. <a href="#" onclick="openPrivacy(event)">מדיניות פרטיות</a></p>
-      </div>
-    </div>
-
-    <!-- THANK YOU -->
-    <div class="thankyou" id="thankyou" role="status" aria-live="assertive" aria-label="הטופס נשלח בהצלחה" tabindex="-1">
-      <div class="ty-icon" aria-hidden="true">🎉</div>
-      <h2>תודה! הפרטים התקבלו</h2>
-      <div class="ty-score" id="ty-score">ניקוד ההתאמה שלך: 8/10</div>
-      <p>נציג מקצועי יחזור אליך בהקדם עם הצעה מותאמת אישית לכיסוי הטוב ביותר עבורך.</p>
-    </div>
-
-  </div>
-</main>
-
-<!-- PRIVACY POLICY MODAL -->
+<!-- PRIVACY MODAL -->
 <div class="modal-overlay" id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
   <div class="modal-box">
-    <button class="modal-close" onclick="closePrivacy()" aria-label="סגור מדיניות פרטיות">✕</button>
+    <button class="modal-close" onclick="closePrivacy()" aria-label="סגור">✕</button>
     <h3 id="privacy-title">מדיניות פרטיות</h3>
-    <p><strong>הראשונים בבריאות וסיעוד</strong> — משווקים מורשים של כתב שירות פלטינום</p>
     <p><strong>איזה מידע אנו אוספים?</strong></p>
     <ul>
       <li>שם מלא ומספר טלפון</li>
-      <li>מידע כללי על מצב ביטוחי ורפואי שמסרת בשאלון</li>
+      <li>מידע כללי על מצב ביטוחי ורפואי מהשאלון</li>
     </ul>
     <p><strong>למה אנו אוספים את המידע?</strong></p>
-    <p>על מנת לחזור אליך עם הצעת כתב שירות מותאמת אישית ולשלוח עדכונים שיווקיים רלוונטיים.</p>
+    <p>על מנת לחזור אליך עם הצעת כתב שירות מותאמת אישית.</p>
     <p><strong>מי רואה את המידע?</strong></p>
-    <p>המידע נשמר במערכת CRM פנימית ומשמש את נציגי החברה בלבד. לא נעביר את פרטיך לצד שלישי ללא הסכמתך המפורשת.</p>
+    <p>המידע נשמר במערכת CRM פנימית ומשמש את נציגי החברה בלבד. לא נעביר פרטים לצד שלישי.</p>
     <p><strong>זכות למחיקה</strong></p>
-    <p>בכל עת תוכל/י לבקש הסרה מהרשימה שלנו על ידי פנייה ישירה לנציג החברה.</p>
+    <p>ניתן לבקש הסרה בכל עת בפנייה ישירה לנציג.</p>
     <p><strong>אבטחת מידע</strong></p>
-    <p>המידע מאוחסן בענן מאובטח (Google Firebase) ומוגן בהצפנה מלאה.</p>
-    <p><strong>ביטול הסכמה</strong></p>
-    <p>ניתן לבטל את ההסכמה לקבלת חומרים שיווקיים בכל עת בפנייה ישירה אלינו.</p>
-    <p style="font-size:.78rem;color:#94a3b8;margin-top:16px">עדכון אחרון: אפריל 2026</p>
+    <p>המידע מאוחסן בענן מאובטח (Google Firebase) עם הצפנה מלאה.</p>
+    <p style="font-size:.77rem;color:#94a3b8;margin-top:14px">עדכון אחרון: אפריל 2026</p>
   </div>
 </div>
-
-<!-- FOOTER -->
-<footer role="contentinfo" class="footer">
-  משווקים מורשים של כתב שירות פלטינום
-  <span class="footer-sep" aria-hidden="true">|</span>
-  כל הזכויות שמורות &copy; 2025
-  <span class="footer-sep" aria-hidden="true">|</span>
-  <a href="#" onclick="openPrivacy(event)" style="color:#94a3b8;text-decoration:underline">מדיניות פרטיות</a>
-</footer>
-
-<!-- visually hidden utility -->
-<style>
-  .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-</style>
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
@@ -735,8 +497,8 @@
   const app = initializeApp(FB_CFG);
   const db  = getFirestore(app);
 
-  const STEP_FIELDS  = [null, null, 'age', 'insurance', 'medical', 'priority'];
-  const STEP_ERRORS  = [null, null, 'age-error', 'ins-error', 'med-error', 'pri-error'];
+  const STEP_FIELDS = [null, null, 'age', 'insurance', 'medical', 'priority'];
+  const STEP_ERRORS = [null, null, 'age-error', 'ins-error', 'med-error', 'pri-error'];
   const answers = {};
   let curStep = 1;
 
@@ -745,7 +507,6 @@
     const fill = document.getElementById('prog-fill');
     fill.style.width = pct + '%';
     fill.setAttribute('aria-valuenow', pct);
-    fill.setAttribute('aria-label', `התקדמות: שלב ${step} מתוך 5`);
     document.getElementById('prog-text').textContent = `שלב ${step} מתוך 5`;
     document.getElementById('prog-pct').textContent  = pct + '%';
   }
@@ -758,59 +519,46 @@
     el.classList.add('selected');
     el.setAttribute('aria-checked', 'true');
     answers[field] = val;
-    // hide error if shown
     const errId = STEP_ERRORS[curStep];
     if (errId) document.getElementById(errId).style.display = 'none';
   };
-
-  function focusFirstInStep(stepNum) {
-    const step = document.getElementById(`step-${stepNum}`);
-    const first = step.querySelector('input, button.opt-btn, button.next-btn');
-    if (first) first.focus();
-  }
 
   window.goStep = function(from) {
     if (from === 1) {
       const nameEl  = document.getElementById('f-name');
       const phoneEl = document.getElementById('f-phone');
-      const nameErr  = document.getElementById('name-error');
-      const phoneErr = document.getElementById('phone-error');
       let ok = true;
-
       if (!nameEl.value.trim()) {
         nameEl.classList.add('field-error');
-        nameEl.setAttribute('aria-invalid', 'true');
-        nameErr.style.display = 'block';
+        document.getElementById('name-error').style.display = 'block';
         ok = false;
       }
       if (!phoneEl.value.trim()) {
         phoneEl.classList.add('field-error');
-        phoneEl.setAttribute('aria-invalid', 'true');
-        phoneErr.style.display = 'block';
+        document.getElementById('phone-error').style.display = 'block';
         ok = false;
       }
-      if (!ok) {
-        document.getElementById('f-name').focus();
-        return;
-      }
+      if (!ok) { nameEl.focus(); return; }
       answers.name  = nameEl.value.trim();
       answers.phone = phoneEl.value.trim();
     } else {
-      const field  = STEP_FIELDS[from];
-      const errId  = STEP_ERRORS[from];
+      const field = STEP_FIELDS[from];
+      const errId = STEP_ERRORS[from];
       if (!answers[field]) {
         document.getElementById(errId).style.display = 'block';
-        document.querySelector(`#step-${from} [role="radiogroup"]`).focus();
         return;
       }
     }
-
     document.getElementById(`step-${from}`).classList.remove('active');
     curStep = from + 1;
     document.getElementById(`step-${curStep}`).classList.add('active');
     setProgress(curStep);
     window.scrollTo({top: document.querySelector('.form-section').offsetTop - 20, behavior:'smooth'});
-    setTimeout(() => focusFirstInStep(curStep), 100);
+    setTimeout(() => {
+      const step = document.getElementById(`step-${curStep}`);
+      const first = step.querySelector('input, button.opt-btn, button.next-btn');
+      if (first) first.focus();
+    }, 100);
   };
 
   function calcScore() {
@@ -826,81 +574,37 @@
     return Math.min(10, s);
   }
 
-  window.openPrivacy = function(e) {
-    e.preventDefault();
-    const modal = document.getElementById('privacy-modal');
-    modal.classList.add('show');
-    modal.querySelector('.modal-close').focus();
-  };
-
-  window.closePrivacy = function() {
-    document.getElementById('privacy-modal').classList.remove('show');
-    const cb = document.getElementById('consent-marketing');
-    if (cb) cb.focus();
-  };
-
-  // סגירת מודל בלחיצה על הרקע
-  document.getElementById('privacy-modal').addEventListener('click', function(e) {
-    if (e.target === this) closePrivacy();
-  });
-
-  // סגירת מודל ב-Escape
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closePrivacy();
-  });
+  window.openPrivacy  = e => { e.preventDefault(); document.getElementById('privacy-modal').classList.add('show'); };
+  window.closePrivacy = ()  => document.getElementById('privacy-modal').classList.remove('show');
+  document.getElementById('privacy-modal').addEventListener('click', e => { if (e.target === document.getElementById('privacy-modal')) closePrivacy(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePrivacy(); });
 
   window.submitLead = async function() {
-    const priErr = document.getElementById('pri-error');
-    if (!answers.priority) {
-      priErr.style.display = 'block';
-      return;
-    }
-
-    // בדיקת הסכמה שיווקית
+    if (!answers.priority) { document.getElementById('pri-error').style.display = 'block'; return; }
     const consentCb  = document.getElementById('consent-marketing');
     const consentErr = document.getElementById('consent-error');
-    if (!consentCb.checked) {
-      consentErr.style.display = 'block';
-      consentCb.focus();
-      return;
-    }
+    if (!consentCb.checked) { consentErr.style.display = 'block'; consentCb.focus(); return; }
     consentErr.style.display = 'none';
 
     const btn = document.getElementById('submit-btn');
     btn.disabled = true;
-    btn.setAttribute('aria-busy', 'true');
     btn.textContent = 'שולח...';
 
     const score = calcScore();
-    const ageLabels = {'18-30':'18-30','31-45':'31-45','46-60':'46-60','60+':'60+'};
-    const insLabels = {yes:'כן מקיף', partial:'חלקי', no:'אין', unsure:'לא בטוח'};
-    const medLabels = {specialist:'רופא מומחה', mri:'MRI/CT', dental:'שיניים', none:'לא נדרש'};
-    const priLabels = {speed:'מהירות', cost:'חיסכון', home:'שירות בבית', full:'כיסוי מלא'};
-    const notes = `ליד מדף נחיתה | גיל: ${ageLabels[answers.age]} | ביטוח: ${insLabels[answers.insurance]} | רפואי: ${medLabels[answers.medical]} | עדיפות: ${priLabels[answers.priority]} | ניקוד: ${score}/10`;
+    const notes = `ליד מדף נחיתה | גיל: ${answers.age} | ביטוח: ${answers.insurance} | רפואי: ${answers.medical} | עדיפות: ${answers.priority} | ניקוד: ${score}/10`;
 
     try {
-      // שמירה לקולקציית landing_leads — נפרד מה-CRM
       await addDoc(collection(db, 'landing_leads'), {
-        name: answers.name,
-        phone: answers.phone,
-        age: answers.age,
-        insurance: answers.insurance,
-        medical: answers.medical,
-        priority: answers.priority,
-        score,
-        notes,
-        status: 'new',
-        source: 'landing_page',
+        name: answers.name, phone: answers.phone,
+        age: answers.age, insurance: answers.insurance,
+        medical: answers.medical, priority: answers.priority,
+        score, notes, status: 'new', source: 'landing_page',
         marketingConsent: true,
         consentDate: new Date().toISOString(),
         createdAt: serverTimestamp()
       });
-
-      // פייסבוק פיקסל — אירוע Lead
       fbq('track', 'Lead', { value: score, currency: 'ILS' });
-      // גוגל אנליטיקס — אירוע lead
       gtag('event', 'generate_lead', { value: score });
-
       document.getElementById('form-wrap').style.display = 'none';
       document.getElementById('ty-score').textContent = `ניקוד ההתאמה שלך: ${score}/10`;
       const ty = document.getElementById('thankyou');
@@ -911,34 +615,28 @@
       console.error(e);
       alert('שגיאה בשמירה, נסה שוב');
       btn.disabled = false;
-      btn.removeAttribute('aria-busy');
-      btn.textContent = '📩 שלח/י פרטים וקבל/י הצעה';
+      btn.textContent = '📩 שלח/י פרטים';
     }
   };
 
-  // ── ACCESSIBILITY WIDGET ──
-  let _fontSize = 0; // -1=small, 0=normal, 1=big, 2=bigger
-
+  // ACCESSIBILITY
+  let _fontSize = 0;
   window.toggleAccPanel = function() {
     const panel = document.getElementById('acc-panel');
     const btn   = document.getElementById('acc-btn');
     const open  = panel.classList.toggle('open');
     btn.setAttribute('aria-expanded', open);
     panel.setAttribute('aria-hidden', !open);
-    if (open) panel.querySelector('button').focus();
   };
-
-  // סגירה בלחיצה מחוץ לפאנל
   document.addEventListener('click', function(e) {
     const panel = document.getElementById('acc-panel');
     const btn   = document.getElementById('acc-btn');
     if (panel.classList.contains('open') && !panel.contains(e.target) && e.target !== btn) {
       panel.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-      panel.setAttribute('aria-hidden', 'true');
+      btn.setAttribute('aria-expanded','false');
+      panel.setAttribute('aria-hidden','true');
     }
   });
-
   window.setFontSize = function(dir) {
     document.body.classList.remove('acc-big','acc-bigger');
     if (dir === 0) { _fontSize = 0; return; }
@@ -946,35 +644,26 @@
     if (_fontSize >= 2) document.body.classList.add('acc-bigger');
     else if (_fontSize >= 1) document.body.classList.add('acc-big');
   };
-
   window.toggleContrast = function() {
     const on = document.body.classList.toggle('acc-contrast');
-    const t  = document.getElementById('toggle-contrast');
-    t.classList.toggle('on', on);
-    t.setAttribute('aria-pressed', on);
+    const t = document.getElementById('toggle-contrast');
+    t.classList.toggle('on', on); t.setAttribute('aria-pressed', on);
   };
-
   window.toggleLinks = function() {
     const on = document.body.classList.toggle('acc-links');
-    const t  = document.getElementById('toggle-links');
-    t.classList.toggle('on', on);
-    t.setAttribute('aria-pressed', on);
+    const t = document.getElementById('toggle-links');
+    t.classList.toggle('on', on); t.setAttribute('aria-pressed', on);
   };
-
   window.toggleMotion = function() {
     const on = document.body.classList.toggle('acc-no-motion');
-    const t  = document.getElementById('toggle-motion');
-    t.classList.toggle('on', on);
-    t.setAttribute('aria-pressed', on);
+    const t = document.getElementById('toggle-motion');
+    t.classList.toggle('on', on); t.setAttribute('aria-pressed', on);
     const style = document.getElementById('acc-motion-style') || (() => {
-      const s = document.createElement('style');
-      s.id = 'acc-motion-style';
-      document.head.appendChild(s);
-      return s;
+      const s = document.createElement('style'); s.id = 'acc-motion-style';
+      document.head.appendChild(s); return s;
     })();
     style.textContent = on ? '*{animation:none!important;transition:none!important}' : '';
   };
-
   window.resetAcc = function() {
     _fontSize = 0;
     document.body.classList.remove('acc-big','acc-bigger','acc-contrast','acc-links','acc-no-motion');
@@ -986,38 +675,15 @@
     if (s) s.textContent = '';
   };
 
-  // Remove error states on input
+  // Clear errors on input
   document.getElementById('f-name').addEventListener('input', function() {
     this.classList.remove('field-error');
-    this.removeAttribute('aria-invalid');
     document.getElementById('name-error').style.display = 'none';
   });
   document.getElementById('f-phone').addEventListener('input', function() {
     this.classList.remove('field-error');
-    this.removeAttribute('aria-invalid');
     document.getElementById('phone-error').style.display = 'none';
   });
-
-  // Keyboard support for opt-btn (Space/Enter to select)
-  document.querySelectorAll('.opt-btn').forEach(btn => {
-    btn.addEventListener('keydown', function(e) {
-      if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault();
-        this.click();
-      }
-      // Arrow key navigation within group
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-        const group = this.closest('[role="radiogroup"]');
-        const btns  = [...group.querySelectorAll('.opt-btn')];
-        const idx   = btns.indexOf(this);
-        let next = idx + (e.key === 'ArrowLeft' || e.key === 'ArrowDown' ? 1 : -1);
-        next = (next + btns.length) % btns.length;
-        btns[next].focus();
-        e.preventDefault();
-      }
-    });
-  });
 </script>
-
 </body>
 </html>
