@@ -9,36 +9,44 @@
 :root{--navy:#1a2744;--gold:#d4af37;--gold2:#f0d060;--bg:#f4f6fb;--white:#fff;--border:#e8ecf4;--green:#22c55e;--red:#e74c3c;--blue:#3b82f6;--wa:#25d366}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;direction:rtl}
+body.focus-mode .hide-focus{display:none!important}
 
 /* HEADER */
-.hdr{background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold)}
+.hdr{background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100}
 .hdr-brand{font-size:1.1rem;font-weight:900;color:var(--gold)}
 .hdr-sub{font-size:.75rem;color:rgba(255,255,255,.6)}
+.hdr-actions{display:flex;align-items:center;gap:10px}
 .status-dot{width:9px;height:9px;border-radius:50%;background:var(--green);display:inline-block;margin-left:6px;animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.focus-btn{background:none;border:1.5px solid rgba(255,255,255,.3);border-radius:8px;padding:5px 12px;font-size:.75rem;font-weight:700;color:rgba(255,255,255,.8);cursor:pointer;font-family:'Heebo',sans-serif;transition:all .2s}
+.focus-btn:hover{border-color:var(--gold);color:var(--gold)}
+body.focus-mode .focus-btn{background:var(--gold);color:var(--navy);border-color:var(--gold)}
 
 /* LAYOUT */
-.container{max-width:800px;margin:0 auto;padding:16px}
+.container{max-width:820px;margin:0 auto;padding:16px}
 
-/* CARD BASE */
+/* CARD */
 .card{background:var(--white);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(26,39,68,.08);border:1.5px solid var(--border)}
 .card-label{font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:10px;opacity:.7}
 
-/* CUSTOMER PROFILE */
+/* PROFILE */
 .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.profile-field label{display:block;font-size:.75rem;font-weight:700;color:var(--navy);opacity:.6;margin-bottom:4px}
-.profile-field input,.profile-field select{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'Heebo',sans-serif;background:#fafbfc;color:var(--navy)}
-.profile-field input:focus,.profile-field select:focus{outline:none;border-color:var(--gold);background:#fff}
-.profile-full{grid-column:1/-1}
-.profile-toggle{font-size:.78rem;color:var(--blue);cursor:pointer;font-weight:700;text-decoration:underline;margin-bottom:10px;display:inline-block}
+.pf label{display:block;font-size:.74rem;font-weight:700;color:var(--navy);opacity:.55;margin-bottom:3px}
+.pf input,.pf select{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'Heebo',sans-serif;background:#fafbfc;color:var(--navy)}
+.pf input:focus,.pf select:focus{outline:none;border-color:var(--gold)}
 
-/* STAGE SELECTOR */
+/* OPENING BUTTON */
+.open-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--navy),#2a3f6e);color:var(--gold);border:none;border-radius:12px;font-size:1rem;font-weight:900;cursor:pointer;font-family:'Heebo',sans-serif;margin-bottom:14px;transition:all .2s;letter-spacing:.3px}
+.open-btn:hover{background:linear-gradient(135deg,#2a3f6e,var(--navy));box-shadow:0 4px 16px rgba(26,39,68,.3)}
+.open-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* STAGE */
 .stages{display:flex;flex-wrap:wrap;gap:8px}
 .stage-btn{padding:8px 14px;border:2px solid var(--border);border-radius:20px;background:var(--bg);cursor:pointer;font-size:.82rem;font-weight:600;color:var(--navy);font-family:'Heebo',sans-serif;transition:all .15s}
 .stage-btn:hover{border-color:var(--gold);background:#fffbeb}
 .stage-btn.active{border-color:var(--gold);background:var(--gold);color:var(--navy);font-weight:800}
 
-/* BUTTONS GRID */
+/* QUICK BUTTONS */
 .btn-grid{display:flex;flex-wrap:wrap;gap:7px}
 .obj-btn{padding:7px 13px;border:1.5px solid #fcd34d;border-radius:20px;background:#fffbeb;cursor:pointer;font-size:.8rem;font-weight:600;color:#92400e;font-family:'Heebo',sans-serif;transition:all .15s}
 .obj-btn:hover{background:#fef3c7;border-color:#f59e0b}
@@ -47,41 +55,67 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--navy);min-h
 .val-btn:hover{background:#dbeafe;border-color:var(--blue)}
 .val-btn.active{background:var(--blue);border-color:#1d4ed8;color:#fff}
 
+/* CALCULATOR */
+.calc-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.calc-row select,.calc-row input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'Heebo',sans-serif;background:#fafbfc}
+.calc-row select{flex:2}
+.calc-row input{flex:1;min-width:100px}
+.calc-go{background:var(--gold);color:var(--navy);border:none;border-radius:8px;padding:9px 18px;font-size:.88rem;font-weight:900;cursor:pointer;font-family:'Heebo',sans-serif;white-space:nowrap}
+.calc-result{margin-top:12px;padding:12px;background:#f0fdf4;border-radius:10px;border:1.5px solid #86efac;font-size:.88rem;line-height:1.8}
+.calc-result .big{font-size:1.1rem;font-weight:900;color:#166534}
+.calc-result .note{font-size:.75rem;color:#6b7a99;margin-top:4px}
+
 /* INPUT */
 .input-row{display:flex;gap:10px}
 textarea{flex:1;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:.93rem;font-family:'Heebo',sans-serif;resize:none;height:70px;direction:rtl;background:#fafbfc;transition:border .2s}
 textarea:focus{outline:none;border-color:var(--gold);background:#fff}
-.ask-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:10px;padding:0 22px;font-size:.95rem;font-weight:900;cursor:pointer;font-family:'Heebo',sans-serif;transition:all .2s;white-space:nowrap;align-self:stretch}
+.ask-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:10px;padding:0 20px;font-size:.95rem;font-weight:900;cursor:pointer;font-family:'Heebo',sans-serif;transition:all .2s;white-space:nowrap;align-self:stretch}
 .ask-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(212,175,55,.4)}
 .ask-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.action-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.action-btn{padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;font-size:.8rem;font-weight:700;color:var(--navy);font-family:'Heebo',sans-serif;transition:all .15s;flex:1;text-align:center}
+.action-btn:hover{border-color:var(--navy);background:#e8ecf4}
+.action-btn:disabled{opacity:.4;cursor:not-allowed}
 
 /* RESPONSES */
 .responses{display:flex;flex-direction:column;gap:12px}
-.resp-card{background:var(--white);border-radius:14px;padding:18px 20px;box-shadow:0 2px 12px rgba(26,39,68,.08);border-right:4px solid var(--gold);border-left:1.5px solid var(--border);border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);position:relative}
-.resp-num{display:inline-block;background:var(--gold);color:var(--navy);border-radius:50%;width:24px;height:24px;font-size:.78rem;font-weight:900;text-align:center;line-height:24px;margin-bottom:10px}
-.resp-text{font-size:.93rem;line-height:1.75;color:var(--navy);white-space:pre-wrap;padding-left:80px}
-.resp-actions{position:absolute;top:14px;left:14px;display:flex;gap:6px}
-.copy-btn{background:none;border:1.5px solid var(--border);border-radius:8px;padding:5px 10px;font-size:.75rem;font-weight:700;cursor:pointer;color:#6b7a99;font-family:'Heebo',sans-serif;transition:all .15s}
+.resp-card{background:var(--white);border-radius:14px;padding:18px 20px 18px 100px;box-shadow:0 2px 12px rgba(26,39,68,.08);border-right:4px solid var(--gold);border-left:1.5px solid var(--border);border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);position:relative}
+.resp-num{display:inline-block;background:var(--gold);color:var(--navy);border-radius:50%;width:24px;height:24px;font-size:.78rem;font-weight:900;text-align:center;line-height:24px;margin-bottom:8px}
+.resp-text{font-size:.93rem;line-height:1.75;color:var(--navy);white-space:pre-wrap}
+.resp-actions{position:absolute;top:14px;left:10px;display:flex;flex-direction:column;gap:5px}
+.copy-btn{background:none;border:1.5px solid var(--border);border-radius:7px;padding:5px 8px;font-size:.72rem;font-weight:700;cursor:pointer;color:#6b7a99;font-family:'Heebo',sans-serif;transition:all .15s;white-space:nowrap}
 .copy-btn:hover{border-color:var(--gold);color:var(--navy);background:#fffbeb}
 .copy-btn.copied{border-color:var(--green);color:var(--green);background:#f0fdf4}
-.wa-btn{background:none;border:1.5px solid #86efac;border-radius:8px;padding:5px 10px;font-size:.75rem;font-weight:700;cursor:pointer;color:var(--wa);font-family:'Heebo',sans-serif;transition:all .15s}
+.wa-btn{background:none;border:1.5px solid #86efac;border-radius:7px;padding:5px 8px;font-size:.72rem;font-weight:700;cursor:pointer;color:var(--wa);font-family:'Heebo',sans-serif;transition:all .15s;white-space:nowrap}
 .wa-btn:hover{background:#f0fdf4;border-color:var(--wa)}
 
-/* STREAMING */
-.stream-card{background:var(--white);border-radius:14px;padding:18px 20px;box-shadow:0 2px 12px rgba(26,39,68,.08);border-right:4px solid var(--gold);border:1.5px solid var(--border);border-right:4px solid var(--gold)}
+/* SCORE BAR */
+.score-wrap{background:var(--white);border-radius:12px;padding:14px 18px;box-shadow:0 2px 12px rgba(26,39,68,.08);border:1.5px solid var(--border);margin-bottom:12px;display:flex;align-items:center;gap:14px}
+.score-label{font-size:.8rem;font-weight:800;color:var(--navy);white-space:nowrap}
+.score-bar{flex:1;height:10px;background:#e8ecf4;border-radius:10px;overflow:hidden}
+.score-fill{height:100%;border-radius:10px;transition:width .6s}
+.score-num{font-size:1.1rem;font-weight:900;min-width:28px;text-align:center}
+.score-text{font-size:.78rem;color:#6b7a99;flex:2}
+
+/* SPECIAL CARD */
+.special-card{background:var(--white);border-radius:14px;padding:18px 20px;box-shadow:0 2px 12px rgba(26,39,68,.08);border-right:4px solid var(--navy);border-left:1.5px solid var(--border);border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);position:relative}
+.special-card .resp-text{font-size:.93rem;line-height:1.8;color:var(--navy);white-space:pre-wrap}
+.special-actions{display:flex;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+
+/* STREAM */
+.stream-card{background:var(--white);border-radius:14px;padding:18px 20px;box-shadow:0 2px 12px rgba(26,39,68,.08);border:1.5px solid var(--border);border-right:4px solid var(--gold)}
 .stream-text{font-size:.93rem;line-height:1.75;color:var(--navy);white-space:pre-wrap;min-height:40px}
-.cursor{display:inline-block;width:2px;height:1em;background:var(--gold);margin-right:2px;animation:blink .7s infinite}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--gold);margin-right:1px;vertical-align:text-bottom;animation:blink .7s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
 /* HISTORY */
 .history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.history-title{font-size:.85rem;font-weight:800;color:var(--navy)}
 .clear-btn{font-size:.75rem;color:var(--red);background:none;border:1.5px solid #fecaca;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:'Heebo',sans-serif;font-weight:700}
 .clear-btn:hover{background:#fef2f2}
-.history-entry{padding:10px 12px;border-radius:10px;margin-bottom:8px;font-size:.82rem;line-height:1.6}
-.history-user{background:#fffbeb;border-right:3px solid var(--gold)}
-.history-ai{background:#f0fdf4;border-right:3px solid var(--green)}
-.history-label{font-size:.72rem;font-weight:800;opacity:.6;margin-bottom:3px}
+.h-entry{padding:9px 12px;border-radius:9px;margin-bottom:7px;font-size:.82rem;line-height:1.6}
+.h-user{background:#fffbeb;border-right:3px solid var(--gold)}
+.h-ai{background:#f0fdf4;border-right:3px solid var(--green)}
+.h-lbl{font-size:.7rem;font-weight:800;opacity:.55;margin-bottom:2px}
 
 /* LOADING */
 .loading{text-align:center;padding:32px;color:#6b7a99}
@@ -98,22 +132,22 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff}
 /* API KEY */
 .api-wrap{background:#fff3cd;border:1.5px solid #ffc107;border-radius:14px;padding:16px;margin-bottom:14px}
 .api-wrap label{display:block;font-size:.82rem;font-weight:700;color:#856404;margin-bottom:8px}
-.api-input-row{display:flex;gap:8px}
-.api-input-row input{flex:1;padding:10px 14px;border:1.5px solid #ffc107;border-radius:8px;font-size:.88rem;font-family:'Heebo',sans-serif;background:#fff}
-.api-save-btn{background:#ffc107;color:#000;border:none;border-radius:8px;padding:0 16px;font-size:.88rem;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif}
+.api-row{display:flex;gap:8px}
+.api-row input{flex:1;padding:10px 14px;border:1.5px solid #ffc107;border-radius:8px;font-size:.88rem;font-family:'Heebo',sans-serif;background:#fff}
+.api-save{background:#ffc107;color:#000;border:none;border-radius:8px;padding:0 16px;font-size:.88rem;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif}
 
 /* TIP */
 .tip{background:#e8f4fd;border:1.5px solid #bfdbfe;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:.8rem;color:#1e40af;line-height:1.5}
 .tip strong{font-weight:800}
 
-@media(max-width:500px){
+@media(max-width:540px){
   .input-row{flex-direction:column}
   .ask-btn{height:44px}
-  .stages{gap:6px}
-  .stage-btn{font-size:.78rem;padding:7px 11px}
   .profile-grid{grid-template-columns:1fr}
-  .resp-text{padding-left:0;padding-top:44px}
-  .resp-actions{top:14px;left:14px}
+  .resp-card{padding:60px 16px 16px}
+  .resp-actions{flex-direction:row;top:10px;left:10px;right:auto}
+  .calc-row{flex-direction:column}
+  .calc-row select,.calc-row input,.calc-go{width:100%}
 }
 </style>
 </head>
@@ -124,70 +158,55 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff}
     <div class="hdr-brand">💬 סוכן מכירות AI</div>
     <div class="hdr-sub">פלטינום כתב שירות</div>
   </div>
-  <div style="font-size:.8rem;color:rgba(255,255,255,.7)">
-    <span class="status-dot"></span>מוכן לשיחה
+  <div class="hdr-actions">
+    <button class="focus-btn" onclick="toggleFocus()" id="focus-btn">🎯 מצב שיחה</button>
+    <span style="font-size:.8rem;color:rgba(255,255,255,.6)"><span class="status-dot"></span>פעיל</span>
   </div>
 </div>
 
 <div class="container">
 
   <!-- API KEY -->
-  <div class="api-wrap" id="api-wrap">
+  <div class="api-wrap hide-focus" id="api-wrap">
     <label>🔑 הכנס Anthropic API Key</label>
-    <div class="api-input-row">
+    <div class="api-row">
       <input type="password" id="api-key" placeholder="sk-ant-api03-..." />
-      <button class="api-save-btn" onclick="saveKey()">שמור</button>
+      <button class="api-save" onclick="saveKey()">שמור</button>
     </div>
   </div>
 
   <!-- CUSTOMER PROFILE -->
-  <div class="card">
-    <div class="card-label">👤 פרופיל לקוח — ממלאים לפני השיחה</div>
+  <div class="card hide-focus">
+    <div class="card-label">👤 פרופיל לקוח — מלא לפני השיחה</div>
     <div class="profile-grid">
-      <div class="profile-field">
-        <label>שם הלקוח</label>
-        <input type="text" id="p-name" placeholder="ישראל ישראלי" />
-      </div>
-      <div class="profile-field">
-        <label>טלפון (לשליחת WhatsApp)</label>
-        <input type="tel" id="p-phone" placeholder="0501234567" />
-      </div>
-      <div class="profile-field">
-        <label>גיל</label>
-        <input type="number" id="p-age" placeholder="65" min="18" max="99" />
-      </div>
-      <div class="profile-field">
-        <label>קופת חולים</label>
+      <div class="pf"><label>שם הלקוח</label><input type="text" id="p-name" placeholder="ישראל ישראלי" /></div>
+      <div class="pf"><label>טלפון (WhatsApp)</label><input type="tel" id="p-phone" placeholder="0501234567" /></div>
+      <div class="pf"><label>גיל</label><input type="number" id="p-age" placeholder="65" min="18" max="99" /></div>
+      <div class="pf"><label>קופת חולים</label>
         <select id="p-fund">
           <option value="">לא ידוע</option>
-          <option value="מכבי">מכבי</option>
-          <option value="מאוחדת">מאוחדת</option>
-          <option value="כללית">כללית</option>
-          <option value="לאומית">לאומית</option>
+          <option>מכבי</option><option>מאוחדת</option><option>כללית</option><option>לאומית</option>
         </select>
       </div>
-      <div class="profile-field">
-        <label>ביטוח פרטי קיים?</label>
+      <div class="pf"><label>ביטוח פרטי?</label>
         <select id="p-insurance">
-          <option value="">לא ידוע</option>
-          <option value="no">אין</option>
-          <option value="yes">יש</option>
+          <option value="">לא ידוע</option><option value="no">אין</option><option value="yes">יש</option>
         </select>
       </div>
-      <div class="profile-field">
-        <label>מצב רפואי / הערות</label>
-        <input type="text" id="p-notes" placeholder="למשל: כאבי גב, מחלת סוכרת..." />
-      </div>
+      <div class="pf"><label>הערות / מצב רפואי</label><input type="text" id="p-notes" placeholder="כאבי גב, סוכרת..." /></div>
     </div>
   </div>
 
+  <!-- OPENING SCRIPT GENERATOR -->
+  <button class="open-btn hide-focus" id="open-btn" onclick="generateOpening()">🎬 צור פתיחת שיחה מותאמת אישית</button>
+
   <!-- TIP -->
-  <div class="tip">
-    <strong>איך משתמשים:</strong> מלא פרטי לקוח למעלה → בחר שלב בשיחה → לחץ על התנגדות/שאלה → קבל 3 תשובות מוכנות + שלח ב-WhatsApp
+  <div class="tip hide-focus">
+    <strong>איך משתמשים:</strong> מלא פרופיל ← לחץ "צור פתיחה" ← בחר שלב ← לחץ על התנגדות/שאלה ← קבל 3 תשובות + שלח WhatsApp
   </div>
 
   <!-- STAGE -->
-  <div class="card">
+  <div class="card hide-focus">
     <div class="card-label">📍 שלב בשיחה</div>
     <div class="stages">
       <button class="stage-btn active" onclick="setStage(this,'פתיחה — ליד חם')">🔥 ליד חם</button>
@@ -201,12 +220,12 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff}
   </div>
 
   <!-- OBJECTIONS -->
-  <div class="card">
-    <div class="card-label">⚡ התנגדויות נפוצות — לחץ לבחירה מהירה</div>
+  <div class="card hide-focus">
+    <div class="card-label">⚡ התנגדויות נפוצות</div>
     <div class="btn-grid">
       <button class="obj-btn" onclick="setObj(this,'זה יקר לי, אני לא יכול להרשות לעצמי')">💸 יקר לי</button>
-      <button class="obj-btn" onclick="setObj(this,'שלח לי מידע ואני אסתכל ואחזור אלייך')">📧 שלח לי מידע</button>
-      <button class="obj-btn" onclick="setObj(this,'אין לי זמן עכשיו, תתקשר אליי מאוחר יותר')">⏰ אין זמן עכשיו</button>
+      <button class="obj-btn" onclick="setObj(this,'שלח לי מידע ואני אסתכל ואחזור אלייך')">📧 שלח מידע</button>
+      <button class="obj-btn" onclick="setObj(this,'אין לי זמן עכשיו, תתקשר אליי מאוחר יותר')">⏰ אין זמן</button>
       <button class="obj-btn" onclick="setObj(this,'יש לי כבר ביטוח בריאות פרטי')">🛡️ יש לי ביטוח</button>
       <button class="obj-btn" onclick="setObj(this,'זה נראה לי הונאה, אני לא בטוח שזה אמיתי')">🚨 נראה הונאה</button>
       <button class="obj-btn" onclick="setObj(this,'אני לא מבין בדברים האלה, לא בעניינים')">❓ לא מבין</button>
@@ -214,13 +233,13 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff}
       <button class="obj-btn" onclick="setObj(this,'צריך להתייעץ עם בן/בת הזוג לפני שאני מחליט')">👫 צריך להתייעץ</button>
       <button class="obj-btn" onclick="setObj(this,'לא מעוניין, תודה')">❌ לא מעוניין</button>
       <button class="obj-btn" onclick="setObj(this,'צריך לחשוב על זה, אחזור אלייך')">🤔 צריך לחשוב</button>
-      <button class="obj-btn" onclick="setObj(this,'אין לי כרטיס אשראי ביד עכשיו')">💳 אין כרטיס ביד</button>
+      <button class="obj-btn" onclick="setObj(this,'אין לי כרטיס אשראי ביד עכשיו')">💳 אין כרטיס</button>
       <button class="obj-btn" onclick="setObj(this,'כבר יש לי כתב שירות ממקום אחר')">📋 יש לי כתב שירות</button>
     </div>
   </div>
 
   <!-- VALUE QUESTIONS -->
-  <div class="card" style="border-color:#bfdbfe">
+  <div class="card hide-focus" style="border-color:#bfdbfe">
     <div class="card-label" style="color:#1e40af">💡 שאלות ערך — "למה אני צריך את זה?"</div>
     <div class="btn-grid">
       <button class="val-btn" onclick="setObj(this,'מה זה בכלל כתב שירות? מה ההבדל מביטוח?')">🤷 מה זה בכלל?</button>
@@ -235,51 +254,77 @@ textarea:focus{outline:none;border-color:var(--gold);background:#fff}
       <button class="val-btn" onclick="setObj(this,'מה זה ליווי בסיעוד — מה בדיוק עושים?')">🤝 מה זה ליווי?</button>
       <button class="val-btn" onclick="setObj(this,'מה זה רפואה משלימה — מה כלול?')">🌿 רפואה משלימה</button>
       <button class="val-btn" onclick="setObj(this,'יש לי מחלה קיימת — האם אני יכול להצטרף?')">💊 יש לי מחלה</button>
-      <button class="val-btn" onclick="setObj(this,'מה זה יעזור לי בפועל בחיי היום-יום? תן לי דוגמאות קונקרטיות')">💡 מה זה יעזור לי?</button>
+      <button class="val-btn" onclick="setObj(this,'מה זה יעזור לי בפועל בחיי היום-יום? תן דוגמאות קונקרטיות')">💡 מה זה יעזור לי?</button>
       <button class="val-btn" onclick="setObj(this,'יש לי ביטוח בריאות פרטי של מנורה/הראל/כלל — למה שאצטרך גם אתכם? מה אתם נותנים שהם לא?')">🔄 יש לי ביטוח — למה אתכם?</button>
-      <button class="val-btn" onclick="setObj(this,'מה ההבדל בין כתב שירות לביטוח בריאות רגיל? הסבר לי את ההבדל')">⚖️ מה ההבדל?</button>
+      <button class="val-btn" onclick="setObj(this,'מה ההבדל בין כתב שירות לביטוח בריאות רגיל?')">⚖️ מה ההבדל?</button>
       <button class="val-btn" onclick="setObj(this,'מה אתם נותנים שקופת החולים לא נותנת לי?')">🏥 מה אין בקופה?</button>
     </div>
   </div>
 
+  <!-- CALCULATOR -->
+  <div class="card hide-focus">
+    <div class="card-label">🧮 מחשבון החזר — כמה פלטינום מחזיר?</div>
+    <div class="calc-row">
+      <select id="calc-type">
+        <option value="physio">פיזיותרפיה / הידרותרפיה</option>
+        <option value="alt">רפואה משלימה (מרפאה)</option>
+        <option value="alt_home">רפואה משלימה (בבית)</option>
+        <option value="specialist1">רופא מומחה (ייעוץ 1-2)</option>
+        <option value="specialist2">רופא מומחה (ייעוץ 3-5)</option>
+        <option value="mri">MRI</option>
+        <option value="imaging">CT / אולטרסאונד</option>
+        <option value="ambulance">אמבולנס</option>
+        <option value="ortho">מכשיר אורתופדי</option>
+        <option value="nutrition">תזונאי/ת</option>
+      </select>
+      <input type="number" id="calc-cost" placeholder="עלות הטיפול ₪" min="0" />
+      <button class="calc-go" onclick="calcRefund()">חשב</button>
+    </div>
+    <div id="calc-result"></div>
+  </div>
+
   <!-- INPUT -->
   <div class="card">
-    <div class="card-label">✍️ מה הלקוח אמר? (כתוב בחופשיות)</div>
+    <div class="card-label">✍️ מה הלקוח אמר?</div>
     <div class="input-row">
       <textarea id="customer-said" placeholder='למשל: "תקשיב, אני לא בטוח שזה בשבילי..."'></textarea>
       <button class="ask-btn" id="ask-btn" onclick="getResponse()">קבל<br>תשובות</button>
     </div>
+    <div class="action-row">
+      <button class="action-btn" id="followup-btn" onclick="generateFollowup()">📲 צור הודעת פולו-אפ</button>
+      <button class="action-btn" id="summary-btn" onclick="generateSummary()">📋 סכם את השיחה</button>
+    </div>
   </div>
 
-  <!-- RESPONSES -->
+  <!-- OUTPUT -->
   <div id="output">
     <div class="empty">
       <div class="empty-icon">🎯</div>
-      <p>בחר שלב + התנגדות<br>או כתוב מה הלקוח אמר<br>ולחץ <strong>"קבל תשובות"</strong></p>
+      <p>מלא פרופיל לקוח → לחץ "צור פתיחה"<br>או בחר שלב + התנגדות ולחץ <strong>"קבל תשובות"</strong></p>
     </div>
   </div>
 
   <!-- HISTORY -->
-  <div class="card" id="history-wrap" style="display:none">
+  <div class="card hide-focus" id="history-wrap" style="display:none">
     <div class="history-header">
-      <span class="history-title">📜 היסטוריית שיחה</span>
+      <span style="font-size:.85rem;font-weight:800">📜 היסטוריית שיחה</span>
       <button class="clear-btn" onclick="clearHistory()">נקה שיחה</button>
     </div>
     <div id="history-log"></div>
   </div>
 
-</div>
+</div><!-- /container -->
 
 <script>
 let currentStage = 'פתיחה — ליד חם';
 let apiKey = localStorage.getItem('sales_api_key') || '';
 let conversationHistory = [];
+const MODEL = 'claude-sonnet-4-6';
 
-// Init API key
 if (apiKey) {
   document.getElementById('api-key').value = apiKey;
-  document.getElementById('api-wrap').style.background = '#f0fdf4';
-  document.getElementById('api-wrap').style.borderColor = '#22c55e';
+  const w = document.getElementById('api-wrap');
+  w.style.background = '#f0fdf4'; w.style.borderColor = '#22c55e';
 }
 
 function saveKey() {
@@ -287,16 +332,14 @@ function saveKey() {
   if (!k) return;
   apiKey = k;
   localStorage.setItem('sales_api_key', k);
-  const wrap = document.getElementById('api-wrap');
-  wrap.style.background = '#f0fdf4';
-  wrap.style.borderColor = '#22c55e';
-  wrap.querySelector('label').textContent = '✅ API Key שמור';
+  const w = document.getElementById('api-wrap');
+  w.style.background = '#f0fdf4'; w.style.borderColor = '#22c55e';
+  w.querySelector('label').textContent = '✅ API Key שמור';
 }
 
-function setStage(el, stage) {
+function setStage(el, s) {
   document.querySelectorAll('.stage-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  currentStage = stage;
+  el.classList.add('active'); currentStage = s;
 }
 
 function setObj(el, text) {
@@ -305,184 +348,191 @@ function setObj(el, text) {
   document.getElementById('customer-said').value = text;
 }
 
+function toggleFocus() {
+  document.body.classList.toggle('focus-mode');
+  document.getElementById('focus-btn').textContent =
+    document.body.classList.contains('focus-mode') ? '↩ חזור למסך מלא' : '🎯 מצב שיחה';
+}
+
 function getProfile() {
   const name = document.getElementById('p-name').value.trim();
-  const age = document.getElementById('p-age').value.trim();
+  const age  = document.getElementById('p-age').value.trim();
   const fund = document.getElementById('p-fund').value;
-  const ins = document.getElementById('p-insurance').value;
-  const notes = document.getElementById('p-notes').value.trim();
+  const ins  = document.getElementById('p-insurance').value;
+  const notes= document.getElementById('p-notes').value.trim();
   if (!name && !age && !fund && !notes) return '';
   let p = '\n===פרופיל לקוח נוכחי===\n';
   if (name) p += `שם: ${name}\n`;
-  if (age) p += `גיל: ${age}\n`;
+  if (age)  p += `גיל: ${age}\n`;
   if (fund) p += `קופת חולים: ${fund}\n`;
-  if (ins) p += `ביטוח פרטי: ${ins === 'yes' ? 'יש' : 'אין'}\n`;
-  if (notes) p += `הערות: ${notes}\n`;
-  p += 'השתמש בפרטים אלה כדי להתאים את התשובות אישית.\n';
+  if (ins)  p += `ביטוח פרטי: ${ins==='yes'?'יש':'אין'}\n`;
+  if (notes)p += `הערות: ${notes}\n`;
+  p += 'התאם את התשובות אישית לפרופיל זה.\n';
   return p;
 }
 
+// ════════════════════════════════════
+// SYSTEM PROMPT
+// ════════════════════════════════════
 const BASE_SYSTEM = `אתה סוכן מכירות מנוסה של פלטינום כתב שירות — כתב שירות רפואי פרטי משלים.
-החברה: פלטינום רפואה משלימה בע"מ | ח.פ 515443554 | מאז 2016 | עשרות אלפי לקוחות מרוצים | כ-100 נציגים ומשווקים.
+החברה: פלטינום רפואה משלימה בע"מ | ח.פ 515443554 | מאז 2016 | עשרות אלפי לקוחות מרוצים | כ-100 נציגים.
 
 ===מחירים===
-- מחיר מקור: 350 ש"ח. מחיר היכרות/מבצע: 248 ש"ח קבוע לכל החיים
+- מחיר מקור: 350 ש"ח. מחיר מבצע: 248 ש"ח קבוע לכל החיים
 - אפשר להוריד ל-220 ש"ח דרך מנהל (אישור חריג), ובמקרים קיצוניים ל-198 ש"ח
 - ללא הצהרת בריאות — כולם מתקבלים, כל גיל, כל מצב רפואי
-- 3 חודשי אכשרה מיום ההצטרפות (לרוב הכיסויים)
+- 3 חודשי אכשרה (6 חודשים לפרימיום)
 - ביטול בכל עת ללא קנס
 - שירות לקוחות: *3779 | 074-7694890 | info@platinum.org.il
 - הגשת תביעות: WhatsApp / אימייל / אתר — תשלום תוך 72 שעות
 
-===קווי המוצר של פלטינום===
+===קווי המוצר===
 
 ** 1. פלטינום רופא עד הבית (תקרה שנתית 3,000 ש"ח) **
-- רופא עד הבית: השתתפות עצמית 35 ש"ח לביקור (שעות פעילות 9:00-16:00)
-- רופא אונליין בווידאו/טלפון: 25 ש"ח, תוך 30 דקות
-- פינוי באמבולנס: עד 600 ש"ח, עד 2 פעמים בשנה
+- רופא עד הבית: השתתפות עצמית 35 ש"ח לביקור, שעות 9:00-16:00
+- רופא אונליין: 25 ש"ח תוך 30 דקות
+- פינוי אמבולנס: עד 600 ש"ח, 2 פעמים בשנה
 
-** 2. פלטינום בריאות — תוכנית בסיס (תקרה שנתית 13,000 ש"ח) **
-- 5 ייעוצים אצל מומחה: 80% עד 800 ש"ח לייעוץ 1-2, עד 400 ש"ח לייעוצים 3-5
-- MRI: 80% עד 3,000 ש"ח לשנה | הדמיות אחרות (CT, אולטרסאונד): 80% עד 1,500 ש"ח
-- סה"כ תקרת הדמיות: 11,000 ש"ח לשנה
-- בדיקות מניעה (גיל 45+): ממוגרפיה, PAP, צפיפות עצם, PSA — 80% עד 1,000 ש"ח, פעם ב-2 שנים
+** 2. פלטינום בריאות — בסיס (תקרה שנתית 13,000 ש"ח) **
+- 5 ייעוצי מומחה: 80% עד 800 ש"ח (1-2), עד 400 ש"ח (3-5)
+- MRI: 80% עד 3,000 ש"ח לשנה | CT/אולטרסאונד: 80% עד 1,500 ש"ח
+- תקרת הדמיות: 11,000 ש"ח לשנה
+- מניעה (גיל 45+): ממוגרפיה, PAP, צפיפות עצם, PSA — 80% עד 1,000 ש"ח, פעם ב-2 שנים
 - פיזיותרפיה/הידרותרפיה: 10 טיפולים/שנה, 80% עד 150 ש"ח לטיפול, תקרה 1,200 ש"ח
-- תזונאי/ת: 10 ביקורים/שנה, 80% עד 120 ש"ח, תקרה 1,200 ש"ח
-- אמבולנס: 80% עד 600 ש"ח, תקרה 1,200 ש"ח לשנה
-- ייעוץ זכויות: 2 ייעוצים בשנה ללא עלות
-- מכשירים אורתופדיים: 80% עד 1,000 ש"ח לשנה
-- 3 חודשי אכשרה לרוב הכיסויים
+- תזונאי/ת: 10 ביקורים, 80% עד 120 ש"ח, תקרה 1,200 ש"ח
+- ייעוץ זכויות: 2 בשנה ללא עלות
+- מכשיר אורתופדי: 80% עד 1,000 ש"ח לשנה
 
-** 3. פלטינום בריאות פרימיום — תוספת (תקרה שנתית 10,000 ש"ח) **
+** 3. פלטינום פרימיום (תקרה שנתית 10,000 ש"ח) **
 - מעבדת שינה: 80% עד 1,000 ש"ח
 - אי-סבילות למזון: 80% עד 2,000 ש"ח
 - קפסולה אנדוסקופית: 80% עד 3,000 ש"ח (פעם ב-3 שנים)
 - מרפאות כאב: 80% עד 150 ש"ח, 12 טיפולים/שנה
-- תאי לחץ: 80% עד 180 ש"ח, 5 טיפולים/שנה
-- ליווי סיעודי: ללא עלות — ביטוח לאומי, רשיון עובד זר, רכב נכה, הכנה לוועדה רפואית
-- הריון מורחב: עד 6,000 ש"ח סה"כ להריון
-- קורס לידה: 80% עד 300 ש"ח | דולה: 80% עד 1,500 ש"ח
-- מלון לידה: 80% עד 200 ש"ח ליום (7 ימים)
-- יועצת הנקה: 80% עד 200 ש"ח לפגישה, פעם בחודש עד גיל שנה
-- אבחון ADHD (TOVA, BRC, MOXO) + טיפולים התפתחותיים לילדים
-- 6 חודשי אכשרה לרוב כיסויי הפרימיום
+- ליווי סיעודי: ללא עלות — ביטוח לאומי, עובד זר, רכב נכה, ועדה רפואית
+- הריון מורחב: עד 6,000 ש"ח להריון | דולה: 80% עד 1,500 ש"ח
+- ADHD: אבחון + טיפולים התפתחותיים לילדים
 
-** 4. פלטינום רפואה משלימה (תקרה שנתית 2,500 ש"ח) **
-- 20 טיפולים לשנה, 80% עד 150 ש"ח לטיפול
-- 21 סוגי טיפולים: דיקור סיני, רפלקסולוגיה, שיאצו, אוסטאופתיה, כירופרקטיקה, הומאופתיה, פלדנקרייז, ביופידבק, נטורופתיה, דיאטנית, מלחיות, פיזיותרפיה, אירוודה, הידרותרפיה ועוד
-- חלק ניתן לקבל בבית: רפלקסולוגיה, שיאצו, טווינא, לומי לומי
-- השתתפות עצמית: 40 ש"ח לטיפול (מרפאה) | 65 ש"ח לטיפול (בבית)
-- 3 חודשי אכשרה
+** 4. רפואה משלימה (תקרה שנתית 2,500 ש"ח) **
+- 20 טיפולים, 80% עד 150 ש"ח לטיפול
+- 21 סוגים: דיקור, רפלקסולוגיה, שיאצו, אוסטאופתיה, כירופרקטיקה, הומאופתיה, פלדנקרייז, ביופידבק, נטורופתיה, מלחיות, אירוודה, הידרותרפיה ועוד
+- גם בבית (רפלקסולוגיה, שיאצו, טווינא, לומי לומי)
+- השתתפות עצמית: 40 ש"ח מרפאה / 65 ש"ח בבית
 
-** 5. פלטינום דנטל **
-- רשת שיניים של ד"ר בוכניק — 24 מרפאות ברחבי הארץ
-- ללא עלות: בדיקות, צילומים, כתרים זמניים
-- הנחות משמעותיות: עקירות, סתימות, טיפולי שורש, כתרים קבועים, השתלות, יישור שיניים
+** 5. דנטל — רשת ד"ר בוכניק (24 מרפאות) **
+- חינם: בדיקות, צילומים, כתרים זמניים
+- הנחות: עקירות, סתימות, שורש, כתרים, השתלות, יישור
 
-** 6. לחצן מצוקה (בשיתוף קבוצת אנוש) **
-- לחצן בית + לחצן נייד (צמיד/שרשרת) — כלול במנוי
-- שעון חכם (אופציה): GPS, זיהוי נפילה, לחץ דם, רמת חמצן, דופק
-- מוקד מאויש 24/7 — מגיב לכל קריאה
-- מחבר לשירותי חירום: משטרה, מד"א, כבאות
-- בעלי מקצוע לחירום: חשמלאי, מנעולן, נגר
+** 6. לחצן מצוקה (קבוצת אנוש) **
+- לחצן בית + צמיד/שרשרת | שעון חכם: GPS, זיהוי נפילה, דופק
+- מוקד מאויש 24/7 | משטרה, מד"א, כבאות, בעלי מקצוע
 
 ===מה שחשוב להסביר===
-1. פלטינום לא מחליף קופת החולים — משלים את מה שחסר. אפשר להגיש גם לביטוח פרטי וגם לפלטינום
-2. "אני לא מציע לך ביטוח סיעודי — אני נותן לך ליווי בסיעוד, השלמה שאין לך דרך הקופה ולא דרך ביטוחים"
-3. ביטוח סיעודי = קצבה כסף בלבד אם מגיעים למצב קשה. כתב שירות = שירות ממשי, ליווי, רופאים, טיפולים — כל יום
-4. "לבנת פורן, זכותי, מגן לוקחים 40,000-50,000 ש"ח מהקצבה שלך. אנחנו עושים את אותו הדבר בתוך המנוי"
-5. חברות ביטוח שולחות מעקבים כדי לא לשלם. פה אין מעקבים, ממש לא
-6. הלקוח הולך לכל רופא שרוצה — לא רק בהסדר הקופה, 80% החזר על קבלה מקורית
+1. פלטינום משלים את הקופה והביטוח — לא מחליף. אפשר להגיש לשניהם
+2. "לא מציע ביטוח סיעודי — נותן ליווי בסיעוד שאין לך דרך הקופה ולא דרך ביטוחים"
+3. ביטוח = קצבה כסף בלבד אם מגיעים למצב קשה. פלטינום = שירות ממשי כל יום
+4. ביטוח פרטי לא כולל: רפואה משלימה, ליווי סיעודי, לחצן מצוקה, תזונאי, פיזיותרפיה שוטפת
+5. "לבנת פורן, זכותי, מגן לוקחים 40,000-50,000 ש"ח מהקצבה. אנחנו עושים את אותו הדבר בתוך המנוי"
+6. אין מעקבים — חברות ביטוח שולחות מעקבים כדי לא לשלם
+7. כל רופא שרוצה — לא רק בהסדר הקופה, 80% החזר על קבלה מקורית
 
-===תסריט לידים חמים (מילאו שאלון)===
-פתיחה: "שלום [שם]? מדבר מאור מהבריאות והסיעוד, השיווק של פלטינום. מה שלומך? קיבלתי את הפרטים שלך — מילאת שאלון קצר באתר לבדיקת זכאות. נכון?"
-עיבוד: "אז על פי מה שמילאת — אתה בגיל ___, מבוטח ב___ ומה שאתה מחפש זה ___. בדיוק בשביל זה מתאים לך כתב השירות של פלטינום."
-הצגת ערך: "רופא עד הבית, MRI ו-CT עם 80% החזר, פיזיותרפיה 10 טיפולים בשנה, 20 טיפולי רפואה משלימה — הכל ללא הצהרת בריאות. עלות רגילה 350 — כי מילאת שאלון יש לך 248 ש"ח קבוע לכל החיים."
+===תסריטים===
+ליד חם: "שלום [שם]? מדבר מאור מהבריאות והסיעוד, השיווק של פלטינום. קיבלתי את הפרטים שלך — מילאת שאלון באתר לבדיקת זכאות. נכון?"
+ליד קר: "שלום [שם]? שבוע טוב. מדבר מאור מהבריאות והסיעוד. אני יוצר קשר כי היום יש לך כיסוי סיעודי בקופה לחמש שנים ראשונות — אתה מכיר את הכיסוי הזה?"
+החזרת לקוח: "היי [שם], מדברת שקד משיווק פלטינום. רואה שבוטל — זה היה עלות גבוהה או אמצעי גבייה?"
 
-===תסריט לידים קרים (שיחה יזומה)===
-פתיחה: "שלום [שם]? שבוע טוב. מדבר מאור מהבריאות והסיעוד, דרך השיווק של פלטינום. אני יוצר איתך קשר כי היום אתה מבוטח דרך קופת החולים בכיסוי סיעודי לחמש שנים הראשונות. את/ה מכיר את הכיסוי הזה?"
-הסבר הכיסוי: "הכיסוי הזה הוא פיצוי כסף בלבד — עד 5,000 ש"ח ב-5 שנים. באוקטובר האחרון הייתה רפורמה בביטוח הבריאות שנותנת למבוטחים שיפוי מורחב. תכף אסביר מה זה אומר לגביך."
-הצגת ערך: "מהיום, חוץ מהכסף, יהיה לך גם ליווי מלא: רופאים מומחים מכל קופה, פיזיותרפיה, רפואה משלימה, ואם חס וחלילה תגיע למצב סיעודי — אנחנו מטפלים בכל הניירת: ביטוח לאומי, תו נכה, עובד זר, הכנה לוועדה. בלי פלטינום זה נופל על הילדים."
+===שאלות רפואיות לפני סגירה===
+"היה לך שינויים במצב הרפואי בשנה האחרונה?"
+"האם עישנת בשנה האחרונה?"
+"חלית בסרטן, מחלת לב, שבץ בשנה האחרונה?"
+אם הכל תקין: "ברוך השם, יש אישור ראשוני. מצרף אותך ב-248 ש"ח קבוע."
 
-===שאלות רפואיות (חובה לשאול לפני סגירה)===
-1. "היה לך שינויים במצב הרפואי בשנה האחרונה?"
-2. "האם עישנת סיגריות בשנה האחרונה?"
-3. "חס וחלילה חלית בשנה האחרונה במחלה קשה כגון סרטן, מחלות לב, שבץ?"
-אם הכל תקין: "מצוין, ברוך השם. יש אישור ראשוני. אז מה שנעשה עכשיו — מצרף אותך ב-248 ש"ח קבוע."
+===טכניקת מנהל===
+"תמציא איתי רגע על הקו — אני בודק עם המנהל."
+(30 שניות): "לא יודע איך הצלחתי — אישור חריג. הצלחתי 220 ש"ח. זה כמעט לא קורה."
+"פחות מ-10 שקל ביום. כמו שמבטחים רכב — גם את עצמך."
 
-===הורדת מחיר — טכניקת מנהל===
-שלב 1: "תמציא איתי רגע על הקו — אני הולך לבדוק עם המנהל."
-שלב 2 (אחרי 30 שניות): "תקשיב, לא יודע איך הצלחתי — זה אישור חריג מאוד. הצלחתי להשיג לך 220 ש"ח. זה כמעט לא קורה."
-חיזוק: "זה פחות מ-10 שקל ביום על הבריאות שלך. כמו שאתה מבטח רכב — גם את עצמך צריך לבטח."
+===מסגרת הרופא (לא צריך / לא מעוניין)===
+לא להתווכח. להשתמש ב-5 שלבים:
+1. "מה התהליך בפועל מול הקופה כשצריך מומחה? כמה זמן ממתינים?"
+2. "כשממתינים חודשים בזמן שכואב — איך זה מרגיש?"
+3. "אתה אוהב את ההתנהלות הזו? מה עצר אותך עד היום?"
+4. "בוא נניח ששום דבר לא משתנה. בעוד חצי שנה מתגלה בעיה דחופה — איך ייראו החיים?"
+5. "האחריות של מי זה לוודא שהמשפחה שלך מוגנת — של המדינה או שלך?"
 
-===בונוס מנהל (שימוש מדי פעם)===
-"המנהלת שלי שמעה את המצב — היא החליטה לתת לך 30 טיפולים במקום 20 מתנה. זה ממש לא קורה."
+===כללי עברית — חובה לקיים===
+- התאמת מין בדיוק: אישה/בת/היא/שלה | גבר/בן/הוא/שלו
+- כתיב נכון: קיבל (לא קבל), שמיעה (לא השמעה), ממתין (לא מחכה ל), נשען (לא סוגד)
+- שפה יומיומית בלבד — אין מילים ספרותיות או מליציות
+- כל משפט לבדוק: האם כך אדם מדבר בטלפון?
+- דיוק: 150 ש"ח = תקרת ההחזר לטיפול, לא ההשתתפות. ה-80% = אחוז החזר. ההשתתפות העצמית = 40 ש"ח
 
-===סגירה===
-"לאיזה כרטיס להתייחס — ויזה או ישראכרט?"
-"תן לי את המספר משמאל ימין בבקשה."
-"שמור את הכרטיס — תצטרך להקריא אותו שוב בשיחת הסיכום שתגיע תוך 2-3 דקות."
-"בן/בת הזוג יכולים להצטרף בדיוק באותו מחיר — ללא הצהרת בריאות."
+===הנחיות כלליות===
+- תשובות קצרות — מקסימום 3 משפטים
+- טבעי ואנושי, כמו נציג מנוסה בטלפון
+- אל תגיד "כמובן" "בהחלט" "בוודאי"
+- התנגדות: תאמת רגש → הצג ערך → סגור`;
 
-===התמודדות עם חשד שזה הונאה===
-"אדם שרוצה לעקוץ לא יגיד לך את כל הפרטים שלך. אנחנו פלטינום רפואה משלימה בע"מ — ח.פ 515443554, פועלים מ-2016, עשרות אלפי לקוחות. שירות לקוחות כוכבית 3779. אני שולח לך את כל הניירת בכתב."
+// ════════════════════════════════════
+// STREAMING AI CALLER (reusable)
+// ════════════════════════════════════
+async function streamAI(systemPrompt, userPrompt, onChunk) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: 800,
+      stream: true,
+      system: systemPrompt,
+      messages: [...conversationHistory, { role: 'user', content: userPrompt }]
+    })
+  });
+  if (!res.ok) throw new Error(await res.text());
 
-===תסריט החזרת לקוח (היה ובוטל)===
-פתיחה: "היי [שם], מה שלומך? מדברת שקד משיווק הפלטינום. אני יוצרת איתך קשר בהמשך לליווי בסיעוד שהיה לך. אני רואה שבוטל — עקב אמצעי גבייה? או כי העלות הייתה גבוהה?"
-אם עלות גבוהה: "נכון, בעבר שילמת יותר. אחרי הרפורמה — המחיר קבוע לכולם: 248 ש"ח שלא ישתנה."
-בדיקה רפואית: "רק לבדוק אם אפשר להחזיר לך — היה לך שינויים במצב הרפואי? עישנת?"
-סגירה: "תהיה איתי כמה רגעים על הקו, אני בודק אישור."
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let fullText = '', buffer = '';
 
-===טיפול בהתנגדות "יש לי ביטוח בריאות פרטי"===
-- פלטינום לא מחליף — משלים. אפשר להגיש קבלה לשניהם
-- ביטוח פרטי לרוב לא כולל: רפואה משלימה, ליווי סיעודי, לחצן מצוקה, תזונאי, פיזיותרפיה שוטפת
-- "כמה אתה משלם על הביטוח הפרטי? בדרך כלל הביטוח עולה 400-800 ש"ח ומתייקר כל שנה. אנחנו 248 קבוע"
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop();
+    for (const line of lines) {
+      if (line.startsWith('data: ')) {
+        const data = line.slice(6).trim();
+        if (data === '[DONE]') continue;
+        try {
+          const p = JSON.parse(data);
+          if (p.type === 'content_block_delta' && p.delta?.type === 'text_delta') {
+            fullText += p.delta.text;
+            onChunk(fullText);
+          }
+        } catch {}
+      }
+    }
+  }
+  return fullText;
+}
 
-===טיפול בהתנגדות "כבר יש לי כתב שירות"===
-- שאל מי הספק ומה המחיר
-- "כמה אתה משלם? יש לך ליווי סיעודי ולחצן מצוקה כלולים? יש לך 20 טיפולי רפואה משלימה?"
-- "אם מה שיש לך פחות מקיף ויקר יותר — שווה לדבר"
+// Show streaming card
+function showStreamCard(label) {
+  document.getElementById('output').innerHTML = `
+    <div class="stream-card">
+      <div style="font-size:.76rem;color:#6b7a99;margin-bottom:8px">${label}<span class="cursor"></span></div>
+      <div class="stream-text" id="stream-text"></div>
+    </div>`;
+}
 
-===עקרונות ממפגישות אמיתיות===
-- "אני לא מוכר לך ביטוח — אני נותן לך ליווי בסיעוד שאין לך אותו היום"
-- השתמש בסיפור אישי: "ממקרה שראיתי בעיניים, אנשים שלא היה להם ליווי — הכל נפל על הילדים"
-- השתמש בנקודות כאב ספציפיות שהלקוח ציין בשיחה
-- "פחות מ-10 שקל ביום" — מסגור המחיר כשמדברים על 248/220
-
-===טכניקה: "אני לא צריך את זה" — מסגרת הרופא + שלב ההשלכות===
-כשלקוח אומר "אני לא צריך", הוא לרוב פועל מפחד משינוי ומעדיף את המוכר. אל תתווכח ואל תשכנע — השתמש בגישת הרופא:
-
-שלב 1 — שאל על המצב הנוכחי (ספציפי):
-"כשאתה או מישהו מהמשפחה צריך רופא מומחה או MRI, מה התהליך בפועל מול הקופה? כמה זמן אתה מחכה?"
-
-שלב 2 — חבר לתחושה רגשית:
-"כשאתה ממתין חודשים בתור בזמן שכואב לך — איך זה מרגיש? מה זה עושה לך ולמשפחה שלך?"
-
-שלב 3 — בנה ספק על המצב הנוכחי:
-"תגיד לי בכנות — אתה אוהב את ההתנהלות הזו מול הקופה? אתה נהנה מלהתחנן לתורים?"
-(הלקוח יגיד לא → "אז מה עצר אותך עד היום מלמצוא פתרון?")
-
-שלב 4 — ציור ההשלכות (בשקט, בגובה עיניים, כמו רופא):
-"בוא נניח ששום דבר לא משתנה. בעוד חצי שנה חס וחלילה מתגלה בעיה שדורשת מומחה דחוף — ואתה עדיין בלי כיסוי, מחכה חודשים. איך ייראו החיים שלך אז? תאר לי איך זה ירגיש לשבת בסלון, סובל מכאבים, כשהילדים שלך מסתכלים עליך ואין לך איך לזרז את הטיפול?"
-
-שלב 5 — שאלת זהות (אל תשאל אם לקנות — שאל מי הוא):
-"אחרי שהבנו לאן המצב הנוכחי מוביל... האם אתה מוכן להסתפק במציאות הזו?"
-"האחריות של מי זה לוודא שהמשפחה שלך מוגנת — של המדינה, או שלך?"
-
-הכלל: האריה שרודף הוא ההשלכות. כאשר הכאב העתידי נראה גדול יותר מ-248 ש"ח לחודש — ההתנגדות נמסה מעצמה.
-
-===הנחיות לתשובות===
-- כתוב תמיד בעברית תקנית — בדוק זכר/נקבה (אישה בת 52, גבר בן 68)
-- כתיב נכון: קיבל (לא קבל), שמיעה (לא השמעה), נשען על (לא סוגד ל)
-- אל תשתמש במילים מוזרות או ספרותיות — שפה פשוטה וישירה בלבד
-- תשובות קצרות — מקסימום 3 משפטים לכל תשובה
-- טבעי ואנושי — כמו שנציג מנוסה מדבר בטלפון
-- אל תגיד "כמובן" "בהחלט" "בוודאי" "ודאי"
-- דיוק עובדתי חובה: 150 ש"ח = תקרת ההחזר לטיפול (לא ההשתתפות העצמית). ההשתתפות העצמית היא 40 ש"ח לטיפול במרפאה. ה-80% = אחוז ההחזר מהעלות
-- אל תסביר יותר מדי — הלקוח צריך להרגיש בטוח, לא להבין הכל
-- כשיש התנגדות — תאמת רגש → הצג ערך → סגור
-- עבור "לא צריך / לא מעוניין" — השתמש תמיד במסגרת הרופא ושלב ההשלכות`;
-
+// ════════════════════════════════════
+// MAIN: GET 3 RESPONSES + SCORE
+// ════════════════════════════════════
 async function getResponse() {
   if (!apiKey) { alert('הכנס API Key קודם'); return; }
   const customerSaid = document.getElementById('customer-said').value.trim();
@@ -490,94 +540,170 @@ async function getResponse() {
 
   const btn = document.getElementById('ask-btn');
   btn.disabled = true;
+  showStreamCard('מכין תשובות...');
 
-  // Show streaming container
-  document.getElementById('output').innerHTML = `
-    <div class="stream-card">
-      <div style="font-size:.78rem;color:#6b7a99;margin-bottom:8px">מכין תשובות<span class="cursor"></span></div>
-      <div class="stream-text" id="stream-text"></div>
-    </div>`;
-
-  const systemPrompt = BASE_SYSTEM + getProfile();
   const userPrompt = `שלב בשיחה: ${currentStage}
 מה הלקוח אמר: "${customerSaid}"
 
 תן לי בדיוק 3 תשובות שונות שאני יכול להגיד עכשיו.
-פורמט:
+לאחר מכן הוסף שורת ניקוד בפורמט המדויק הזה:
+סיכוי: [ספרה 1-10] — [משפט קצר: הסבר + צעד הבא]
+
+פורמט מלא:
 תשובה 1: [הטקסט]
 תשובה 2: [הטקסט]
-תשובה 3: [הטקסט]`;
+תשובה 3: [הטקסט]
+סיכוי: [1-10] — [הסבר]`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 700,
-        stream: true,
-        system: systemPrompt,
-        messages: [...conversationHistory, { role: 'user', content: userPrompt }]
-      })
-    });
+    const fullText = await streamAI(BASE_SYSTEM + getProfile(), userPrompt,
+      text => { document.getElementById('stream-text').textContent = text; });
 
-    if (!res.ok) throw new Error(await res.text());
-
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let fullText = '';
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop();
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6).trim();
-          if (data === '[DONE]') continue;
-          try {
-            const parsed = JSON.parse(data);
-            if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
-              fullText += parsed.delta.text;
-              document.getElementById('stream-text').textContent = fullText;
-            }
-          } catch {}
-        }
-      }
-    }
-
-    // Save to conversation history
     conversationHistory.push({ role: 'user', content: userPrompt });
     conversationHistory.push({ role: 'assistant', content: fullText });
 
-    // Parse and render 3 cards
-    const responses = parseResponses(fullText);
-    renderResponses(responses);
-
-    // Add to history log
+    const { responses, score, scoreText } = parseAll(fullText);
+    renderResponses(responses, score, scoreText);
     addToHistory(customerSaid, responses[0] || fullText);
 
   } catch(e) {
-    document.getElementById('output').innerHTML = `
-      <div class="empty">
-        <div class="empty-icon">❌</div>
-        <p>שגיאה: ${e.message}</p>
-      </div>`;
+    showError(e.message);
   }
-
   btn.disabled = false;
 }
 
-function parseResponses(text) {
-  const lines = text.split('\n').filter(l => l.trim());
+// ════════════════════════════════════
+// OPENING SCRIPT GENERATOR
+// ════════════════════════════════════
+async function generateOpening() {
+  if (!apiKey) { alert('הכנס API Key קודם'); return; }
+  const btn = document.getElementById('open-btn');
+  btn.disabled = true;
+  showStreamCard('מכין פתיחת שיחה מותאמת...');
+
+  const profile = getProfile();
+  const userPrompt = `צור תסריט פתיחת שיחה מותאם אישית לנציג מכירות של פלטינום.
+${profile || 'לא סופק פרופיל — צור פתיחה כללית.'}
+שלב: ${currentStage}
+
+כתוב תסריט פתיחה אחד מלא שהנציג יכול לקרוא מילה במילה.
+כולל: ברכה → הצגה עצמית → סיבת השיחה → שאלת מחויבות ראשונית.
+אורך: 4-6 משפטים. עברית תקנית ברורה. ללא שגיאות כתיב.`;
+
+  try {
+    const fullText = await streamAI(BASE_SYSTEM, userPrompt,
+      text => { document.getElementById('stream-text').textContent = text; });
+    renderSpecial('🎬 פתיחת שיחה מותאמת', fullText);
+  } catch(e) { showError(e.message); }
+  btn.disabled = false;
+}
+
+// ════════════════════════════════════
+// FOLLOW-UP GENERATOR
+// ════════════════════════════════════
+async function generateFollowup() {
+  if (!apiKey) { alert('הכנס API Key קודם'); return; }
+  const btn = document.getElementById('followup-btn');
+  btn.disabled = true;
+  showStreamCard('מכין הודעת פולו-אפ...');
+
+  const name = document.getElementById('p-name').value.trim() || 'הלקוח';
+  const history = conversationHistory.length
+    ? 'השיחה כללה: ' + conversationHistory.filter(m=>m.role==='user').map(m=>m.content.slice(0,80)).join(' | ')
+    : '';
+
+  const userPrompt = `צור הודעת WhatsApp מקצועית לשלוח ל${name} אחרי שיחת מכירה שבה אמר שיחשוב על זה.
+${history}
+${getProfile()}
+
+ההודעה צריכה: להזכיר את הערך המרכזי, להיות חמה ואנושית, לכלול הצעה לחזור.
+אורך: 3-4 משפטים. עברית תקנית. להתחיל בשם הלקוח.`;
+
+  try {
+    const fullText = await streamAI(BASE_SYSTEM, userPrompt,
+      text => { document.getElementById('stream-text').textContent = text; });
+    renderSpecial('📲 הודעת פולו-אפ ל-WhatsApp', fullText, true);
+  } catch(e) { showError(e.message); }
+  btn.disabled = false;
+}
+
+// ════════════════════════════════════
+// SUMMARY GENERATOR
+// ════════════════════════════════════
+async function generateSummary() {
+  if (!apiKey) { alert('הכנס API Key קודם'); return; }
+  if (!conversationHistory.length) { alert('אין היסטוריית שיחה עדיין'); return; }
+  const btn = document.getElementById('summary-btn');
+  btn.disabled = true;
+  showStreamCard('מסכם את השיחה...');
+
+  const histText = conversationHistory.map((m,i) =>
+    `${m.role==='user'?'נציג':'AI'}: ${m.content.slice(0,200)}`).join('\n');
+
+  const userPrompt = `סכם את שיחת המכירה הבאה בפורמט מובנה:
+
+${histText}
+
+פורמט:
+🌡️ טמפרטורת לקוח: [חם/פושר/קר]
+💬 עיקרי השיחה: [2-3 נקודות]
+⚠️ התנגדויות שעלו: [רשימה]
+✅ המלצה: [צעד הבא הספציפי]`;
+
+  try {
+    const fullText = await streamAI(BASE_SYSTEM + getProfile(), userPrompt,
+      text => { document.getElementById('stream-text').textContent = text; });
+    renderSpecial('📋 סיכום השיחה', fullText);
+  } catch(e) { showError(e.message); }
+  btn.disabled = false;
+}
+
+// ════════════════════════════════════
+// CALCULATOR
+// ════════════════════════════════════
+function calcRefund() {
+  const cost = parseFloat(document.getElementById('calc-cost').value);
+  const type = document.getElementById('calc-type').value;
+  if (!cost || cost <= 0) { alert('הכנס עלות תקינה'); return; }
+
+  const limits = {
+    physio:      { cap: 150,  copay: 0,   label: 'פיזיותרפיה — עד 10 טיפולים/שנה, תקרה 1,200 ש"ח' },
+    alt:         { cap: 150,  copay: 40,  label: 'רפואה משלימה (מרפאה) — 20 טיפולים/שנה, השתתפות 40 ש"ח' },
+    alt_home:    { cap: 150,  copay: 65,  label: 'רפואה משלימה (בבית) — השתתפות 65 ש"ח' },
+    specialist1: { cap: 800,  copay: 0,   label: 'רופא מומחה ייעוץ 1-2 (80% עד 800 ש"ח)' },
+    specialist2: { cap: 400,  copay: 0,   label: 'רופא מומחה ייעוץ 3-5 (80% עד 400 ש"ח)' },
+    mri:         { cap: 3000, copay: 0,   label: 'MRI — תקרה שנתית 3,000 ש"ח' },
+    imaging:     { cap: 1500, copay: 0,   label: 'CT / אולטרסאונד — תקרה שנתית 1,500 ש"ח' },
+    ambulance:   { cap: 600,  copay: 0,   label: 'אמבולנס — עד 2 פעמים בשנה' },
+    ortho:       { cap: 1000, copay: 0,   label: 'מכשיר אורתופדי — עד 1,000 ש"ח/שנה' },
+    nutrition:   { cap: 120,  copay: 0,   label: 'תזונאי/ת — עד 10 ביקורים, 120 ש"ח לביקור' },
+  };
+  const { cap, copay, label } = limits[type];
+  const refund = Math.min(cost * 0.8, cap);
+  const youPay = cost - refund + copay;
+  const pct = Math.round((refund / cost) * 100);
+
+  document.getElementById('calc-result').innerHTML = `
+    <div class="calc-result">
+      <div>עלות הטיפול: <strong>${cost.toLocaleString()} ש"ח</strong></div>
+      <div class="big">פלטינום מחזיר: ${refund.toFixed(0).toLocaleString()} ש"ח (${pct}%)</div>
+      <div>אתה משלם בסה"כ: <strong>${youPay.toFixed(0).toLocaleString()} ש"ח</strong>${copay?' (כולל השתתפות עצמית '+copay+' ש"ח)':''}</div>
+      <div class="note">${label}</div>
+    </div>`;
+}
+
+// ════════════════════════════════════
+// PARSE + RENDER
+// ════════════════════════════════════
+function parseAll(text) {
+  // Extract score line
+  const scoreMatch = text.match(/סיכוי:\s*(\d+)\s*[—–-]\s*(.+)/);
+  const score = scoreMatch ? parseInt(scoreMatch[1]) : null;
+  const scoreText = scoreMatch ? scoreMatch[2].trim() : '';
+  const cleanText = text.replace(/סיכוי:\s*\d+\s*[—–-]\s*.+/, '').trim();
+
+  // Extract 3 responses
+  const lines = cleanText.split('\n').filter(l => l.trim());
   const responses = [];
   let current = '';
   for (const line of lines) {
@@ -589,85 +715,101 @@ function parseResponses(text) {
     }
   }
   if (current) responses.push(current.trim());
-  return responses.length ? responses : [text];
+  return { responses: responses.length ? responses : [cleanText], score, scoreText };
 }
 
-function renderResponses(responses) {
+function renderResponses(responses, score, scoreText) {
   const colors = ['#d4af37','#22c55e','#3b82f6'];
-  const html = responses.map((r, i) => `
+  let html = '';
+
+  // Score bar
+  if (score !== null) {
+    const pct = score * 10;
+    const color = score >= 7 ? '#22c55e' : score >= 4 ? '#f59e0b' : '#e74c3c';
+    html += `<div class="score-wrap">
+      <span class="score-label">סיכוי סגירה</span>
+      <div class="score-bar"><div class="score-fill" style="width:${pct}%;background:${color}"></div></div>
+      <span class="score-num" style="color:${color}">${score}/10</span>
+      <span class="score-text">${escH(scoreText)}</span>
+    </div>`;
+  }
+
+  html += '<div class="responses">' + responses.map((r,i) => `
     <div class="resp-card" style="border-right-color:${colors[i]||'#d4af37'}">
       <span class="resp-num" style="background:${colors[i]||'#d4af37'}">${i+1}</span>
       <div class="resp-actions">
-        <button class="copy-btn" onclick="copyText(this,'${escapeForAttr(r)}')">העתק</button>
-        <button class="wa-btn" onclick="sendWhatsApp('${escapeForAttr(r)}')">📲 WA</button>
+        <button class="copy-btn" onclick="copyText(this,'${esc(r)}')">העתק</button>
+        <button class="wa-btn"   onclick="sendWA('${esc(r)}')">📲 WA</button>
       </div>
-      <div class="resp-text">${escapeHtml(r)}</div>
-    </div>
-  `).join('');
-  document.getElementById('output').innerHTML = `<div class="responses">${html}</div>`;
+      <div class="resp-text">${escH(r)}</div>
+    </div>`).join('') + '</div>';
+
+  document.getElementById('output').innerHTML = html;
 }
 
-function escapeForAttr(text) {
+function renderSpecial(title, text, withWA) {
+  const waBtn = withWA ? `<button class="copy-btn wa-btn" onclick="sendWA('${esc(text)}')">📲 שלח ב-WhatsApp</button>` : '';
+  document.getElementById('output').innerHTML = `
+    <div class="special-card">
+      <div style="font-size:.8rem;font-weight:800;color:var(--navy);opacity:.6;margin-bottom:10px">${title}</div>
+      <div class="resp-text">${escH(text)}</div>
+      <div class="special-actions">
+        <button class="copy-btn" onclick="copyText(this,'${esc(text)}')">העתק</button>
+        ${waBtn}
+      </div>
+    </div>`;
+}
+
+function showError(msg) {
+  document.getElementById('output').innerHTML = `
+    <div class="empty"><div class="empty-icon">❌</div><p>שגיאה: ${escH(msg)}</p></div>`;
+}
+
+// ════════════════════════════════════
+// UTILITIES
+// ════════════════════════════════════
+function esc(text) {
   return text.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n');
 }
-
-function escapeHtml(text) {
+function escH(text) {
   return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
+function decode(text) {
+  return text.replace(/\\n/g,'\n').replace(/\\'/g,"'").replace(/\\\\/g,'\\');
+}
 
-function copyText(btn, text) {
-  const decoded = text.replace(/\\n/g,'\n').replace(/\\'/g,"'").replace(/\\\\/g,'\\');
-  navigator.clipboard.writeText(decoded).then(() => {
-    btn.textContent = '✓ הועתק';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'העתק'; btn.classList.remove('copied'); }, 2000);
+function copyText(btn, raw) {
+  navigator.clipboard.writeText(decode(raw)).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ הועתק'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
   });
 }
 
-function sendWhatsApp(text) {
-  const decoded = text.replace(/\\n/g,'\n').replace(/\\'/g,"'").replace(/\\\\/g,'\\');
+function sendWA(raw) {
+  const text = decode(raw);
   const rawPhone = document.getElementById('p-phone').value.trim().replace(/[^0-9]/g,'');
   const phone = rawPhone.startsWith('0') ? '972' + rawPhone.slice(1) : rawPhone;
-  const url = phone
-    ? `https://wa.me/${phone}?text=${encodeURIComponent(decoded)}`
-    : `https://wa.me/?text=${encodeURIComponent(decoded)}`;
-  window.open(url, '_blank');
+  window.open(phone
+    ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
+    : `https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
 }
 
-function addToHistory(customerText, aiResponse) {
+function addToHistory(q, a) {
   const wrap = document.getElementById('history-wrap');
-  const log = document.getElementById('history-log');
+  const log  = document.getElementById('history-log');
   wrap.style.display = 'block';
-
-  const entry = document.createElement('div');
-  entry.innerHTML = `
-    <div class="history-entry history-user">
-      <div class="history-label">👤 לקוח אמר — ${currentStage}</div>
-      ${escapeHtml(customerText)}
-    </div>
-    <div class="history-entry history-ai">
-      <div class="history-label">🤖 תשובה ראשונה</div>
-      ${escapeHtml(aiResponse)}
-    </div>`;
-  log.insertBefore(entry, log.firstChild);
+  const el = document.createElement('div');
+  el.innerHTML = `
+    <div class="h-entry h-user"><div class="h-lbl">👤 לקוח — ${currentStage}</div>${escH(q)}</div>
+    <div class="h-entry h-ai"><div class="h-lbl">🤖 תשובה 1</div>${escH(a)}</div>`;
+  log.insertBefore(el, log.firstChild);
 }
 
 function clearHistory() {
   conversationHistory = [];
   document.getElementById('history-log').innerHTML = '';
   document.getElementById('history-wrap').style.display = 'none';
-}
-
-function setStage(el, stage) {
-  document.querySelectorAll('.stage-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  currentStage = stage;
-}
-
-function setObj(el, text) {
-  document.querySelectorAll('.obj-btn,.val-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('customer-said').value = text;
 }
 
 document.getElementById('customer-said').addEventListener('keydown', function(e) {
