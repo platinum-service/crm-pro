@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>סוכן מכירות — פלטינום</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--gold:#d4af37;--gold2:#f0d060;--bg:#f4f6fb;--white:#fff;--border:#e8ecf4;--green:#22c55e;--red:#e74c3c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;direction:rtl}
+
+/* HEADER */
+.hdr{background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold)}
+.hdr-brand{font-size:1.1rem;font-weight:900;color:var(--gold)}
+.hdr-sub{font-size:.75rem;color:rgba(255,255,255,.6)}
+.status-dot{width:9px;height:9px;border-radius:50%;background:var(--green);display:inline-block;margin-left:6px;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* LAYOUT */
+.container{max-width:800px;margin:0 auto;padding:16px}
+
+/* STAGE SELECTOR */
+.stage-wrap{background:var(--white);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(26,39,68,.08);border:1.5px solid var(--border)}
+.stage-label{font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:10px;opacity:.7}
+.stages{display:flex;flex-wrap:wrap;gap:8px}
+.stage-btn{padding:8px 14px;border:2px solid var(--border);border-radius:20px;background:var(--bg);cursor:pointer;font-size:.82rem;font-weight:600;color:var(--navy);font-family:'Heebo',sans-serif;transition:all .15s}
+.stage-btn:hover{border-color:var(--gold);background:#fffbeb}
+.stage-btn.active{border-color:var(--gold);background:var(--gold);color:var(--navy);font-weight:800}
+
+/* QUICK OBJECTIONS */
+.obj-wrap{background:var(--white);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(26,39,68,.08);border:1.5px solid var(--border)}
+.obj-label{font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:10px;opacity:.7}
+.obj-grid{display:flex;flex-wrap:wrap;gap:7px}
+.obj-btn{padding:7px 13px;border:1.5px solid #fcd34d;border-radius:20px;background:#fffbeb;cursor:pointer;font-size:.8rem;font-weight:600;color:#92400e;font-family:'Heebo',sans-serif;transition:all .15s}
+.obj-btn:hover{background:#fef3c7;border-color:#f59e0b}
+.obj-btn.active{background:#f59e0b;border-color:#d97706;color:#fff}
+
+/* INPUT */
+.input-wrap{background:var(--white);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(26,39,68,.08);border:1.5px solid var(--border)}
+.input-label{font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:8px;opacity:.7}
+.input-row{display:flex;gap:10px}
+textarea{flex:1;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:.93rem;font-family:'Heebo',sans-serif;resize:none;height:70px;direction:rtl;background:#fafbfc;transition:border .2s}
+textarea:focus{outline:none;border-color:var(--gold);background:#fff}
+.ask-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:10px;padding:0 22px;font-size:.95rem;font-weight:900;cursor:pointer;font-family:'Heebo',sans-serif;transition:all .2s;white-space:nowrap;align-self:stretch}
+.ask-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(212,175,55,.4)}
+.ask-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* RESPONSES */
+.responses{display:flex;flex-direction:column;gap:12px}
+.resp-card{background:var(--white);border-radius:14px;padding:18px 20px;box-shadow:0 2px 12px rgba(26,39,68,.08);border-right:4px solid var(--gold);border-left:1.5px solid var(--border);border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);position:relative}
+.resp-num{display:inline-block;background:var(--gold);color:var(--navy);border-radius:50%;width:24px;height:24px;font-size:.78rem;font-weight:900;text-align:center;line-height:24px;margin-bottom:10px}
+.resp-text{font-size:.93rem;line-height:1.75;color:var(--navy);white-space:pre-wrap}
+.copy-btn{position:absolute;top:14px;left:14px;background:none;border:1.5px solid var(--border);border-radius:8px;padding:5px 12px;font-size:.78rem;font-weight:700;cursor:pointer;color:#6b7a99;font-family:'Heebo',sans-serif;transition:all .15s}
+.copy-btn:hover{border-color:var(--gold);color:var(--navy);background:#fffbeb}
+.copy-btn.copied{border-color:var(--green);color:var(--green);background:#f0fdf4}
+
+/* LOADING */
+.loading{text-align:center;padding:32px;color:#6b7a99}
+.loading-dots span{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin:0 3px;animation:ldot 1s infinite}
+.loading-dots span:nth-child(2){animation-delay:.2s}
+.loading-dots span:nth-child(3){animation-delay:.4s}
+@keyframes ldot{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+/* EMPTY */
+.empty{text-align:center;padding:40px 20px;color:#6b7a99;background:var(--white);border-radius:14px;box-shadow:0 2px 12px rgba(26,39,68,.08)}
+.empty-icon{font-size:2.5rem;margin-bottom:12px}
+.empty p{font-size:.9rem;line-height:1.6}
+
+/* API KEY */
+.api-wrap{background:#fff3cd;border:1.5px solid #ffc107;border-radius:14px;padding:16px;margin-bottom:14px}
+.api-wrap label{display:block;font-size:.82rem;font-weight:700;color:#856404;margin-bottom:8px}
+.api-input-row{display:flex;gap:8px}
+.api-input-row input{flex:1;padding:10px 14px;border:1.5px solid #ffc107;border-radius:8px;font-size:.88rem;font-family:'Heebo',sans-serif;background:#fff}
+.api-save-btn{background:#ffc107;color:#000;border:none;border-radius:8px;padding:0 16px;font-size:.88rem;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif}
+
+/* TIP */
+.tip{background:#e8f4fd;border:1.5px solid #bfdbfe;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:.8rem;color:#1e40af;line-height:1.5}
+.tip strong{font-weight:800}
+
+@media(max-width:500px){
+  .input-row{flex-direction:column}
+  .ask-btn{height:44px}
+  .stages{gap:6px}
+  .stage-btn{font-size:.78rem;padding:7px 11px}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-brand">💬 סוכן מכירות AI</div>
+    <div class="hdr-sub">פלטינום כתב שירות</div>
+  </div>
+  <div style="font-size:.8rem;color:rgba(255,255,255,.7)">
+    <span class="status-dot"></span>מוכן לשיחה
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- API KEY -->
+  <div class="api-wrap" id="api-wrap">
+    <label>🔑 הכנס Anthropic API Key</label>
+    <div class="api-input-row">
+      <input type="password" id="api-key" placeholder="sk-ant-api03-..." />
+      <button class="api-save-btn" onclick="saveKey()">שמור</button>
+    </div>
+  </div>
+
+  <!-- TIP -->
+  <div class="tip">
+    <strong>איך משתמשים:</strong> בחר שלב בשיחה → לחץ על התנגדות נפוצה או כתוב מה הלקוח אמר → קבל 3 תשובות מוכנות
+  </div>
+
+  <!-- STAGE -->
+  <div class="stage-wrap">
+    <div class="stage-label">📍 שלב בשיחה</div>
+    <div class="stages">
+      <button class="stage-btn active" onclick="setStage(this,'פתיחה')">📞 פתיחה</button>
+      <button class="stage-btn" onclick="setStage(this,'הצגת ערך')">💎 הצגת ערך</button>
+      <button class="stage-btn" onclick="setStage(this,'שאלות רפואיות')">🏥 שאלות רפואיות</button>
+      <button class="stage-btn" onclick="setStage(this,'סגירה')">✅ סגירה</button>
+      <button class="stage-btn" onclick="setStage(this,'התנגדויות')">🛡️ התנגדויות</button>
+    </div>
+  </div>
+
+  <!-- OBJECTIONS -->
+  <div class="obj-wrap">
+    <div class="obj-label">⚡ התנגדויות נפוצות — לחץ לבחירה מהירה</div>
+    <div class="obj-grid">
+      <button class="obj-btn" onclick="setObj(this,'זה יקר מדי')">💸 זה יקר מדי</button>
+      <button class="obj-btn" onclick="setObj(this,'צריך לחשוב על זה')">🤔 צריך לחשוב</button>
+      <button class="obj-btn" onclick="setObj(this,'יש לי כבר ביטוח בריאות')">🛡️ יש לי כבר ביטוח</button>
+      <button class="obj-btn" onclick="setObj(this,'לא מעוניין')">❌ לא מעוניין</button>
+      <button class="obj-btn" onclick="setObj(this,'אני צריך להתייעץ עם בן/בת הזוג')">👫 צריך להתייעץ</button>
+      <button class="obj-btn" onclick="setObj(this,'שלח לי מידע במייל/וואטסאפ')">📧 שלח לי מידע</button>
+      <button class="obj-btn" onclick="setObj(this,'אין לי כרטיס אשראי ביד עכשיו')">💳 אין כרטיס ביד</button>
+      <button class="obj-btn" onclick="setObj(this,'כבר יש לי כתב שירות')">📋 יש לי כתב שירות</button>
+      <button class="obj-btn" onclick="setObj(this,'אני בריא, אין לי צורך')">💪 אני בריא</button>
+      <button class="obj-btn" onclick="setObj(this,'248 שקל זה הרבה כסף בחודש')">💰 המחיר גבוה</button>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-wrap">
+    <div class="input-label">✍️ מה הלקוח אמר? (כתוב בחופשיות)</div>
+    <div class="input-row">
+      <textarea id="customer-said" placeholder="למשל: &quot;תקשיב, אני לא בטוח שזה בשבילי...&quot;"></textarea>
+      <button class="ask-btn" id="ask-btn" onclick="getResponse()">קבל<br>תשובות</button>
+    </div>
+  </div>
+
+  <!-- RESPONSES -->
+  <div id="output">
+    <div class="empty">
+      <div class="empty-icon">🎯</div>
+      <p>בחר שלב + התנגדות<br>או כתוב מה הלקוח אמר<br>ולחץ <strong>"קבל תשובות"</strong></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentStage = 'פתיחה';
+let apiKey = localStorage.getItem('sales_api_key') || '';
+
+// Init
+if (apiKey) {
+  document.getElementById('api-key').value = apiKey;
+  document.getElementById('api-wrap').style.background = '#f0fdf4';
+  document.getElementById('api-wrap').style.borderColor = '#22c55e';
+}
+
+function saveKey() {
+  const k = document.getElementById('api-key').value.trim();
+  if (!k) return;
+  apiKey = k;
+  localStorage.setItem('sales_api_key', k);
+  const wrap = document.getElementById('api-wrap');
+  wrap.style.background = '#f0fdf4';
+  wrap.style.borderColor = '#22c55e';
+  wrap.querySelector('label').textContent = '✅ API Key שמור';
+}
+
+function setStage(el, stage) {
+  document.querySelectorAll('.stage-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  currentStage = stage;
+}
+
+function setObj(el, text) {
+  document.querySelectorAll('.obj-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('customer-said').value = text;
+}
+
+async function getResponse() {
+  if (!apiKey) {
+    alert('הכנס API Key קודם');
+    return;
+  }
+  const customerSaid = document.getElementById('customer-said').value.trim();
+  if (!customerSaid) {
+    alert('כתוב מה הלקוח אמר');
+    return;
+  }
+
+  const btn = document.getElementById('ask-btn');
+  btn.disabled = true;
+
+  document.getElementById('output').innerHTML = `
+    <div class="loading">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+      <p style="margin-top:12px;font-size:.88rem">מכין תשובות...</p>
+    </div>`;
+
+  const systemPrompt = `אתה סוכן מכירות מנוסה של פלטינום כתב שירות — כתב שירות רפואי פרטי.
+
+פרטי המוצר:
+- כתב שירות פלטינום: 248 שקל לחודש (מחיר רגיל 340)
+- ללא הצהרת בריאות — כולם מתקבלים
+- ביקור רופא עד הבית
+- החזרים 80% על פיזיותרפיה, MRI, CT
+- רפואה משלימה — 20 טיפולים בשנה
+- ייעוץ רפואי 24/7
+- ביטול בכל עת ללא קנס
+- שאלות רפואיות: עישון? מחלה קשה בשנה האחרונה (סרטן/לב/שבץ)?
+
+תסריט השיחה:
+- פתיחה: "שלום, מדבר מפלטינום. קיבלתי את הפרטים שלך — מילאת שאלון באתר. נכון?"
+- הצגת ערך: להציג את 4 היתרונות הגדולים ואת ההנחה המיוחדת
+- שאלות רפואיות: עישון + מחלה קשה בשנה האחרונה
+- סגירה: "לאיזה כרטיס להתייחס — ויזה או ישראכרט?"
+
+הנחיות:
+- תמיד כתוב בעברית
+- תשובות קצרות וישירות — מקסימום 3 משפטים כל תשובה
+- טבעי ואנושי — לא רובוטי
+- לא להגיד "כמובן" או "בהחלט"
+- להתמקד בערך ולא להגן על המחיר
+- ליצור דחיפות עדינה`;
+
+  const userPrompt = `שלב בשיחה: ${currentStage}
+מה הלקוח אמר: "${customerSaid}"
+
+תן לי בדיוק 3 תשובות שונות שאני יכול להגיד עכשיו.
+פורמט:
+תשובה 1: [הטקסט]
+תשובה 2: [הטקסט]
+תשובה 3: [הטקסט]`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+        'anthropic-dangerous-allow-browser': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 600,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+
+    if (!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+    const text = data.content[0].text;
+
+    // Parse responses
+    const lines = text.split('\n').filter(l => l.trim());
+    const responses = [];
+    let current = '';
+
+    for (const line of lines) {
+      if (line.match(/^תשובה\s*\d+\s*:/)) {
+        if (current) responses.push(current.trim());
+        current = line.replace(/^תשובה\s*\d+\s*:\s*/, '');
+      } else if (current) {
+        current += '\n' + line;
+      }
+    }
+    if (current) responses.push(current.trim());
+
+    if (responses.length === 0) {
+      responses.push(text);
+    }
+
+    renderResponses(responses);
+  } catch(e) {
+    document.getElementById('output').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">❌</div>
+        <p>שגיאה: ${e.message}</p>
+      </div>`;
+  }
+
+  btn.disabled = false;
+}
+
+function renderResponses(responses) {
+  const colors = ['#d4af37','#22c55e','#3b82f6'];
+  const html = responses.map((r, i) => `
+    <div class="resp-card" style="border-right-color:${colors[i]||'#d4af37'}">
+      <span class="resp-num" style="background:${colors[i]||'#d4af37'}">${i+1}</span>
+      <button class="copy-btn" onclick="copyText(this, \`${r.replace(/`/g,'\\`')}\`)">העתק</button>
+      <div class="resp-text">${r}</div>
+    </div>
+  `).join('');
+  document.getElementById('output').innerHTML = `<div class="responses">${html}</div>`;
+}
+
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ הועתק';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'העתק';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// Enter to submit
+document.getElementById('customer-said').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    getResponse();
+  }
+});
+</script>
+</body>
+</html>
