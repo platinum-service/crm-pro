@@ -312,13 +312,13 @@ body.focus-mode .focus-btn{background:var(--gold);color:var(--navy);border-color
     <div class="phase-body">
       <span class="sec-label">שאלות האריה</span>
       <div class="btn-grid">
-        <button class="lion-btn" onclick="setObj(this,'מה קורה אם שום דבר לא משתנה? בעוד חצי שנה, שנה — איך ייראו החיים שלך?')">⏳ מה קורה אם כלום לא משתנה?</button>
-        <button class="lion-btn" onclick="setObj(this,'מה קורה אם המצב פתאום מחמיר ואין לך שום כיסוי?')">💥 מה קורה אם יחמיר?</button>
-        <button class="lion-btn" onclick="setObj(this,'בשבילך — מה הסיטואציה שאתה הכי לא רוצה שתקרה לך?')">🦁 מה האריה שלך?</button>
-        <button class="lion-btn" onclick="setObj(this,'כמה בריאות, זמן וכסף אתה מפסיד כרגע בגלל המצב הזה?')">💸 כמה אתה מפסיד?</button>
-        <button class="lion-btn" onclick="setObj(this,'אתה אוהב לחכות חודשים לתור כשכואב לך?')">😤 אוהב לחכות?</button>
-        <button class="lion-btn" onclick="setObj(this,'אם המצב יחמיר — מי יעשה את כל הניירת? מי ידפוק על הדלתות?')">🚪 מי ידפוק בשביל?</button>
-        <button class="lion-btn" onclick="setObj(this,'האם אתה מוכן להסתפק במציאות הזו?')">❓ מוכן להסתפק?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'מה קורה אם שום דבר לא משתנה? בעוד חצי שנה, שנה — איך ייראו החיים שלך?')">⏳ מה קורה אם כלום לא משתנה?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'מה קורה אם המצב פתאום מחמיר ואין לך שום כיסוי?')">💥 מה קורה אם יחמיר?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'בשבילך — מה הסיטואציה שאתה הכי לא רוצה שתקרה לך?')">🦁 מה האריה שלך?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'כמה בריאות, זמן וכסף אתה מפסיד כרגע בגלל המצב הזה?')">💸 כמה אתה מפסיד?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'אתה אוהב לחכות חודשים לתור כשכואב לך?')">😤 אוהב לחכות?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'אם המצב יחמיר — מי יעשה את כל הניירת? מי ידפוק על הדלתות?')">🚪 מי ידפוק בשביל?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'האם אתה מוכן להסתפק במציאות הזו?')">❓ מוכן להסתפק?</button>
       </div>
     </div>
   </div>
@@ -332,16 +332,16 @@ body.focus-mode .focus-btn{background:var(--gold);color:var(--navy);border-color
     </div>
     <div class="phase-body">
       <div class="btn-grid">
-        <button class="pain-q-btn" onclick="setObj(this,'המשפחה שלך רואה בך האדם החזק, הדומיננטי בבית — מה יקרה אם הם יראו אותך תלוי בכולם?')">👑 האדם החזק בבית</button>
-        <button class="pain-q-btn" onclick="setObj(this,'איך אתה רואה את החיים שלך ללא כאב? חופשי, מטייל עם הנכדים, נהנה?')">🌅 חיים ללא כאב</button>
-        <button class="pain-q-btn" onclick="setObj(this,'מה הדבר הכי חשוב שאתה רוצה להמשיך לעשות עם הנכדים? מה יקרה אם לא תוכל?')">👶 הנכדים</button>
-        <button class="pain-q-btn" onclick="setObj(this,'מתי בפעם האחרונה הרגשת באמת בריא ואנרגטי?')">⚡ מתי הרגשת שלם?</button>
-        <button class="pain-q-btn" onclick="setObj(this,'אם המצב יחמיר — מה הדבר הראשון שתפסיק לעשות?')">💔 מה תאבד ראשון?</button>
-        <button class="pain-q-btn" onclick="setObj(this,'מה הכי לא רוצה שהילדים שלך יצטרכו לעשות בשבילך?')">😔 לא להיות נטל</button>
-        <button class="pain-q-btn" onclick="setObj(this,'כשאתה מדמיין את עצמך בעוד 5 שנים — מה אתה רואה?')">🔮 בעוד 5 שנים</button>
-        <button class="pain-q-btn" onclick="setObj(this,'מה יגידו עליך הילדים אם ידעו שסירבת לדאוג לעצמך?')">🗣️ מה יגידו?</button>
-        <button class="pain-q-btn" onclick="setObj(this,'אתה האדם שכולם מסתמכים עליו — אם אתה נופל, מה קורה לכולם?')">🏛️ כולם מסתמכים</button>
-        <button class="pain-q-btn" onclick="setObj(this,'מה יותר כואב — 248 שקל בחודש, או לחכות 4 חודשים לתור כשכואב?')">⚖️ מה יותר כואב?</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'המשפחה שלך רואה בך האדם החזק, הדומיננטי בבית — מה יקרה אם הם יראו אותך תלוי בכולם?')">👑 האדם החזק בבית</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'איך אתה רואה את החיים שלך ללא כאב? חופשי, מטייל עם הנכדים, נהנה?')">🌅 חיים ללא כאב</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'מה הדבר הכי חשוב שאתה רוצה להמשיך לעשות עם הנכדים? מה יקרה אם לא תוכל?')">👶 הנכדים</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'מתי בפעם האחרונה הרגשת באמת בריא ואנרגטי?')">⚡ מתי הרגשת שלם?</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'אם המצב יחמיר — מה הדבר הראשון שתפסיק לעשות?')">💔 מה תאבד ראשון?</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'מה הכי לא רוצה שהילדים שלך יצטרכו לעשות בשבילך?')">😔 לא להיות נטל</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'כשאתה מדמיין את עצמך בעוד 5 שנים — מה אתה רואה?')">🔮 בעוד 5 שנים</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'מה יגידו עליך הילדים אם ידעו שסירבת לדאוג לעצמך?')">🗣️ מה יגידו?</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'אתה האדם שכולם מסתמכים עליו — אם אתה נופל, מה קורה לכולם?')">🏛️ כולם מסתמכים</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'מה יותר כואב — 248 שקל בחודש, או לחכות 4 חודשים לתור כשכואב?')">⚖️ מה יותר כואב?</button>
       </div>
     </div>
   </div>
@@ -413,13 +413,13 @@ body.focus-mode .focus-btn{background:var(--gold);color:var(--navy);border-color
     </div>
     <div class="phase-body">
       <div class="btn-grid">
-        <button class="close-btn" onclick="setObj(this,'בסולם 1 עד 10 — כש-10 זה אדם עם שליטה מלאה על הבריאות — איפה אתה היום?')">📊 סולם 1-10</button>
-        <button class="close-btn" onclick="setObj(this,'אם לא תעשה שינוי — איזה אדם תישאר? מה זה אומר על המשפחה שלך?')">🪞 איזה אדם תישאר?</button>
-        <button class="close-btn" onclick="setObj(this,'האם תישאר מוותר לעצמו — או שתבחר להיות האדם שלוקח שליטה?')">⚡ מוותר / שולט?</button>
-        <button class="close-btn" onclick="setObj(this,'האחריות של מי זה לוודא שהמשפחה שלך מוגנת?')">🤝 האחריות של מי?</button>
-        <button class="close-btn" onclick="setObj(this,'למה לטפל בזה דווקא עכשיו?')">🕐 למה עכשיו?</button>
-        <button class="close-btn" onclick="setObj(this,'מה דעתך על החלק הזה? אתה חושב שזה יכול לעזור לך?')">✅ הסכמה קטנה</button>
-        <button class="close-btn" onclick="setObj(this,'ההשקעה היא 248 שקל בחודש — 8 שקל ביום. איך אתה רוצה להמשיך?')">💳 סגירה 248 ש״ח</button>
+        <button class="close-btn" onclick="setQuestion(this,'בסולם 1 עד 10 — כש-10 זה אדם עם שליטה מלאה על הבריאות — איפה אתה היום?')">📊 סולם 1-10</button>
+        <button class="close-btn" onclick="setQuestion(this,'אם לא תעשה שינוי — איזה אדם תישאר? מה זה אומר על המשפחה שלך?')">🪞 איזה אדם תישאר?</button>
+        <button class="close-btn" onclick="setQuestion(this,'האם תישאר מוותר לעצמו — או שתבחר להיות האדם שלוקח שליטה?')">⚡ מוותר / שולט?</button>
+        <button class="close-btn" onclick="setQuestion(this,'האחריות של מי זה לוודא שהמשפחה שלך מוגנת?')">🤝 האחריות של מי?</button>
+        <button class="close-btn" onclick="setQuestion(this,'למה לטפל בזה דווקא עכשיו?')">🕐 למה עכשיו?</button>
+        <button class="close-btn" onclick="setQuestion(this,'מה דעתך על החלק הזה? אתה חושב שזה יכול לעזור לך?')">✅ הסכמה קטנה</button>
+        <button class="close-btn" onclick="setQuestion(this,'ההשקעה היא 248 שקל בחודש — 8 שקל ביום. איך אתה רוצה להמשיך?')">💳 סגירה 248 ש״ח</button>
       </div>
       <div class="call-btns" style="margin-top:12px">
         <button class="call-btn call-btn-close" id="closing-btn" onclick="generateClosingScript()">✅ צור תסריט סגירה מלא — כולל שאלות רפואיות + מחיר</button>
@@ -521,6 +521,12 @@ function setDisc(el, text) {
   document.querySelectorAll('.disc-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('customer-said').value = text;
+}
+
+function setQuestion(el, text) {
+  document.querySelectorAll('.lion-btn,.pain-q-btn,.close-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('customer-said').value = 'אני שואל את הלקוח: ' + text;
 }
 
 function toggleFocus() {
@@ -986,7 +992,21 @@ async function getResponse() {
   startTimer();
   showStreamCard('מכין תשובות...');
 
-  const userPrompt = `שלב בשיחה: ${currentStage}
+  const isQuestion = customerSaid.startsWith('אני שואל את הלקוח:');
+  const userPrompt = isQuestion
+    ? `שלב בשיחה: ${currentStage}
+הנציג רוצה לשאול את הלקוח: "${customerSaid.replace('אני שואל את הלקוח:', '').trim()}"
+
+תן לי בדיוק 3 דרכים שונות לנסח את השאלה הזו — בטון שונה (אחת ישירה, אחת רכה, אחת עם תמונת עתיד).
+לאחר מכן הוסף שורת ניקוד בפורמט:
+סיכוי: [ספרה 1-10] — [הסבר + מה לצפות מהתשובה]
+
+פורמט מלא:
+תשובה 1: [הטקסט]
+תשובה 2: [הטקסט]
+תשובה 3: [הטקסט]
+סיכוי: [1-10] — [הסבר]`
+    : `שלב בשיחה: ${currentStage}
 מה הלקוח אמר: "${customerSaid}"
 
 תן לי בדיוק 3 תשובות שונות שאני יכול להגיד עכשיו.
