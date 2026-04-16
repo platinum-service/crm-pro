@@ -144,6 +144,16 @@ body.focus-mode .focus-btn{background:var(--gold);color:var(--navy);border-color
 .special-card .resp-text{font-size:.93rem;line-height:1.85;color:var(--navy);white-space:pre-wrap}
 .special-actions{display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
 
+/* SAY THIS CARD */
+.say-card{background:linear-gradient(135deg,#0d1628,var(--navy));border-radius:16px;padding:22px 24px;box-shadow:0 4px 24px rgba(13,22,40,.35);border:2px solid var(--gold)}
+.say-label{font-size:.72rem;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;opacity:.85}
+.say-text{font-size:1.15rem;font-weight:700;color:#fff;line-height:1.75;direction:rtl}
+.say-tip{font-size:.78rem;color:rgba(212,175,55,.7);margin-top:12px;padding-top:10px;border-top:1px solid rgba(212,175,55,.2);line-height:1.6}
+.say-actions{display:flex;gap:8px;margin-top:14px}
+.say-copy{background:var(--gold);color:var(--navy);border:none;border-radius:8px;padding:8px 18px;font-size:.82rem;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif}
+.say-copy:hover{background:var(--gold2)}
+.say-copy.copied{background:#22c55e;color:#fff}
+
 /* STREAM */
 .stream-card{background:var(--white);border-radius:14px;padding:20px;box-shadow:0 2px 16px rgba(26,39,68,.08);border:1.5px solid var(--border);border-right:4px solid var(--gold)}
 .stream-text{font-size:.93rem;line-height:1.8;color:var(--navy);white-space:pre-wrap;min-height:40px}
@@ -312,13 +322,13 @@ body.focus-mode .focus-btn{background:var(--gold);color:var(--navy);border-color
     <div class="phase-body">
       <span class="sec-label">שאלות האריה</span>
       <div class="btn-grid">
-        <button class="lion-btn" onclick="setQuestion(this,'מה קורה אם שום דבר לא משתנה? בעוד חצי שנה, שנה — איך ייראו החיים שלך?')">⏳ מה קורה אם כלום לא משתנה?</button>
-        <button class="lion-btn" onclick="setQuestion(this,'מה קורה אם המצב פתאום מחמיר ואין לך שום כיסוי?')">💥 מה קורה אם יחמיר?</button>
-        <button class="lion-btn" onclick="setQuestion(this,'בשבילך — מה הסיטואציה שאתה הכי לא רוצה שתקרה לך?')">🦁 מה האריה שלך?</button>
-        <button class="lion-btn" onclick="setQuestion(this,'כמה בריאות, זמן וכסף אתה מפסיד כרגע בגלל המצב הזה?')">💸 כמה אתה מפסיד?</button>
-        <button class="lion-btn" onclick="setQuestion(this,'אתה אוהב לחכות חודשים לתור כשכואב לך?')">😤 אוהב לחכות?</button>
-        <button class="lion-btn" onclick="setQuestion(this,'אם המצב יחמיר — מי יעשה את כל הניירת? מי ידפוק על הדלתות?')">🚪 מי ידפוק בשביל?</button>
-        <button class="lion-btn" onclick="setQuestion(this,'האם אתה מוכן להסתפק במציאות הזו?')">❓ מוכן להסתפק?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'מה קורה אם שום דבר לא משתנה? בעוד חצי שנה, שנה — איך ייראו החיים שלך?','תן לו לדמיין. שתוק אחרי השאלה.')">⏳ מה קורה אם כלום לא משתנה?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'מה קורה אם המצב פתאום מחמיר ואין לך שום כיסוי?','אם הוא מזכיר ילדים — זה האריה שלו. רשום בפרופיל.')">💥 מה קורה אם יחמיר?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'בשבילך — מה הסיטואציה שאתה הכי לא רוצה שתקרה לך?','זו שאלת האריה — מה שהוא יאמר כאן, חזור עליו בסגירה.')">🦁 מה האריה שלך?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'כמה בריאות, זמן וכסף אתה מפסיד כרגע בגלל המצב הזה?','מסגר את העלות הנוכחית לעומת 248 ש״ח.')">💸 כמה אתה מפסיד?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'אתה אוהב לחכות חודשים לתור כשכואב לך?','שאלה רטורית — הוא יגיד לא. המשך: ״אז בוא נפתור את זה.״')">😤 אוהב לחכות?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'אם המצב יחמיר — מי יעשה את כל הניירת? מי ידפוק על הדלתות?','אם אמר שהילדים בחו״ל — הזכר לו את זה עכשיו.')">🚪 מי ידפוק בשביל?</button>
+        <button class="lion-btn" onclick="setQuestion(this,'האם אתה מוכן להסתפק במציאות הזו?','אם ענה לא — ״אז בוא נשנה את זה עכשיו.״')">❓ מוכן להסתפק?</button>
       </div>
     </div>
   </div>
@@ -332,16 +342,16 @@ body.focus-mode .focus-btn{background:var(--gold);color:var(--navy);border-color
     </div>
     <div class="phase-body">
       <div class="btn-grid">
-        <button class="pain-q-btn" onclick="setQuestion(this,'המשפחה שלך רואה בך האדם החזק, הדומיננטי בבית — מה יקרה אם הם יראו אותך תלוי בכולם?')">👑 האדם החזק בבית</button>
-        <button class="pain-q-btn" onclick="setQuestion(this,'איך אתה רואה את החיים שלך ללא כאב? חופשי, מטייל עם הנכדים, נהנה?')">🌅 חיים ללא כאב</button>
-        <button class="pain-q-btn" onclick="setQuestion(this,'מה הדבר הכי חשוב שאתה רוצה להמשיך לעשות עם הנכדים? מה יקרה אם לא תוכל?')">👶 הנכדים</button>
-        <button class="pain-q-btn" onclick="setQuestion(this,'מתי בפעם האחרונה הרגשת באמת בריא ואנרגטי?')">⚡ מתי הרגשת שלם?</button>
-        <button class="pain-q-btn" onclick="setQuestion(this,'אם המצב יחמיר — מה הדבר הראשון שתפסיק לעשות?')">💔 מה תאבד ראשון?</button>
-        <button class="pain-q-btn" onclick="setQuestion(this,'מה הכי לא רוצה שהילדים שלך יצטרכו לעשות בשבילך?')">😔 לא להיות נטל</button>
-        <button class="pain-q-btn" onclick="setQuestion(this,'כשאתה מדמיין את עצמך בעוד 5 שנים — מה אתה רואה?')">🔮 בעוד 5 שנים</button>
-        <button class="pain-q-btn" onclick="setQuestion(this,'מה יגידו עליך הילדים אם ידעו שסירבת לדאוג לעצמך?')">🗣️ מה יגידו?</button>
-        <button class="pain-q-btn" onclick="setQuestion(this,'אתה האדם שכולם מסתמכים עליו — אם אתה נופל, מה קורה לכולם?')">🏛️ כולם מסתמכים</button>
-        <button class="pain-q-btn" onclick="setQuestion(this,'מה יותר כואב — 248 שקל בחודש, או לחכות 4 חודשים לתור כשכואב?')">⚖️ מה יותר כואב?</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'המשפחה שלך רואה בך האדם החזק, הדומיננטי בבית — מה יקרה אם הם יראו אותך תלוי בכולם?','לא לפרט. תן לו לדמיין בעצמו. שתיקה = כסף.')">👑 האדם החזק בבית</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'איך אתה רואה את החיים שלך ללא כאב? חופשי, מטייל עם הנכדים, נהנה?','בנה את החלום קודם — אחר כך שאל מה מונע ממנו.')">🌅 חיים ללא כאב</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'מה הדבר הכי חשוב שאתה רוצה להמשיך לעשות עם הנכדים? מה יקרה אם לא תוכל?','אם יזכיר פעולה ספציפית — זו הסיבה לקנות.')">👶 הנכדים</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'מתי בפעם האחרונה הרגשת באמת בריא ואנרגטי?','יוצר קונטרסט בין הווה לעבר. הכאב הנוכחי מתחדד.')">⚡ מתי הרגשת שלם?</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'אם המצב יחמיר — מה הדבר הראשון שתפסיק לעשות?','הוא מגדיר בעצמו מה הוא מסכן. זה שווה עשרה נימוקים שלך.')">💔 מה תאבד ראשון?</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'מה הכי לא רוצה שהילדים שלך יצטרכו לעשות בשבילך?','כמעט כל הורה — הפחד מנטל גדול מהפחד ממוות.')">😔 לא להיות נטל</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'כשאתה מדמיין את עצמך בעוד 5 שנים — מה אתה רואה?','אם יתאר חיים פעילים — שאל מה הוא עושה היום להגיע לשם.')">🔮 בעוד 5 שנים</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'מה יגידו עליך הילדים אם ידעו שסירבת לדאוג לעצמך?','שאלת זהות חזקה. לא לסגור — לתת לו לענות.')">🗣️ מה יגידו?</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'אתה האדם שכולם מסתמכים עליו — אם אתה נופל, מה קורה לכולם?','מחבר את ההחלטה שלו לאנשים שהוא אוהב.')">🏛️ כולם מסתמכים</button>
+        <button class="pain-q-btn" onclick="setQuestion(this,'מה יותר כואב — 248 שקל בחודש, או לחכות 4 חודשים לתור כשכואב?','מסגר מחדש את המחיר. 248 = 8 שקל ביום = כוס קפה.')">⚖️ מה יותר כואב?</button>
       </div>
     </div>
   </div>
@@ -413,13 +423,14 @@ body.focus-mode .focus-btn{background:var(--gold);color:var(--navy);border-color
     </div>
     <div class="phase-body">
       <div class="btn-grid">
-        <button class="close-btn" onclick="setQuestion(this,'בסולם 1 עד 10 — כש-10 זה אדם עם שליטה מלאה על הבריאות — איפה אתה היום?')">📊 סולם 1-10</button>
-        <button class="close-btn" onclick="setQuestion(this,'אם לא תעשה שינוי — איזה אדם תישאר? מה זה אומר על המשפחה שלך?')">🪞 איזה אדם תישאר?</button>
-        <button class="close-btn" onclick="setQuestion(this,'האם תישאר מוותר לעצמו — או שתבחר להיות האדם שלוקח שליטה?')">⚡ מוותר / שולט?</button>
-        <button class="close-btn" onclick="setQuestion(this,'האחריות של מי זה לוודא שהמשפחה שלך מוגנת?')">🤝 האחריות של מי?</button>
-        <button class="close-btn" onclick="setQuestion(this,'למה לטפל בזה דווקא עכשיו?')">🕐 למה עכשיו?</button>
-        <button class="close-btn" onclick="setQuestion(this,'מה דעתך על החלק הזה? אתה חושב שזה יכול לעזור לך?')">✅ הסכמה קטנה</button>
-        <button class="close-btn" onclick="setQuestion(this,'ההשקעה היא 248 שקל בחודש — 8 שקל ביום. איך אתה רוצה להמשיך?')">💳 סגירה 248 ש״ח</button>
+        <button class="close-btn" onclick="setQuestion(this,'בסולם 1 עד 10 — כש-10 זה אדם עם שליטה מלאה על הבריאות — איפה אתה היום?','הוא יגיד 5-7. ״מה צריך לקרות כדי שתהיה 10?״')">📊 סולם 1-10</button>
+        <button class="close-btn" onclick="setQuestion(this,'אם לא תעשה שינוי — איזה אדם תישאר? מה זה אומר על המשפחה שלך?','שתוק. תן לו להישאר עם הדמות הזו כמה שניות.')">🪞 איזה אדם תישאר?</button>
+        <button class="close-btn" onclick="setQuestion(this,'האם תישאר מוותר לעצמו — או שתבחר להיות האדם שלוקח שליטה?','בחירה בינארית — אין אמצע. מחכה לתשובה שלו.')">⚡ מוותר / שולט?</button>
+        <button class="close-btn" onclick="setQuestion(this,'האחריות של מי זה לוודא שהמשפחה שלך מוגנת?','כשיגיד ״שלי״ — ״מצוין, אז בוא נעשה את זה עכשיו.״')">🤝 האחריות של מי?</button>
+        <button class="close-btn" onclick="setQuestion(this,'למה לטפל בזה דווקא עכשיו?','כל יום בלי כיסוי = יום של סיכון. הדחיפות אמיתית.')">🕐 למה עכשיו?</button>
+        <button class="close-btn" onclick="setQuestion(this,'מה דעתך על החלק הזה? אתה חושב שזה יכול לעזור לך?','הסכמה קטנה אחרי כל פיצ׳ר. צובר כן → סגירה קלה.')">✅ הסכמה קטנה</button>
+        <button class="close-btn" onclick="setQuestion(this,'ההשקעה היא 248 שקל בחודש — 8 שקל ביום. איך אתה רוצה להמשיך?','לא לשאול אם הוא רוצה. לשאול איך הוא רוצה להמשיך.')">💳 סגירה 248 ש״ח</button>
+        <button class="close-btn" onclick="setQuestion(this,'מה יותר מסוכן — להשקיע פחות מ-10 שקלים ביום, או להישאר במצב שבו חס וחלילה קורה משהו ואתה צריך לשלם 8,000 שקלים בחודש וליפול על הילדים?','שתוק. תן לו לענות לעצמו. הוא יודע את התשובה.')">⚖️ 10 שקל מול 8,000</button>
       </div>
       <div class="call-btns" style="margin-top:12px">
         <button class="call-btn call-btn-close" id="closing-btn" onclick="generateClosingScript()">✅ צור תסריט סגירה מלא — כולל שאלות רפואיות + מחיר</button>
@@ -523,10 +534,32 @@ function setDisc(el, text) {
   document.getElementById('customer-said').value = text;
 }
 
-function setQuestion(el, text) {
+function setQuestion(el, text, tip) {
   document.querySelectorAll('.lion-btn,.pain-q-btn,.close-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('customer-said').value = 'אני שואל את הלקוח: ' + text;
+  startTimer();
+  // Show "say this" card instantly — no API call needed
+  const tipHtml = tip ? `<div class="say-tip">💡 ${escH(tip)}</div>` : '';
+  document.getElementById('output').innerHTML = `
+    <div class="say-card">
+      <div class="say-label">אמור ללקוח</div>
+      <div class="say-text">${escH(text)}</div>
+      ${tipHtml}
+      <div class="say-actions">
+        <button class="say-copy" onclick="copySay(this,'${esc(text)}')">העתק</button>
+        <span style="font-size:.75rem;color:rgba(255,255,255,.4);align-self:center">← הקלד מה שהוא ענה בתיבה למטה</span>
+      </div>
+    </div>`;
+  // Clear textarea so agent types customer's response
+  document.getElementById('customer-said').value = '';
+  document.getElementById('customer-said').focus();
+}
+
+function copySay(btn, raw) {
+  navigator.clipboard.writeText(decode(raw)).then(() => {
+    btn.textContent = '✓ הועתק'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'העתק'; btn.classList.remove('copied'); }, 2000);
+  });
 }
 
 function toggleFocus() {
@@ -873,6 +906,11 @@ const BASE_SYSTEM = `אתה סוכן מכירות מנוסה של פלטינום
 לאחר כל פיצ'ר — שאל: "מה דעתך על זה? אתה חושב שזה יכול לעזור לך?" (הסכמה קטנה)
 
 סגירה: "ההשקעה כדי שיהיה לך שקט נפשי הרמטי היא 248 שקל בחודש. איך אתה רוצה להמשיך מכאן?"
+
+===משפט הסגירה הכי חזק — שאלת הסיכון===
+"מה יותר מסוכן — להשקיע פחות מ-10 שקלים ביום, או להישאר במצב שבו חס וחלילה קורה משהו ואתה צריך לשלם 8,000 שקלים בחודש וליפול על הילדים?"
+כלל: לשאול ולשתוק. הלקוח יודע את התשובה — לתת לו לומר אותה בעצמו.
+המספרים: 10 שקל ביום = 248 ש"ח לחודש. 8,000 ש"ח = עלות עובד זר בסיסית. הקונטרסט הזה מנפץ כל התנגדות מחיר.
 
 ===מיינדסט: ניתוק מהתוצאה (Detachment)===
 לפני כל שיחה — המטרה שלך היא לא לסגור. המטרה שלך היא:
