@@ -435,6 +435,7 @@ body{
     <div class="timer" id="timer">00:00</div>
   </div>
   <div class="header-actions">
+    <a href="sales-training.html" class="btn-icon" style="text-decoration:none">🎓 אימון</a>
     <button class="btn-icon" onclick="clearKey()">🔑</button>
     <button class="btn-icon btn-new" onclick="newCall()">+ שיחה חדשה</button>
   </div>
@@ -628,6 +629,20 @@ let voiceTimeout = null;
 let currentScore = 0;
 let leadContext = '';
 
+// ════════════════════════════════════
+// LESSONS MEMORY — shared with sales-training.html
+// ════════════════════════════════════
+function getLessonsContext(){
+  try {
+    const raw = localStorage.getItem('sales_lessons');
+    if (!raw) return '';
+    const lessons = JSON.parse(raw).slice(0, 5);
+    if (lessons.length === 0) return '';
+    const list = lessons.map((l,i) => `${i+1}. תרחיש "${l.scenario}" (${l.grade}): ${l.keyLesson}`).join('\n');
+    return `\n\n## לקחים מאימונים קודמים של הנציג (אל תחזור על הטעויות)\n${list}`;
+  } catch(e){ return ''; }
+}
+
 // INIT
 window.onload = () => {
   const key = localStorage.getItem('anthropic_key');
@@ -781,7 +796,7 @@ async function sendMessage() {
         model: 'claude-opus-4-7',
         max_tokens: 1500,
         stream: true,
-        system: SYSTEM_PROMPT + leadContext,
+        system: SYSTEM_PROMPT + leadContext + getLessonsContext(),
         messages: history
       })
     });

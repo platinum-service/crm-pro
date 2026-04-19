@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>אימון נציג — פלטינום</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#090c17;
+  --surface:#111827;
+  --surface2:#1a2235;
+  --border:rgba(200,169,110,0.15);
+  --gold:#c8a96e;
+  --gold2:#e8d9b8;
+  --text:#f0f0f0;
+  --muted:#8899aa;
+  --green:#22c55e;
+  --red:#ef4444;
+  --blue:#3b82f6;
+  --amber:#f59e0b;
+}
+body{
+  font-family:'Heebo',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 20px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.header-logo{font-size:16px;font-weight:700;color:var(--gold)}
+.header-logo span{color:var(--muted);font-weight:300;font-size:13px;margin-right:6px}
+.header-actions{display:flex;gap:8px}
+.btn-icon{
+  padding:7px 14px;border-radius:8px;
+  border:1px solid var(--border);background:var(--surface2);
+  color:var(--text);font-family:'Heebo',sans-serif;font-size:13px;
+  cursor:pointer;transition:all 0.15s;
+}
+.btn-icon:hover{border-color:var(--gold);color:var(--gold)}
+.btn-back{color:var(--muted)}
+
+/* SETUP SCREEN */
+.setup{
+  max-width:900px;margin:30px auto;padding:0 20px;
+  display:grid;gap:24px;
+}
+.setup-title{
+  font-size:28px;font-weight:700;color:var(--gold);
+  text-align:center;margin-bottom:8px;
+}
+.setup-sub{text-align:center;color:var(--muted);font-size:15px}
+.section{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;padding:20px;
+}
+.section h3{font-size:16px;color:var(--gold);margin-bottom:14px;font-weight:600}
+
+/* SCENARIOS */
+.scenarios{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.scenario{
+  background:var(--surface2);
+  border:2px solid var(--border);
+  border-radius:12px;padding:14px;
+  cursor:pointer;transition:all 0.15s;
+}
+.scenario:hover{border-color:var(--gold)}
+.scenario.selected{border-color:var(--gold);background:rgba(200,169,110,0.08)}
+.scenario-icon{font-size:28px;margin-bottom:6px}
+.scenario-name{font-weight:700;font-size:15px;margin-bottom:4px}
+.scenario-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.scenario-level{
+  display:inline-block;margin-top:8px;
+  font-size:10px;font-weight:600;
+  padding:2px 8px;border-radius:4px;
+}
+.level-easy{background:rgba(34,197,94,0.15);color:var(--green)}
+.level-medium{background:rgba(245,158,11,0.15);color:var(--amber)}
+.level-hard{background:rgba(239,68,68,0.15);color:var(--red)}
+
+/* PERSONA FIELDS */
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+.field input, .field select{
+  width:100%;padding:10px 12px;
+  background:var(--surface2);
+  border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-family:'Heebo',sans-serif;font-size:14px;
+}
+.field input:focus, .field select:focus{outline:none;border-color:var(--gold)}
+
+/* START BUTTON */
+.start-btn{
+  width:100%;padding:16px;
+  background:linear-gradient(135deg,var(--gold),#a07838);
+  border:none;border-radius:12px;
+  color:#fff;font-family:'Heebo',sans-serif;
+  font-size:17px;font-weight:700;
+  cursor:pointer;transition:all 0.15s;
+}
+.start-btn:hover{opacity:0.9;transform:translateY(-1px)}
+.start-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+
+/* TRAINING SCREEN */
+.training{
+  display:none;
+  flex-direction:column;
+  height:100dvh;
+  max-width:1200px;
+  width:100%;
+  margin:0 auto;
+}
+.training.active{display:flex}
+.stage-bar{
+  display:flex;gap:4px;
+  padding:12px 20px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;
+  flex-shrink:0;
+}
+.stage-pill{
+  padding:5px 12px;border-radius:20px;
+  font-size:11px;font-weight:600;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  color:var(--muted);
+  white-space:nowrap;
+}
+.stage-pill.current{background:var(--gold);color:#000;border-color:var(--gold)}
+.stage-pill.done{background:rgba(34,197,94,0.15);color:var(--green);border-color:var(--green)}
+
+.chat{
+  flex:1;overflow-y:auto;
+  padding:20px;display:flex;flex-direction:column;gap:14px;
+}
+.msg{
+  max-width:80%;padding:12px 16px;
+  border-radius:14px;
+  line-height:1.55;font-size:15px;
+  animation:slide 0.3s;
+}
+@keyframes slide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg-customer{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  align-self:flex-start;
+  border-top-right-radius:4px;
+}
+.msg-customer::before{
+  content:"🧑 לקוח";
+  display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600;
+}
+.msg-rep{
+  background:linear-gradient(135deg,rgba(59,130,246,0.15),rgba(59,130,246,0.05));
+  border:1px solid rgba(59,130,246,0.3);
+  align-self:flex-end;
+  border-top-left-radius:4px;
+}
+.msg-rep::before{
+  content:"🎯 אתה (נציג)";
+  display:block;font-size:11px;color:var(--blue);margin-bottom:4px;font-weight:600;
+}
+.msg-coach{
+  background:linear-gradient(135deg,rgba(200,169,110,0.12),rgba(200,169,110,0.04));
+  border:1px solid rgba(200,169,110,0.3);
+  align-self:center;max-width:90%;
+  font-size:13px;
+}
+.msg-coach::before{
+  content:"📋 מאמן — ניתוח תגובה";
+  display:block;font-size:11px;color:var(--gold);margin-bottom:6px;font-weight:700;
+}
+.coach-line{margin:4px 0;display:flex;gap:6px;align-items:flex-start}
+.coach-tag{
+  font-size:10px;font-weight:700;
+  padding:2px 6px;border-radius:4px;
+  white-space:nowrap;flex-shrink:0;
+}
+.tag-good{background:rgba(34,197,94,0.2);color:var(--green)}
+.tag-warn{background:rgba(245,158,11,0.2);color:var(--amber)}
+.tag-bad{background:rgba(239,68,68,0.2);color:var(--red)}
+.tag-tip{background:rgba(59,130,246,0.2);color:var(--blue)}
+
+.input-bar{
+  display:flex;gap:8px;
+  padding:16px 20px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  flex-shrink:0;
+}
+.input-bar textarea{
+  flex:1;
+  padding:12px 14px;
+  background:var(--surface2);
+  border:1px solid var(--border);border-radius:10px;
+  color:var(--text);font-family:'Heebo',sans-serif;font-size:15px;
+  resize:none;min-height:54px;max-height:150px;
+}
+.input-bar textarea:focus{outline:none;border-color:var(--gold)}
+.input-btns{display:flex;flex-direction:column;gap:6px}
+.send-btn{
+  padding:10px 22px;
+  background:linear-gradient(135deg,var(--gold),#a07838);
+  border:none;border-radius:10px;color:#fff;
+  font-family:'Heebo',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;transition:all 0.15s;white-space:nowrap;
+}
+.send-btn:hover{opacity:0.9}
+.send-btn:disabled{opacity:0.4;cursor:not-allowed}
+.end-btn{
+  padding:10px 22px;
+  background:var(--surface2);
+  border:1px solid var(--red);border-radius:10px;
+  color:var(--red);
+  font-family:'Heebo',sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;
+}
+.end-btn:hover{background:var(--red);color:#fff}
+
+.loading{display:flex;gap:6px;padding:14px;align-self:flex-start}
+.loading span{
+  width:8px;height:8px;border-radius:50%;background:var(--gold);
+  animation:bounce 1.4s infinite ease-in-out both;
+}
+.loading span:nth-child(1){animation-delay:-0.32s}
+.loading span:nth-child(2){animation-delay:-0.16s}
+@keyframes bounce{0%,80%,100%{transform:scale(0.5);opacity:0.3}40%{transform:scale(1);opacity:1}}
+
+/* FINAL REPORT */
+.report{
+  max-width:800px;margin:30px auto;padding:0 20px;
+  display:none;
+}
+.report.active{display:block}
+.report-title{
+  font-size:26px;font-weight:700;color:var(--gold);
+  text-align:center;margin-bottom:20px;
+}
+.grade-big{
+  font-size:72px;font-weight:900;
+  text-align:center;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin:10px 0;
+}
+.grade-label{text-align:center;color:var(--muted);margin-bottom:20px}
+.metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
+.metric{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:10px;padding:12px;
+}
+.metric-name{font-size:11px;color:var(--muted);margin-bottom:4px}
+.metric-value{font-size:22px;font-weight:700;color:var(--gold)}
+.metric-value.low{color:var(--red)}
+.metric-value.mid{color:var(--amber)}
+.metric-value.high{color:var(--green)}
+
+.api-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.85);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;
+}
+.api-box{
+  background:var(--surface);
+  border:1px solid var(--gold);border-radius:14px;
+  padding:26px;max-width:440px;width:92%;
+}
+.api-box h3{color:var(--gold);margin-bottom:10px}
+.api-box p{color:var(--muted);font-size:13px;margin-bottom:14px;line-height:1.5}
+.api-box input{
+  width:100%;padding:11px;
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-family:monospace;font-size:13px;margin-bottom:12px;
+}
+.api-box button{
+  width:100%;padding:12px;
+  background:linear-gradient(135deg,var(--gold),#a07838);
+  border:none;border-radius:8px;color:#fff;
+  font-family:'Heebo',sans-serif;font-size:15px;font-weight:600;cursor:pointer;
+}
+
+@media(max-width:600px){
+  .scenarios{grid-template-columns:1fr}
+  .fields{grid-template-columns:1fr}
+  .msg{max-width:90%}
+  .setup-title{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">🎓 <span>אימון נציג</span> פלטינום</div>
+  <div class="header-actions">
+    <a href="sales-agent-v2.html" class="btn-icon btn-back">← לסוכן האמיתי</a>
+    <button class="btn-icon" onclick="resetKey()">🔑</button>
+  </div>
+</div>
+
+<!-- API KEY MODAL -->
+<div class="api-modal" id="apiModal">
+  <div class="api-box">
+    <h3>🔑 הכנס מפתח Anthropic API</h3>
+    <p>המפתח נשמר מקומית בדפדפן שלך בלבד. לא נשלח לאף שרת חוץ מ-Anthropic.</p>
+    <input type="password" id="apiKey" placeholder="sk-ant-..." />
+    <button onclick="saveKey()">התחל</button>
+  </div>
+</div>
+
+<!-- SETUP SCREEN -->
+<div class="setup" id="setupScreen">
+  <div>
+    <div class="setup-title">🎓 אימון נציג מכירות</div>
+    <div class="setup-sub">AI משחק לקוח אמיתי. אתה מתרגל. אחרי כל תור — פידבק מקצועי מנותח לפי שיטת מנשרוב.</div>
+  </div>
+
+  <div class="section">
+    <h3>1. בחר תרחיש</h3>
+    <div class="scenarios" id="scenarios"></div>
+  </div>
+
+  <div class="section">
+    <h3>2. פרטי הלקוח</h3>
+    <div class="fields">
+      <div class="field">
+        <label>שם</label>
+        <input id="custName" placeholder="יורם כהן" value="יורם"/>
+      </div>
+      <div class="field">
+        <label>גיל</label>
+        <input id="custAge" type="number" placeholder="70" value="70"/>
+      </div>
+      <div class="field">
+        <label>קופת חולים</label>
+        <select id="custHmo">
+          <option>כללית</option>
+          <option>מכבי</option>
+          <option>מאוחדת</option>
+          <option>לאומית</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>סטטוס משפחתי</label>
+        <select id="custFamily">
+          <option>נשוי</option>
+          <option>רווק</option>
+          <option>גרוש</option>
+          <option>אלמן</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>עיסוק אחרון</label>
+        <input id="custJob" placeholder="פורש — היה מהנדס"/>
+      </div>
+      <div class="field">
+        <label>מצב בריאותי</label>
+        <input id="custHealth" placeholder="סוכרת קלה, לחץ דם"/>
+      </div>
+    </div>
+  </div>
+
+  <button class="start-btn" id="startBtn" onclick="startTraining()">🚀 התחל אימון</button>
+</div>
+
+<!-- TRAINING SCREEN -->
+<div class="training" id="trainingScreen">
+  <div class="stage-bar" id="stageBar">
+    <div class="stage-pill current" data-stage="1">1. חיבור</div>
+    <div class="stage-pill" data-stage="2">2. מצב נוכחי</div>
+    <div class="stage-pill" data-stage="3">3. בעיה</div>
+    <div class="stage-pill" data-stage="4">4. פער</div>
+    <div class="stage-pill" data-stage="5">5. זהות</div>
+    <div class="stage-pill" data-stage="6">6. מחויבות</div>
+    <div class="stage-pill" data-stage="7">7. סגירה</div>
+  </div>
+
+  <div class="chat" id="chat"></div>
+
+  <div class="input-bar">
+    <textarea id="repInput" placeholder="הקלד את התגובה שלך ללקוח..." rows="2"></textarea>
+    <div class="input-btns">
+      <button class="send-btn" id="sendBtn" onclick="sendResponse()">שלח</button>
+      <button class="end-btn" onclick="endTraining()">סיום</button>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL REPORT -->
+<div class="report" id="reportScreen">
+  <div class="report-title">🎯 סיכום האימון</div>
+  <div class="grade-big" id="gradeBig">--</div>
+  <div class="grade-label" id="gradeLabel">ציון כללי</div>
+  <div class="metrics" id="metrics"></div>
+  <div class="section" id="finalFeedback"></div>
+  <button class="start-btn" style="margin-top:16px" onclick="location.reload()">🔄 אימון נוסף</button>
+</div>
+
+<script>
+// ════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════
+const MODEL = 'claude-opus-4-7';
+let apiKey = localStorage.getItem('anthropic_key') || '';
+
+const SCENARIOS = [
+  {id:'cold_polite', icon:'❄️', name:'ליד קר מנומס',
+   desc:'לא ביקש שיחה. עונה יפה אבל רוצה לסיים מהר.',
+   level:'easy',
+   behavior:'מתחיל את השיחה מבולבל — "מי זה? מה רצית?" מנומס אבל לא מעוניין. אם הנציג שואל שאלה טובה, הוא עונה. אם הנציג לוחץ — סוגר.'},
+  {id:'cold_hostile', icon:'😠', name:'ליד קר עוין',
+   desc:'"עוד אחד שמתקשר? תפסיקו כבר"',
+   level:'hard',
+   behavior:'תוקפני, סרקסטי, "נמאס לי מהטלפונים האלה", "תורידו אותי מהרשימה". רק אם הנציג באמת יוצא דופן ויוצר חיבור אמיתי ב-30 שניות הראשונות — ממשיך לשמוע. אחרת מנתק.'},
+  {id:'has_insurance', icon:'📋', name:'"יש לי כבר ביטוח"',
+   desc:'מושלם של קופ"ח + ביטוח פרטי. למה לו עוד?',
+   level:'medium',
+   behavior:'בטוח בעצמו, "אני מכוסה מכל הכיוונים, מה אתה יכול להציע לי?". מרגיש שהוא ממלא חובה בשיחה. רק שאלת "מתי בדקת פעם אחרונה מה באמת מכוסה?" עשויה לפתוח אותו. מכיר את הקופה שלו אבל לא את פרטי הכיסוי.'},
+  {id:'too_expensive', icon:'💸', name:'"יקר מדי"',
+   desc:'בפנסיה, כל שקל נספר',
+   level:'medium',
+   behavior:'מודה שזה נשמע טוב אבל "248 שקל בחודש זה יותר מ-3000 שקל בשנה". ממקד הכל במחיר. אם הנציג מוריד ל-220 מיד — הלקוח מזלזל. אם הנציג בונה ערך קודם ורק בסוף מוריד — קונה.'},
+  {id:'need_wife', icon:'👰', name:'"אני חייב לדבר עם אשתי"',
+   desc:'עוצר כל החלטה בנימוק הזה',
+   level:'medium',
+   behavior:'נשמע מתעניין, שואל שאלות, אבל כשמגיעים לסגירה אומר "אני לא מחליט לבד, אשתי צריכה לאשר". אם הנציג מפרק את ההתנגדות בכבוד ועם פתרון "מפיקים על שמך ומבטלים אם היא לא מסכימה" — סוגר.'},
+  {id:'analytical', icon:'🤔', name:'לקוח אנליטי',
+   desc:'רוצה מספרים, השוואות, פירוט מלא',
+   level:'hard',
+   behavior:'מהנדס לשעבר. שואל שאלות טכניות מדויקות — "תן לי רשימה של כל הכיסויים", "איך זה משתלם לעומת הראל?", "מה ההשתתפות העצמית הממוצעת?". ישעמם לו אם הנציג לא ממוקד. עונה לרגש רק אחרי שקיבל מספיק מידע הגיוני.'},
+  {id:'senior_lonely', icon:'👴', name:'קשיש בודד',
+   desc:'שמח לדבר, מסיט לנושאים צדדיים',
+   level:'easy',
+   behavior:'אלמן בן 78, ילדים בחו"ל. שמח שמישהו מתקשר. מתחיל לספר על הנכדים, על הבריאות, על הימים הטובים. הנציג צריך לנווט אותו בחזרה למסלול בלי להעליב. אם הנציג מקשיב ברגישות ואז מקשר לצורך — הוא סוגר מהר.'},
+  {id:'fake_interest', icon:'🎭', name:'"כן, כן" — לא מחויב',
+   desc:'מסכים לכל דבר, לא מתכוון לסגור',
+   level:'hard',
+   behavior:'"מעניין", "אני מבין", "נכון מאוד" — אבל בסוף "אני אחשוב על זה". לא מתנגד כי זה דורש אנרגיה. רק אם הנציג יוצר לו פער רגשי אמיתי ושאלת מחויבות — הוא נכנס. אחרת מבטיח "אחזור אליך".'},
+  {id:'lost_loved_one', icon:'💔', name:'איבד קרוב לאחרונה',
+   desc:'רגיש, פתוח, אבל זהיר מאוד',
+   level:'medium',
+   behavior:'אחיו נפטר לפני שנה מבעיה רפואית שלא טופלה בזמן. רגיש מאוד לנושא, אבל פוחד שינצלו את הסיטואציה. אם הנציג נוגע בזה בטון של רופא (שקט, בגובה עיניים) — נפתח. אם מרגיש מניפולציה — נסגר ומנתק.'},
+  {id:'tech_savvy_skeptic', icon:'🔍', name:'סקפטי — "בודק באינטרנט"',
+   desc:'"אחפש ביקורות קודם"',
+   level:'hard',
+   behavior:'"אני לא סוגר כלום בטלפון. תן לי לחפש את החברה באינטרנט ואחזור". בעל סמארטפון. חושש מתרמיות. רק סיפור אישי אותנטי או הוכחה של ותק (10 שנים בשוק, עשרות אלפי לקוחות) עשויים להזיז אותו.'}
+];
+
+const MENASHROV_STAGES = ['חיבור','מצב נוכחי','בעיה','פער','זהות','מחויבות','סגירה'];
+
+let currentScenario = null;
+let customerPersona = null;
+let history = [];
+let currentStage = 1;
+let metrics = {
+  ironRule: 0,         // ended with question
+  ironRuleTotal: 0,
+  ammunition: 0,       // used customer's words
+  stagesReached: 1,
+  objectionsHandled: 0,
+  totalTurns: 0
+};
+
+// ════════════════════════════════════
+// INIT
+// ════════════════════════════════════
+window.onload = () => {
+  if (apiKey) document.getElementById('apiModal').style.display = 'none';
+  renderScenarios();
+  renderPastLessons();
+};
+
+function saveKey(){
+  const k = document.getElementById('apiKey').value.trim();
+  if (!k.startsWith('sk-ant-')) {alert('מפתח לא תקין'); return;}
+  apiKey = k;
+  localStorage.setItem('anthropic_key', k);
+  document.getElementById('apiModal').style.display = 'none';
+}
+function resetKey(){
+  if (!confirm('לאפס את המפתח?')) return;
+  localStorage.removeItem('anthropic_key');
+  apiKey = '';
+  document.getElementById('apiModal').style.display = 'flex';
+}
+
+function renderScenarios(){
+  const container = document.getElementById('scenarios');
+  container.innerHTML = SCENARIOS.map(s => `
+    <div class="scenario" data-id="${s.id}" onclick="selectScenario('${s.id}')">
+      <div class="scenario-icon">${s.icon}</div>
+      <div class="scenario-name">${s.name}</div>
+      <div class="scenario-desc">${s.desc}</div>
+      <div class="scenario-level level-${s.level}">${s.level === 'easy' ? 'קל' : s.level === 'medium' ? 'בינוני' : 'קשה'}</div>
+    </div>
+  `).join('');
+}
+
+function selectScenario(id){
+  document.querySelectorAll('.scenario').forEach(e => e.classList.remove('selected'));
+  document.querySelector(`[data-id="${id}"]`).classList.add('selected');
+  currentScenario = SCENARIOS.find(s => s.id === id);
+}
+
+// ════════════════════════════════════
+// START TRAINING
+// ════════════════════════════════════
+async function startTraining(){
+  if (!currentScenario) {alert('בחר תרחיש'); return;}
+  if (!apiKey) {document.getElementById('apiModal').style.display='flex'; return;}
+
+  customerPersona = {
+    name: document.getElementById('custName').value || 'יורם',
+    age: document.getElementById('custAge').value || '70',
+    hmo: document.getElementById('custHmo').value,
+    family: document.getElementById('custFamily').value,
+    job: document.getElementById('custJob').value || '',
+    health: document.getElementById('custHealth').value || ''
+  };
+
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('trainingScreen').classList.add('active');
+
+  // opening customer line
+  await generateCustomerLine(true);
+}
+
+// ════════════════════════════════════
+// CUSTOMER ROLE-PLAY PROMPT
+// ════════════════════════════════════
+// ════════════════════════════════════
+// MEMORY — lessons learned from past sessions
+// ════════════════════════════════════
+function loadLessons(){
+  try {
+    const raw = localStorage.getItem('sales_lessons');
+    return raw ? JSON.parse(raw) : [];
+  } catch(e){ return []; }
+}
+function saveLesson(lesson){
+  const lessons = loadLessons();
+  lessons.unshift(lesson);
+  // keep last 20 lessons
+  localStorage.setItem('sales_lessons', JSON.stringify(lessons.slice(0, 20)));
+}
+function getLessonsContext(){
+  const lessons = loadLessons().slice(0, 5); // last 5 sessions
+  if (lessons.length === 0) return '';
+  const list = lessons.map((l,i) => `${i+1}. תרחיש "${l.scenario}" (ציון ${l.grade}): ${l.keyLesson}`).join('\n');
+  return `\n\n## לקחים משיחות קודמות של הנציג הזה (השתדל לא לחזור על הטעויות)\n${list}`;
+}
+
+function getCustomerSystemPrompt(){
+  return `אתה משחק לקוח בשם ${customerPersona.name}, בן ${customerPersona.age}, מבוטח ב${customerPersona.hmo}, ${customerPersona.family}.
+${customerPersona.job ? 'עיסוק: '+customerPersona.job+'.' : ''}
+${customerPersona.health ? 'מצב בריאותי: '+customerPersona.health+'.' : ''}
+
+## התרחיש שלך
+${currentScenario.name} (${currentScenario.desc})
+
+## ההתנהגות שלך
+${currentScenario.behavior}
+
+## כללים חשובים
+- דבר טבעי, בעברית יומיומית של אדם בגיל השלישי — לא ספרותי, עם שיהוקים ("תשמע...", "נו...", "אה")
+- תשובות קצרות — 1-3 משפטים בדרך כלל, לא מונולוגים
+- אל תהיה מסכים יתר על המידה — לקוח אמיתי יש לו דעות, ספקות, התנגדויות
+- אם הנציג עושה עבודה מעולה (שואל שאלות חכמות, מגיע לרגש, יוצר פער) — תתחיל להיפתח
+- אם הנציג לוחץ, מצהיר במקום לשאול, מדבר מהסקריפט — תתנגד יותר או תסגור
+- אתה לא יודע שזו סימולציה. אתה מאמין שאתה לקוח אמיתי בשיחה אמיתית.
+- אל תיתן הסבר, ניתוח או כותרת — רק את התגובה של הלקוח, כמו בשיחת טלפון.
+- אל תכתוב "לקוח:" או שום תיוג — רק את הטקסט של מה שהלקוח אומר.`;
+}
+
+// ════════════════════════════════════
+// COACH PROMPT — analyze rep's response
+// ════════════════════════════════════
+function getCoachSystemPrompt(){
+  return `אתה מאמן מכירות מומחה לשיטת רון מנשרוב בפלטינום כתב שירות.
+אחרי כל תגובה של הנציג — תן ניתוח קצר, חד וממוקד.
+
+## מה לבדוק
+1. **חוק הברזל** — האם התגובה נגמרה בשאלה? (הכי חשוב!)
+2. **שלב מנשרוב** — באיזה שלב הנציג נמצא? (חיבור/מצב נוכחי/בעיה/פער/זהות/מחויבות/סגירה)
+3. **תחמושת מהלקוח** — האם השתמש בדברי הלקוח שלו עצמו?
+4. **טון** — האם נשמע כמו רופא שקט, או כמו נציג לחוץ?
+5. **טכניקה** — איזו טכניקה מהשיטה הופעלה? (פיצ'ר→תועלת→למה / הנשוי באושר / האריה / שאלת סולם / משפט הסיכון)
+
+## פורמט התגובה שלך
+JSON בפורמט הבא בלבד, ללא טקסט לפניו או אחריו:
+{
+  "stage": מספר 1-7 של השלב הנוכחי,
+  "ironRuleOk": true/false (האם הסתיים בשאלה),
+  "usedAmmo": true/false (האם ציטט את הלקוח),
+  "tone": "good" / "warn" / "bad",
+  "feedback": [
+    {"tag": "good"/"warn"/"bad"/"tip", "text": "משפט קצר של 10-15 מילים"}
+  ]
+}
+
+תן 2-4 שורות פידבק בלבד. חד, ממוקד, מעשי. בעברית.${getLessonsContext()}`;
+}
+
+// ════════════════════════════════════
+// STREAM API CALLER
+// ════════════════════════════════════
+async function callAI(systemPrompt, messages, opts = {}){
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: opts.maxTokens || 500,
+      system: systemPrompt,
+      messages: messages
+    })
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const data = await res.json();
+  return data.content[0].text;
+}
+
+// ════════════════════════════════════
+// GENERATE CUSTOMER LINE
+// ════════════════════════════════════
+async function generateCustomerLine(isOpening){
+  showLoading();
+  try {
+    const messages = isOpening
+      ? [{ role: 'user', content: `השיחה מתחילה עכשיו. אתה ${customerPersona.name}. הנציג עוד לא אמר כלום. תגיד את המשפט הראשון שלך בתחילת השיחה (לדוגמה: "הלו?", "כן, מי זה?"), לפי ההתנהגות שלך בתרחיש.` }]
+      : [...history, { role: 'user', content: '[תור הלקוח — תגובה קצרה וטבעית]' }];
+
+    const text = await callAI(getCustomerSystemPrompt(), messages, {maxTokens: 300});
+    removeLoading();
+    addMessage('customer', text);
+    history.push({role: 'assistant', content: text});
+  } catch(e) {
+    removeLoading();
+    addMessage('customer', '[שגיאה: ' + e.message + ']');
+  }
+}
+
+// ════════════════════════════════════
+// SEND REP RESPONSE
+// ════════════════════════════════════
+async function sendResponse(){
+  const input = document.getElementById('repInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  document.getElementById('sendBtn').disabled = true;
+  addMessage('rep', text);
+  metrics.totalTurns++;
+
+  // Coach analysis (in parallel with next customer line)
+  const coachPromise = analyzeRepResponse(text);
+
+  // Customer continues
+  history.push({role: 'user', content: text});
+
+  await coachPromise; // show coach first
+  await generateCustomerLine(false);
+
+  document.getElementById('sendBtn').disabled = false;
+  input.focus();
+}
+
+// ════════════════════════════════════
+// ANALYZE REP (COACH)
+// ════════════════════════════════════
+async function analyzeRepResponse(repText){
+  // Build context for coach
+  const lastCustomer = history.length > 0 && history[history.length-1].role === 'assistant'
+    ? history[history.length-1].content
+    : '(פתיחת שיחה)';
+
+  const coachMessage = [{
+    role: 'user',
+    content: `הלקוח אמר: "${lastCustomer}"\n\nהנציג הגיב: "${repText}"\n\nתן ניתוח לפי הפורמט.`
+  }];
+
+  try {
+    const response = await callAI(getCoachSystemPrompt(), coachMessage, {maxTokens: 400});
+    const json = extractJSON(response);
+    if (json) {
+      updateMetrics(json);
+      showCoachMessage(json);
+    }
+  } catch(e){
+    console.error('Coach failed:', e);
+  }
+}
+
+function extractJSON(text){
+  try {
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) return JSON.parse(match[0]);
+  } catch(e){}
+  return null;
+}
+
+function updateMetrics(analysis){
+  metrics.ironRuleTotal++;
+  if (analysis.ironRuleOk) metrics.ironRule++;
+  if (analysis.usedAmmo) metrics.ammunition++;
+  if (analysis.stage > metrics.stagesReached) {
+    metrics.stagesReached = analysis.stage;
+    currentStage = analysis.stage;
+    updateStageBar();
+  }
+}
+
+function updateStageBar(){
+  document.querySelectorAll('.stage-pill').forEach(p => {
+    const s = parseInt(p.dataset.stage);
+    p.classList.remove('current','done');
+    if (s < currentStage) p.classList.add('done');
+    else if (s === currentStage) p.classList.add('current');
+  });
+}
+
+// ════════════════════════════════════
+// UI HELPERS
+// ════════════════════════════════════
+function addMessage(type, text){
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.className = `msg msg-${type}`;
+  div.textContent = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function showCoachMessage(analysis){
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.className = 'msg msg-coach';
+  const lines = analysis.feedback.map(f => `
+    <div class="coach-line">
+      <span class="coach-tag tag-${f.tag}">${f.tag === 'good' ? '✓' : f.tag === 'warn' ? '⚠' : f.tag === 'bad' ? '✗' : '💡'}</span>
+      <span>${f.text}</span>
+    </div>
+  `).join('');
+  const stageLabel = MENASHROV_STAGES[analysis.stage - 1] || '—';
+  div.innerHTML = `
+    <div style="font-size:11px;color:var(--muted);margin-bottom:6px">
+      שלב: <strong style="color:var(--gold)">${stageLabel}</strong>
+      ${analysis.ironRuleOk ? '• ✅ הסתיים בשאלה' : '• ❌ לא הסתיים בשאלה'}
+      ${analysis.usedAmmo ? '• 🎯 תחמושת מהלקוח' : ''}
+    </div>
+    ${lines}
+  `;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function showLoading(){
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.className = 'loading';
+  div.id = 'loadingDots';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+function removeLoading(){
+  const el = document.getElementById('loadingDots');
+  if (el) el.remove();
+}
+
+// ════════════════════════════════════
+// END TRAINING & REPORT
+// ════════════════════════════════════
+async function endTraining(){
+  if (!confirm('לסיים את האימון ולקבל ציון?')) return;
+  document.getElementById('trainingScreen').classList.remove('active');
+  document.getElementById('reportScreen').classList.add('active');
+
+  const irronRulePct = metrics.ironRuleTotal > 0 ? Math.round(metrics.ironRule / metrics.ironRuleTotal * 100) : 0;
+  const ammoPct = metrics.totalTurns > 0 ? Math.round(metrics.ammunition / metrics.totalTurns * 100) : 0;
+
+  const grade = calcGrade(irronRulePct, ammoPct, metrics.stagesReached);
+  document.getElementById('gradeBig').textContent = grade.letter;
+  document.getElementById('gradeLabel').textContent = grade.label;
+
+  const metricsEl = document.getElementById('metrics');
+  metricsEl.innerHTML = `
+    <div class="metric">
+      <div class="metric-name">חוק הברזל (שאלה בסוף)</div>
+      <div class="metric-value ${gradeClass(irronRulePct)}">${irronRulePct}%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-name">תחמושת מהלקוח</div>
+      <div class="metric-value ${gradeClass(ammoPct)}">${ammoPct}%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-name">שלב מנשרוב שהגעת</div>
+      <div class="metric-value ${gradeClass(metrics.stagesReached*14)}">${metrics.stagesReached}/7</div>
+    </div>
+    <div class="metric">
+      <div class="metric-name">סה״כ תגובות</div>
+      <div class="metric-value">${metrics.totalTurns}</div>
+    </div>
+  `;
+
+  // Final AI feedback
+  const fbEl = document.getElementById('finalFeedback');
+  fbEl.innerHTML = '<h3>🎯 סיכום מקצועי</h3><div id="finalText" style="line-height:1.7">מנתח...</div>';
+
+  try {
+    // Get human-readable summary for display
+    const summary = await callAI(
+      `אתה מאמן מכירות. תן סיכום של השיחה המלאה — מה היה טוב, מה לשפר, והמלצה עיקרית אחת לפעם הבאה. 4-6 משפטים קצרים. בעברית.`,
+      [{role: 'user', content: 'הנה השיחה המלאה:\n\n' + history.map((m,i) => `${m.role === 'user' ? 'נציג' : 'לקוח'}: ${m.content}`).join('\n') + '\n\nתן סיכום.'}],
+      {maxTokens: 800}
+    );
+    document.getElementById('finalText').textContent = summary;
+
+    // Extract machine-readable lesson to save
+    const lessonRaw = await callAI(
+      `אתה מאמן. בהינתן שיחת אימון, חלץ לקח קצר וחד שהנציג צריך לזכור לפעם הבאה. הלקח יוזרק לפרומפט של המאמן בשיחה הבאה. תן JSON בלבד:
+{
+  "keyLesson": "משפט אחד קצר (עד 15 מילים) של הטעות העיקרית / המפתח לשיפור",
+  "mistakes": ["2-3 טעויות ספציפיות"],
+  "wins": ["1-2 דברים שעבדו טוב"]
+}`,
+      [{role: 'user', content: 'תרחיש: ' + currentScenario.name + '\nציון: ' + grade.letter + '\nחוק הברזל: ' + irronRulePct + '%\nתחמושת: ' + ammoPct + '%\nשלבים: ' + metrics.stagesReached + '/7\n\nהשיחה:\n' + history.map((m,i) => `${m.role === 'user' ? 'נציג' : 'לקוח'}: ${m.content}`).join('\n')}],
+      {maxTokens: 400}
+    );
+    const lesson = extractJSON(lessonRaw);
+    if (lesson) {
+      saveLesson({
+        date: new Date().toISOString().slice(0,10),
+        scenario: currentScenario.name,
+        grade: grade.letter,
+        keyLesson: lesson.keyLesson,
+        mistakes: lesson.mistakes || [],
+        wins: lesson.wins || []
+      });
+    }
+  } catch(e){
+    document.getElementById('finalText').textContent = 'לא הצלחתי להפיק סיכום: ' + e.message;
+  }
+}
+
+// ════════════════════════════════════
+// SHOW PAST LESSONS ON SETUP
+// ════════════════════════════════════
+function renderPastLessons(){
+  const lessons = loadLessons();
+  if (lessons.length === 0) return;
+  const container = document.getElementById('setupScreen');
+  const section = document.createElement('div');
+  section.className = 'section';
+  section.innerHTML = `
+    <h3>📚 לקחים משיחות קודמות שלך (${lessons.length})</h3>
+    <div style="display:grid;gap:10px">
+      ${lessons.slice(0,5).map(l => `
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px">
+            <span>${l.date} · ${l.scenario}</span>
+            <span style="color:var(--gold);font-weight:700">${l.grade}</span>
+          </div>
+          <div style="font-size:14px;color:var(--gold2)">💡 ${l.keyLesson}</div>
+        </div>
+      `).join('')}
+    </div>
+    ${lessons.length > 0 ? '<button class="btn-icon" style="margin-top:12px" onclick="clearLessons()">🗑️ נקה לקחים</button>' : ''}
+  `;
+  container.appendChild(section);
+}
+function clearLessons(){
+  if (!confirm('למחוק את כל הלקחים? (פעולה לא הפיכה)')) return;
+  localStorage.removeItem('sales_lessons');
+  location.reload();
+}
+
+function calcGrade(ironPct, ammoPct, stages){
+  const score = (ironPct * 0.4) + (ammoPct * 0.3) + (stages/7 * 100 * 0.3);
+  if (score >= 90) return {letter:'A+', label:'מעולה! סטנדרט מקצועי'};
+  if (score >= 80) return {letter:'A', label:'יפה מאוד'};
+  if (score >= 70) return {letter:'B', label:'טוב, יש לאן להתקדם'};
+  if (score >= 60) return {letter:'C', label:'בסיסי — צריך לחדד'};
+  if (score >= 50) return {letter:'D', label:'חלש — חוזרים לשיטה'};
+  return {letter:'F', label:'נדרש אימון מחודש'};
+}
+function gradeClass(pct){
+  if (pct >= 75) return 'high';
+  if (pct >= 50) return 'mid';
+  return 'low';
+}
+
+// Enter to send
+document.getElementById('repInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendResponse();
+  }
+});
+</script>
+</body>
+</html>
