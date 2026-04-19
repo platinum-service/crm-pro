@@ -436,6 +436,8 @@ body{
   </div>
   <div class="header-actions">
     <a href="sales-training.html" class="btn-icon" style="text-decoration:none">🎓 אימון</a>
+    <button class="btn-icon" onclick="openManualLead()">👤 טען לקוח</button>
+    <button class="btn-icon" id="btnSaveCall" onclick="saveCurrentCallSummary()">🏁 סיים ושמור</button>
     <button class="btn-icon" onclick="clearKey()">🔑</button>
     <button class="btn-icon btn-new" onclick="newCall()">+ שיחה חדשה</button>
   </div>
@@ -628,6 +630,7 @@ let recognition = null;
 let voiceTimeout = null;
 let currentScore = 0;
 let leadContext = '';
+let currentCustomerPhone = '';
 
 // ════════════════════════════════════
 // LESSONS MEMORY — shared with sales-training.html
@@ -641,6 +644,151 @@ function getLessonsContext(){
     const list = lessons.map((l,i) => `${i+1}. תרחיש "${l.scenario}" (${l.grade}): ${l.keyLesson}`).join('\n');
     return `\n\n## לקחים מאימונים קודמים של הנציג (אל תחזור על הטעויות)\n${list}`;
   } catch(e){ return ''; }
+}
+
+// ════════════════════════════════════
+// CUSTOMER MEMORY — per-customer call history
+// ════════════════════════════════════
+function normalizePhone(phone){
+  if (!phone) return '';
+  return phone.replace(/[^\d]/g, '').replace(/^972/, '0');
+}
+
+function loadCustomers(){
+  try {
+    const raw = localStorage.getItem('customer_memory');
+    return raw ? JSON.parse(raw) : {};
+  } catch(e){ return {}; }
+}
+
+function saveCustomers(data){
+  localStorage.setItem('customer_memory', JSON.stringify(data));
+}
+
+function loadCustomer(phone){
+  const key = normalizePhone(phone);
+  if (!key) return null;
+  const all = loadCustomers();
+  return all[key] || null;
+}
+
+function saveCustomerCall(phone, name, summary){
+  const key = normalizePhone(phone);
+  if (!key) return;
+  const all = loadCustomers();
+  if (!all[key]) {
+    all[key] = { name: name || '', phone: key, calls: [], firstCall: new Date().toISOString() };
+  }
+  if (name && !all[key].name) all[key].name = name;
+  all[key].calls.push({
+    date: new Date().toISOString(),
+    ...summary
+  });
+  // keep last 10 calls
+  all[key].calls = all[key].calls.slice(-10);
+  saveCustomers(all);
+}
+
+function getCustomerContext(phone){
+  const cust = loadCustomer(phone);
+  if (!cust || !cust.calls || cust.calls.length === 0) return '';
+
+  const lastCalls = cust.calls.slice(-3).reverse();
+  const lines = lastCalls.map((c,i) => {
+    const date = c.date.slice(0,10);
+    return `**שיחה ${i+1} (${date})** — סטטוס: ${c.status || 'לא ידוע'} (ציון ${c.score || '?'}/10)
+- התנגדויות: ${(c.objections || []).join(', ') || 'אין'}
+- תחמושת אישית (דברים שהוא אמר): ${(c.ammunition || []).join(' | ') || '—'}
+- לקח מהשיחה: ${c.lesson || '—'}`;
+  }).join('\n\n');
+
+  const objAll = cust.calls.flatMap(c => c.objections || []);
+  const objCount = {};
+  objAll.forEach(o => objCount[o] = (objCount[o]||0) + 1);
+  const recurring = Object.entries(objCount).filter(([,n]) => n >= 2).map(([o]) => o);
+
+  return `\n\n## ⭐ הלקוח הזה כבר דיבר איתנו ${cust.calls.length} פעמים — זכור את ההיסטוריה!
+${recurring.length > 0 ? `**התנגדויות חוזרות:** ${recurring.join(', ')} — תטפל בהן מראש.\n` : ''}
+${lines}
+
+**חשוב:** התייחס להיסטוריה באופן טבעי ("דיברנו בפעם שעברה על..." / "אתה אמרת לי ש...") — זה בונה אמון. אל תשאל שאלות שכבר ענה עליהן. השתמש ב"תחמושת אישית" שלו.`;
+}
+
+function openManualLead(){
+  const phone = prompt('הכנס מספר טלפון של הלקוח:');
+  if (!phone) return;
+  const existing = loadCustomer(phone);
+  const name = prompt('שם הלקוח:' + (existing ? ' (נמצא: '+existing.name+')' : ''), existing?.name || '') || '';
+  currentCustomerPhone = phone;
+
+  // הצג פרטים בסרגל הליד
+  const bar = document.getElementById('leadBar');
+  if (bar) {
+    bar.style.display = 'flex';
+    document.getElementById('leadName').textContent = name;
+    document.getElementById('leadPhone').textContent = phone;
+    document.getElementById('leadNotes').textContent = existing ? `${existing.calls.length} שיחות קודמות` : 'לקוח חדש';
+  }
+
+  leadContext = `\n\n## פרטי הליד הנוכחי\nשם: ${name}\nטלפון: ${phone}`;
+
+  if (existing && existing.calls.length > 0) {
+    appendMsg('ai', `⭐ לקוח חוזר — **${name}** (${existing.calls.length} שיחות קודמות)\n\nהסוכן טעון עם כל ההיסטוריה שלו — התנגדויות, תחמושת, וסטטוסים. תתחיל לדבר.`);
+  } else {
+    appendMsg('ai', `לקוח חדש נטען: **${name}** ${phone}\nהתחל שיחה!`);
+  }
+  if (!timerInterval) startTimer();
+}
+
+async function saveCurrentCallSummary(){
+  if (!currentCustomerPhone) { alert('אין ליד פעיל לשמור — טעון ליד דרך URL או הזן טלפון'); return; }
+  if (history.length === 0) { alert('אין שיחה לסכם'); return; }
+
+  if (!confirm('לסכם את השיחה ולשמור לזיכרון הלקוח?')) return;
+
+  const btn = document.getElementById('btnSaveCall');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ מנתח...'; }
+
+  try {
+    const transcript = history.map(m => `${m.role === 'user' ? 'מה הלקוח אמר' : 'מה הנציג ענה'}: ${m.content}`).join('\n');
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-opus-4-7',
+        max_tokens: 700,
+        system: `אתה מנתח שיחות מכירה. חלץ מהשיחה הבאה מידע מובנה. תן JSON בלבד בפורמט:
+{
+  "status": "סגר" / "לא סגר" / "אחשוב" / "פולו-אפ" / "סירב",
+  "score": מספר 1-10 של הסיכוי,
+  "objections": ["רשימת התנגדויות עיקריות"],
+  "ammunition": ["ציטוטים חשובים של הלקוח להשתמש בפעם הבאה — פרטים אישיים, כאבים, הצהרות"],
+  "lesson": "משפט אחד קצר — איך לגשת ללקוח הזה בפעם הבאה"
+}`,
+        messages: [{ role: 'user', content: transcript }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content[0].text;
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('לא התקבל JSON תקין');
+    const summary = JSON.parse(match[0]);
+
+    const name = document.getElementById('leadName')?.textContent || '';
+    saveCustomerCall(currentCustomerPhone, name, summary);
+
+    appendMsg('ai', `✅ השיחה נשמרה בזיכרון הלקוח:\n\n**סטטוס:** ${summary.status} (ציון ${summary.score}/10)\n**התנגדויות:** ${(summary.objections||[]).join(', ') || 'אין'}\n**לקח לפעם הבאה:** ${summary.lesson}`);
+
+  } catch(e) {
+    alert('שגיאה בשמירה: ' + e.message);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '🏁 סיים ושמור'; }
+  }
 }
 
 // INIT
@@ -669,6 +817,15 @@ function loadLeadFromURL() {
   // הכנס לתוך ה-system prompt כמידע על הלקוח
   leadContext = `\n\n## פרטי הליד הנוכחי\nשם: ${name}\nטלפון: ${phone}\nהערות: ${notes}`;
 
+  // שמור לצורך שמירת סיכום בסוף
+  currentCustomerPhone = phone;
+
+  // חפש לקוח קיים בזיכרון
+  const existing = loadCustomer(phone);
+  const historyNote = existing && existing.calls.length > 0
+    ? `<p style="color:var(--gold);font-size:13px;margin-top:8px">⭐ לקוח חוזר — ${existing.calls.length} שיחות קודמות. היסטוריה נטענה לסוכן.</p>`
+    : '';
+
   // הודעת פתיחה אוטומטית
   const welcome = document.querySelector('.welcome');
   if (welcome) {
@@ -676,6 +833,7 @@ function loadLeadFromURL() {
       <h3>שיחה עם ${name || 'לקוח'} 📞</h3>
       <p style="color:var(--muted);font-size:13px">${phone}</p>
       ${notes ? `<p style="color:var(--muted);font-size:12px;margin-top:4px">${notes}</p>` : ''}
+      ${historyNote}
       <p style="margin-top:12px">לחץ על התנגדות או הקלד מה הלקוח אמר</p>
     `;
   }
@@ -796,7 +954,7 @@ async function sendMessage() {
         model: 'claude-opus-4-7',
         max_tokens: 1500,
         stream: true,
-        system: SYSTEM_PROMPT + leadContext + getLessonsContext(),
+        system: SYSTEM_PROMPT + leadContext + getCustomerContext(currentCustomerPhone) + getLessonsContext(),
         messages: history
       })
     });
