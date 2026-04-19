@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 דשבורד מכירות — פלטינום</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a1428; --surface:#0f1a2e; --surface2:#1a2744;
+  --gold:#d4af37; --text:#e8e8ec; --muted:#8b8b94;
+  --border:rgba(212,175,55,0.2); --green:#22c55e; --red:#ef4444; --amber:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Heebo',sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh;padding:20px}
+.wrap{max-width:1200px;margin:0 auto}
+h1{color:var(--gold);font-size:28px;margin-bottom:6px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:24px}
+.nav{display:flex;gap:10px;margin-bottom:24px}
+.nav a{padding:8px 14px;background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);text-decoration:none;font-size:13px;font-weight:600}
+.nav a:hover{background:var(--surface2)}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:30px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
+.kpi .label{font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:0.5px}
+.kpi .val{font-size:32px;font-weight:800;color:var(--gold);line-height:1.1}
+.kpi .sub2{font-size:11px;color:var(--muted);margin-top:4px}
+
+.row{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:20px}
+@media(max-width:900px){.row{grid-template-columns:1fr}}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.card h2{font-size:16px;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+.bar{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px}
+.bar .name{flex:0 0 140px;color:var(--text)}
+.bar .track{flex:1;height:18px;background:var(--surface2);border-radius:9px;overflow:hidden;position:relative}
+.bar .fill{height:100%;border-radius:9px;transition:width 0.5s}
+.bar .num{flex:0 0 40px;text-align:left;font-weight:700;color:var(--muted)}
+
+.cust-row{display:grid;grid-template-columns:1fr 80px 80px 100px;gap:8px;
+  padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;align-items:center}
+.cust-row:hover{background:var(--surface2)}
+.cust-row .nm{font-weight:600}
+.cust-row .ph{color:var(--muted);font-size:12px}
+.badge{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;text-align:center}
+.b-good{background:rgba(34,197,94,0.15);color:var(--green)}
+.b-mid{background:rgba(245,158,11,0.15);color:var(--amber)}
+.b-bad{background:rgba(239,68,68,0.15);color:var(--red)}
+
+.lesson{padding:10px 12px;border-right:3px solid var(--gold);background:var(--surface2);
+  margin-bottom:8px;border-radius:6px;font-size:13px;line-height:1.5}
+.lesson .meta{font-size:11px;color:var(--muted);margin-bottom:3px}
+.empty{color:var(--muted);text-align:center;padding:20px;font-size:13px}
+
+.actions{display:flex;gap:8px;margin-top:14px}
+.btn{padding:8px 14px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);cursor:pointer;font-size:12px;font-family:'Heebo',sans-serif;font-weight:600}
+.btn:hover{background:var(--gold);color:#000;border-color:var(--gold)}
+.btn.danger:hover{background:var(--red);color:#fff;border-color:var(--red)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>📊 דשבורד מכירות</h1>
+<div class="sub">סטטיסטיקה חיה מהשיחות שלך — נטענת מהזיכרון המקומי של הסוכן</div>
+
+<div class="nav">
+  <a href="sales-agent-v2.html">← חזור לסוכן</a>
+  <a href="sales-training.html">🎓 מצב אימון</a>
+  <a href="index.html">🏠 CRM</a>
+</div>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="row">
+  <div class="card">
+    <h2>👥 לקוחות בזיכרון</h2>
+    <div id="customers"></div>
+  </div>
+
+  <div class="card">
+    <h2>🛡️ התנגדויות נפוצות</h2>
+    <div id="objections"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="card">
+    <h2>📚 לקחים מאימון</h2>
+    <div id="lessons"></div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ ניהול נתונים</h2>
+    <div style="font-size:13px;color:var(--muted);line-height:1.6">
+      כל הנתונים נשמרים מקומית בדפדפן (localStorage).<br/>
+      גיבוי = ייצוא JSON. ניקוי = מחיקה מוחלטת.
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="exportData()">⬇ ייצא הכל (JSON)</button>
+      <button class="btn" onclick="importData()">⬆ ייבוא</button>
+      <button class="btn danger" onclick="clearAll()">🗑 נקה הכל</button>
+    </div>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
+  </div>
+</div>
+
+</div>
+
+<script>
+function loadCustomers(){
+  try { return JSON.parse(localStorage.getItem('customer_memory')||'{}'); }
+  catch(e){ return {}; }
+}
+function loadLessons(){
+  try { return JSON.parse(localStorage.getItem('sales_lessons')||'[]'); }
+  catch(e){ return []; }
+}
+
+const STATUS_CLS = {
+  'סגר':'b-good','פולו-אפ':'b-mid','אחשוב':'b-mid',
+  'לא סגר':'b-bad','סירב':'b-bad'
+};
+
+function renderKpis(){
+  const customers = loadCustomers();
+  const arr = Object.values(customers);
+  const allCalls = arr.flatMap(c => c.calls || []);
+
+  const closed = allCalls.filter(c => c.status === 'סגר').length;
+  const followup = allCalls.filter(c => ['אחשוב','פולו-אפ'].includes(c.status)).length;
+  const lost = allCalls.filter(c => ['לא סגר','סירב'].includes(c.status)).length;
+  const avgScore = allCalls.length ? (allCalls.reduce((s,c)=>s+(c.score||0),0)/allCalls.length).toFixed(1) : '—';
+  const closeRate = allCalls.length ? Math.round(closed/allCalls.length*100) : 0;
+  const lessons = loadLessons().length;
+
+  const kpis = [
+    { label:'סה"כ שיחות',  val: allCalls.length, sub: arr.length+' לקוחות' },
+    { label:'סגר ✅',       val: closed,          sub: closeRate+'% אחוז סגירה' },
+    { label:'פולו-אפ ⏳',   val: followup,        sub:'יש להחזיר שיחה' },
+    { label:'לא סגר ❌',    val: lost,            sub:'מוצה' },
+    { label:'ציון ממוצע',   val: avgScore,        sub:'מתוך 10' },
+    { label:'לקחים שנלמדו', val: lessons,         sub:'במצב אימון' }
+  ];
+
+  document.getElementById('kpis').innerHTML = kpis.map(k =>
+    `<div class="kpi"><div class="label">${k.label}</div><div class="val">${k.val}</div><div class="sub2">${k.sub}</div></div>`
+  ).join('');
+}
+
+function renderCustomers(){
+  const customers = loadCustomers();
+  const arr = Object.values(customers).sort((a,b) => {
+    const la = (a.calls?.[a.calls.length-1]?.date)||'';
+    const lb = (b.calls?.[b.calls.length-1]?.date)||'';
+    return lb.localeCompare(la);
+  });
+
+  if (arr.length === 0) {
+    document.getElementById('customers').innerHTML = '<div class="empty">אין לקוחות בזיכרון עדיין. סיים שיחה עם "🏁 סיים ושמור" בסוכן.</div>';
+    return;
+  }
+
+  const html = arr.slice(0,15).map(c => {
+    const last = c.calls[c.calls.length-1] || {};
+    const cls = STATUS_CLS[last.status] || 'b-mid';
+    return `<div class="cust-row">
+      <div><div class="nm">${c.name||'—'}</div><div class="ph">${c.phone}</div></div>
+      <div class="badge ${cls}">${last.status||'—'}</div>
+      <div style="text-align:center;color:var(--muted);font-size:12px">${c.calls.length} שיחות</div>
+      <div style="text-align:left">
+        <a href="sales-agent-v2.html?name=${encodeURIComponent(c.name||'')}&phone=${encodeURIComponent(c.phone)}"
+           style="color:var(--gold);font-size:12px;text-decoration:none">חזור לשיחה ←</a>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('customers').innerHTML = html;
+}
+
+function renderObjections(){
+  const customers = loadCustomers();
+  const allObj = Object.values(customers).flatMap(c => (c.calls||[]).flatMap(call => call.objections||[]));
+  const counts = {};
+  allObj.forEach(o => counts[o] = (counts[o]||0)+1);
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+
+  if (sorted.length === 0) {
+    document.getElementById('objections').innerHTML = '<div class="empty">אין נתוני התנגדויות עדיין</div>';
+    return;
+  }
+  const max = sorted[0][1];
+  const html = sorted.map(([name,n]) => {
+    const pct = Math.round(n/max*100);
+    return `<div class="bar">
+      <div class="name">${name}</div>
+      <div class="track"><div class="fill" style="width:${pct}%;background:linear-gradient(90deg,var(--gold),#f4cc55)"></div></div>
+      <div class="num">${n}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('objections').innerHTML = html;
+}
+
+function renderLessons(){
+  const lessons = loadLessons().slice(-8).reverse();
+  if (lessons.length === 0) {
+    document.getElementById('lessons').innerHTML = '<div class="empty">אין לקחים שמורים. השתמש במצב אימון 🎓 כדי לבנות זיכרון.</div>';
+    return;
+  }
+  document.getElementById('lessons').innerHTML = lessons.map(l => `
+    <div class="lesson">
+      <div class="meta">${(l.date||'').slice(0,10)} ${l.scenario ? '— '+l.scenario : ''}</div>
+      ${l.lesson || l.text || JSON.stringify(l)}
+    </div>
+  `).join('');
+}
+
+function exportData(){
+  const blob = {
+    customer_memory: JSON.parse(localStorage.getItem('customer_memory')||'{}'),
+    sales_lessons:   JSON.parse(localStorage.getItem('sales_lessons')||'[]'),
+    exportedAt: new Date().toISOString()
+  };
+  const data = new Blob([JSON.stringify(blob, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(data);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `platinum-sales-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(){ document.getElementById('importFile').click(); }
+
+function handleImport(e){
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (data.customer_memory) localStorage.setItem('customer_memory', JSON.stringify(data.customer_memory));
+      if (data.sales_lessons)   localStorage.setItem('sales_lessons', JSON.stringify(data.sales_lessons));
+      alert('יובא בהצלחה!'); renderAll();
+    } catch(err) { alert('קובץ לא תקין: '+err.message); }
+  };
+  r.readAsText(file);
+}
+
+function clearAll(){
+  if (!confirm('למחוק את כל הזיכרון? פעולה זו לא ניתנת לביטול.')) return;
+  if (!confirm('בטוח? כל הלקוחות והלקחים יימחקו לצמיתות!')) return;
+  localStorage.removeItem('customer_memory');
+  localStorage.removeItem('sales_lessons');
+  renderAll();
+}
+
+function renderAll(){
+  renderKpis();
+  renderCustomers();
+  renderObjections();
+  renderLessons();
+}
+
+renderAll();
+</script>
+</body>
+</html>
