@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎓 קורס מכירות פלטינום — מתחילים למאסטרים</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a1428; --surface:#0f1a2e; --surface2:#1a2744;
+  --gold:#d4af37; --gold2:#f4cc55; --text:#e8e8ec; --muted:#8b8b94;
+  --border:rgba(212,175,55,0.2); --green:#22c55e; --red:#ef4444; --amber:#f59e0b; --blue:#3b82f6;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Heebo',sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,var(--surface),#0d1a33);
+  border-bottom:1px solid var(--border);padding:14px 24px;
+  display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(10px)
+}
+.header h1{font-size:18px;color:var(--gold);font-weight:700}
+.header .nav{margin-right:auto;display:flex;gap:8px}
+.header .nav a{
+  padding:8px 14px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);text-decoration:none;font-size:13px;font-weight:600
+}
+.header .nav a:hover{background:var(--gold);color:#000;border-color:var(--gold)}
+
+/* PROGRESS BAR */
+.progress-wrap{background:var(--surface);padding:12px 24px;border-bottom:1px solid var(--border)}
+.progress-label{font-size:12px;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between}
+.progress-track{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 0.6s;border-radius:3px}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 110px)}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+
+/* SIDEBAR */
+.sidebar{
+  background:var(--surface);border-left:1px solid var(--border);
+  padding:20px 14px;position:sticky;top:110px;height:fit-content;max-height:calc(100vh - 110px);overflow-y:auto
+}
+@media(max-width:900px){.sidebar{position:static;max-height:none;border-left:none;border-bottom:1px solid var(--border)}}
+.sidebar h3{font-size:12px;color:var(--muted);letter-spacing:1.5px;margin-bottom:14px;font-weight:700}
+.ch-item{
+  display:flex;align-items:center;gap:10px;padding:12px;border-radius:8px;
+  cursor:pointer;margin-bottom:4px;transition:all 0.2s;
+  border:1px solid transparent
+}
+.ch-item:hover{background:var(--surface2)}
+.ch-item.active{background:var(--surface2);border-color:var(--gold)}
+.ch-item .num{
+  width:28px;height:28px;border-radius:50%;background:var(--surface2);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+  border:1px solid var(--border);flex-shrink:0
+}
+.ch-item.active .num{background:var(--gold);color:#000;border-color:var(--gold)}
+.ch-item.done .num{background:var(--green);color:#fff;border-color:var(--green)}
+.ch-item.done .num::after{content:"✓";font-size:14px}
+.ch-item.done .num .n{display:none}
+.ch-item .title{flex:1;font-size:13px;font-weight:600}
+.ch-item .sub{font-size:11px;color:var(--muted);font-weight:400}
+
+/* MAIN CONTENT */
+.main{padding:40px 60px;max-width:900px;margin:0 auto}
+@media(max-width:900px){.main{padding:24px}}
+
+.chapter-header{margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.chapter-num{font-size:12px;color:var(--gold);letter-spacing:2px;font-weight:700;margin-bottom:6px}
+.chapter-title{font-size:32px;font-weight:800;color:var(--text);margin-bottom:10px;line-height:1.2}
+.chapter-intro{font-size:16px;color:var(--muted);line-height:1.7}
+
+h2{font-size:22px;color:var(--gold);margin:36px 0 14px;font-weight:700}
+h3{font-size:17px;color:var(--text);margin:24px 0 10px;font-weight:700}
+p{margin-bottom:14px;font-size:15px;line-height:1.8}
+
+.box{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:20px 24px;margin:20px 0
+}
+.box.highlight{border-color:var(--gold);background:linear-gradient(135deg,rgba(212,175,55,0.06),rgba(212,175,55,0.02))}
+.box.rule{border-right:4px solid var(--gold)}
+.box.example{border-right:4px solid var(--blue);background:rgba(59,130,246,0.04)}
+.box.warn{border-right:4px solid var(--red);background:rgba(239,68,68,0.04)}
+.box.ok{border-right:4px solid var(--green);background:rgba(34,197,94,0.04)}
+
+.dialog{background:var(--surface2);border-radius:12px;padding:16px 20px;margin:14px 0}
+.dialog .line{margin-bottom:10px;font-size:14px}
+.dialog .line:last-child{margin-bottom:0}
+.dialog .who{font-weight:700;font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:3px}
+.dialog .who.cust{color:var(--red)}
+.dialog .who.rep{color:var(--green)}
+
+.pill{
+  display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;
+  background:var(--surface2);color:var(--gold);margin:0 4px
+}
+
+ul{margin:10px 20px;padding:0}
+ul li{margin-bottom:8px;line-height:1.7;font-size:15px}
+ol{margin:10px 20px;padding:0}
+ol li{margin-bottom:10px;line-height:1.7;font-size:15px}
+
+.ai-btn{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 18px;margin:16px 6px 16px 0;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;
+  border:none;border-radius:8px;cursor:pointer;font-family:'Heebo',sans-serif;
+  font-size:13px;font-weight:700;transition:transform 0.15s
+}
+.ai-btn:hover{transform:translateY(-1px)}
+.practice-btn{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 18px;margin:16px 6px 16px 0;
+  background:var(--surface2);color:var(--text);border:1px solid var(--border);
+  border-radius:8px;cursor:pointer;text-decoration:none;font-size:13px;font-weight:600
+}
+.practice-btn:hover{border-color:var(--gold);background:var(--gold);color:#000}
+
+.ai-out{
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:18px 22px;margin:12px 0;font-size:15px;line-height:1.8;
+  display:none;white-space:pre-wrap
+}
+.ai-out.visible{display:block}
+.ai-out .label{font-size:11px;color:var(--gold);letter-spacing:1.5px;font-weight:700;margin-bottom:10px}
+
+/* QUIZ */
+.quiz{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin:30px 0}
+.quiz h3{color:var(--gold);margin:0 0 16px;font-size:18px}
+.q-item{margin-bottom:18px}
+.q-text{font-weight:600;font-size:15px;margin-bottom:10px}
+.q-opt{
+  display:block;padding:10px 14px;margin:6px 0;background:var(--surface2);
+  border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:14px;
+  transition:all 0.15s;font-family:'Heebo',sans-serif;width:100%;text-align:right;color:var(--text)
+}
+.q-opt:hover{border-color:var(--gold)}
+.q-opt.correct{background:rgba(34,197,94,0.15);border-color:var(--green);color:var(--green)}
+.q-opt.wrong{background:rgba(239,68,68,0.15);border-color:var(--red);color:var(--red)}
+.q-explain{font-size:13px;color:var(--muted);margin-top:8px;padding:8px 12px;border-right:3px solid var(--gold);background:var(--surface2);border-radius:4px;display:none}
+.q-explain.visible{display:block}
+
+/* COMPLETE BUTTON */
+.complete-btn{
+  display:block;width:100%;padding:14px;margin-top:30px;
+  background:linear-gradient(135deg,var(--green),#16a34a);color:#fff;
+  border:none;border-radius:10px;cursor:pointer;font-family:'Heebo',sans-serif;
+  font-size:15px;font-weight:700
+}
+.complete-btn:hover{transform:translateY(-1px)}
+.complete-btn.done{background:var(--surface2);color:var(--muted);cursor:default}
+
+/* CERT */
+.cert{
+  display:none;background:linear-gradient(135deg,#0d1a33,var(--surface2));
+  border:2px solid var(--gold);border-radius:16px;padding:40px;text-align:center;margin:40px 0
+}
+.cert.visible{display:block}
+.cert h2{font-size:32px;color:var(--gold);margin-bottom:10px}
+.cert p{font-size:16px;color:var(--text);margin-bottom:20px}
+.cert .name{font-size:28px;font-weight:800;color:#fff;padding:20px 0;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);margin:20px 0}
+
+/* MODAL */
+.modal-bg{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;
+  align-items:center;justify-content:center;padding:20px
+}
+.modal-bg.visible{display:flex}
+.modal{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:28px;max-width:440px;width:100%
+}
+.modal h2{color:var(--gold);margin-bottom:10px}
+.modal input{
+  width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-size:14px;margin:10px 0;font-family:'Heebo',sans-serif
+}
+.modal button{
+  width:100%;padding:10px;background:var(--gold);color:#000;border:none;
+  border-radius:8px;cursor:pointer;font-weight:700;font-family:'Heebo',sans-serif
+}
+
+/* DOT TYPING */
+.typing{display:inline-flex;gap:4px;padding:6px 0}
+.typing span{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:tp 1.2s infinite}
+.typing span:nth-child(2){animation-delay:0.2s}
+.typing span:nth-child(3){animation-delay:0.4s}
+@keyframes tp{0%,60%,100%{opacity:0.3}30%{opacity:1}}
+</style>
+</head>
+<body>
+
+<!-- API MODAL -->
+<div class="modal-bg" id="apiModal">
+  <div class="modal">
+    <h2>🔑 מפתח API</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px">נשמר בדפדפן בלבד.</p>
+    <input type="password" id="apiKey" placeholder="sk-ant-api..."/>
+    <button onclick="saveKey()">שמור</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🎓 קורס מכירות פלטינום</h1>
+  <div class="nav">
+    <a href="sales-agent-v2.html">← סוכן חי</a>
+    <a href="sales-training.html">🥊 תרגול</a>
+    <a href="sales-dashboard.html">📊 דשבורד</a>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>התקדמות בקורס</span>
+    <span id="progressText">0/7 פרקים</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h3>תוכן הקורס</h3>
+  <div id="chapterList"></div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main"></div>
+
+</div>
+
+<script>
+// ════════════════════════════════════
+// COURSE DATA — 7 chapters
+// ════════════════════════════════════
+const CHAPTERS = [
+  {
+    id:1, num:'01', icon:'🧘',
+    title:'מסגרת הרופא',
+    sub:'מיינדסט הבסיס',
+    intro:'המכירה מתחילה לפני שפתחת את הפה. הטון, הנוכחות, והניתוק מהתוצאה — הם יותר חשובים מכל מילה שתגיד.',
+    body:`
+      <h2>הרעיון: רופא ולא מוכר</h2>
+      <p>דמיין רופא טוב. הוא לא רודף אחריך להזמין ניתוח. הוא <strong>שואל שאלות</strong>, <strong>מקשיב</strong>, <strong>מאבחן</strong>, ואז אומר: "לדעתי המקצועית, זה מה שאתה צריך. אתה מוזמן לחשוב על זה."</p>
+      <p>זו בדיוק העמדה שלך כנציג. אתה לא "מוכר" — אתה מאבחן מצב ונותן המלצה.</p>
+
+      <div class="box rule">
+        <h3>3 העקרונות של הרופא</h3>
+        <ol>
+          <li><strong>טון שקט</strong> — לא להתלהב. רופא לא צועק "יש לי בשורה בשבילך!"</li>
+          <li><strong>גובה עיניים</strong> — לא למעלה (נלחצים) ולא למטה (מתחננים). שווה לשווה.</li>
+          <li><strong>ניתוק מהתוצאה</strong> — "אם זה מתאים לך — מעולה. אם לא — בסדר גמור." הלקוח מרגיש את זה.</li>
+        </ol>
+      </div>
+
+      <h2>למה זה עובד</h2>
+      <p>לקוחות פיתחו אלרגיה למוכרים לחוצים. ברגע שהם מרגישים "הוא רוצה את זה יותר ממני" — הם סוגרים. ברגע שהם מרגישים "הוא שלם עם עצמו, אין לחץ" — הם פותחים.</p>
+
+      <div class="box example">
+        <div class="dialog">
+          <div class="line"><div class="who cust">לקוח:</div>יקר לי</div>
+          <div class="line"><div class="who rep">נציג רגיל:</div>לא לא, זה זול מאוד! תחשוב שזה רק 8 שקל ביום! זה כלום!</div>
+          <div class="line"><div class="who rep">נציג-רופא:</div>מבין. תגיד לי — <em>למה</em> זה יקר לך? יש משהו ספציפי בחודש שמהדק?</div>
+        </div>
+      </div>
+
+      <div class="box warn">
+        <h3>הסימפטומים של "נציג לחוץ"</h3>
+        <ul>
+          <li>מדבר מהר מדי</li>
+          <li>קוטע את הלקוח</li>
+          <li>משתמש במילים "רק", "פשוט", "בלבד" יותר מדי</li>
+          <li>חוזר על אותה תועלת 3 פעמים</li>
+          <li>אומר "כן?" בסוף כל משפט כמחפש אישור</li>
+        </ul>
+      </div>
+    `,
+    practice:{ scenario:'price_objection', label:'🥊 תרגל — התמודדות עם "יקר לי" בטון שקט' },
+    quiz:[
+      {
+        q:'לקוח אומר "אני לא מעוניין" מיד בתחילת השיחה. תגובת "נציג-רופא" היא:',
+        opts:[
+          { t:'"רגע רגע, תן לי רק 30 שניות, זה חשוב!"', ok:false, e:'לחץ → דחייה. זו תגובה של מוכר, לא של רופא.' },
+          { t:'"בסדר גמור. רק לפני שאני סוגר — מה בדיוק לא מעניין?"', ok:true, e:'שחרור + שאלה = הלקוח חייב לחשוב. זה פותח שיחה.' },
+          { t:'"אז למה ענית לטלפון בכלל?"', ok:false, e:'תוקפנות = סגירת דלת.' }
+        ]
+      },
+      {
+        q:'מה ההבדל המרכזי בין "רופא" למוכר?',
+        opts:[
+          { t:'הרופא משתמש במילים רפואיות', ok:false, e:'הנושא הוא הגישה, לא האוצר מילים.' },
+          { t:'הרופא מנותק מהתוצאה — אין לו לחץ למכור', ok:true, e:'ניתוק מהתוצאה = מקור הסמכות. הלקוח מרגיש שאתה לא צריך אותו.' },
+          { t:'הרופא עובד לפי שעות', ok:false, e:'לא רלוונטי.' }
+        ]
+      }
+    ]
+  },
+
+  {
+    id:2, num:'02', icon:'🎯',
+    title:'7 שלבי מנשרוב',
+    sub:'מסע פסיכולוגי של לקוח',
+    intro:'כל לקוח עובר מסע פסיכולוגי: מזר לחשדן, מחשדן למתעניין, ממתעניין למחויב. אם תדלג על שלב — תאבד את המכירה.',
+    body:`
+      <h2>המפה המלאה</h2>
+      <p>רון מנשרוב — אחד המוכרים הגדולים בישראל — גילה שכל מכירה מורכבת מ-7 שלבים בסדר קבוע. אי אפשר לדלג. אי אפשר להחליף סדר.</p>
+
+      <div class="box highlight">
+        <h3>🗺️ המסע</h3>
+        <ol>
+          <li><strong>חיבור (Connection)</strong> — "אתה מדבר עם בן אדם, לא עם מוכר"</li>
+          <li><strong>מצב נוכחי (Current)</strong> — "מה המצב שלך עכשיו?"</li>
+          <li><strong>בעיה/כאב (Problem)</strong> — "מה בזה מפריע לך?"</li>
+          <li><strong>פער (Gap)</strong> — "מה תרצה שיהיה שונה?"</li>
+          <li><strong>זהות (Identity)</strong> — "אתה סוג של אדם ש..."</li>
+          <li><strong>מחויבות (Commitment)</strong> — "מוכן להתחיל?"</li>
+          <li><strong>סגירה (Close)</strong> — "טכני — מה התעודת זהות?"</li>
+        </ol>
+      </div>
+
+      <h2>שלב אחר שלב — דוגמה מלאה</h2>
+
+      <h3>1. חיבור</h3>
+      <div class="box example">
+        <p><em>"שלום יוסי, מנחם מפלטינום. אני לא הולך להציק לך, רק להכיר שני דקות — אתה מהרצליה?"</em></p>
+        <p style="font-size:13px;color:var(--muted)">קוטעים לחשד עם שקיפות + שאלה אישית.</p>
+      </div>
+
+      <h3>2. מצב נוכחי</h3>
+      <div class="box example">
+        <p><em>"מה יש לך היום לעניין בריאות? קופה בלבד או עוד משהו?"</em></p>
+      </div>
+
+      <h3>3. בעיה / כאב</h3>
+      <div class="box example">
+        <p><em>"ומה קורה לך כשאתה צריך רופא פרטי — לקחת כבר?"</em></p>
+        <p><em>"כמה זה עלה? ו-כמה אתה מעריך שזה יעלה לך בשנה הקרובה?"</em></p>
+      </div>
+
+      <h3>4. פער</h3>
+      <div class="box example">
+        <p><em>"ומה תרצה? שלא תצטרך לחשוב על כסף ברגע שאתה חולה?"</em></p>
+      </div>
+
+      <h3>5. זהות</h3>
+      <div class="box example">
+        <p><em>"אתה נשמע לי סוג של אדם שמעדיף לסגור עניין מראש מאשר לרוץ ברגע האחרון, נכון?"</em></p>
+      </div>
+
+      <h3>6. מחויבות</h3>
+      <div class="box example">
+        <p><em>"נשמע שזה בדיוק בשבילך. מוכן שנפיק לך את הפוליסה עכשיו?"</em></p>
+      </div>
+
+      <h3>7. סגירה</h3>
+      <div class="box example">
+        <p><em>"מצוין. תן לי בבקשה תעודת זהות ואימייל, ואני מטפל בכל השאר."</em></p>
+      </div>
+
+      <div class="box warn">
+        <h3>הטעות הגדולה של 90% מהנציגים</h3>
+        <p>מדלגים משלב 2 ישר ל-7. שואלים "מה המצב?" ואז "מוכן לסגור?". זה לא עובד. הלקוח צריך <strong>להרגיש את הכאב</strong> (שלב 3) לפני שהוא קונה פתרון.</p>
+      </div>
+    `,
+    practice:{ scenario:'cold_lead', label:'🥊 תרגל — שיחה מלאה לפי 7 השלבים' },
+    quiz:[
+      {
+        q:'באיזה שלב שואלים "מה התעודת זהות?"',
+        opts:[
+          { t:'שלב 4 — פער', ok:false, e:'זה מוקדם. הלקוח עוד לא החליט.' },
+          { t:'שלב 7 — סגירה טכנית', ok:true, e:'רק אחרי שהלקוח אמר "כן, מוכן". אחרת זה קונפרונטציה.' },
+          { t:'שלב 1 — חיבור', ok:false, e:'יגרום ללקוח לחשוב שאתה מוכר, לא שאתה מכיר.' }
+        ]
+      },
+      {
+        q:'לקוח בשלב 2 (מצב נוכחי) אומר "יש לי קופה". מה השלב הבא?',
+        opts:[
+          { t:'להציג מוצר מיד', ok:false, e:'דילוג על שלבים 3-6 = סיכון לאבד.' },
+          { t:'לעבור לשלב 3 — "ומה קורה כשאתה צריך רופא פרטי?"', ok:true, e:'חייבים לעורר כאב לפני שמציעים פתרון.' },
+          { t:'לסגור שיחה — יש לו כבר', ok:false, e:'יש לו, אבל זה לא מכסה רופא עד הבית ופרטי. זו ההזדמנות.' }
+        ]
+      }
+    ]
+  },
+
+  {
+    id:3, num:'03', icon:'🔥',
+    title:'תסריט מאור — ליד קר',
+    sub:'6 שלבים מילה במילה',
+    intro:'ליד קר (מישהו שלא ביקש שיתקשרו אליו) הוא אתגר שונה. מאור בנה תסריט שלב-אחר-שלב שעובד דווקא כשהלקוח לא מוכן.',
+    body:`
+      <h2>למה ליד קר קשה?</h2>
+      <p>הלקוח לא מצפה לשיחה. הוא באמצע משהו. המוח שלו במצב "איך להיפטר מהשיחה הזאת".</p>
+      <p>לכן הפתיחה <strong>חייבת להיות שונה</strong> מליד חם. אסור לקפוץ למכירה.</p>
+
+      <div class="box highlight">
+        <h3>🎬 תסריט 6 שלבים (מאור)</h3>
+      </div>
+
+      <h3>שלב 1 — פתיחה שקופה (15 שניות)</h3>
+      <div class="box example">
+        <p><em>"שלום ישראל, מדבר מנחם מפלטינום. אני לא הולך להציק לך ברמה גדולה — רק דקה אחת לראות אם זה רלוונטי. מותר לי?"</em></p>
+        <p style="font-size:13px;color:var(--muted)">השקיפות = הפתעה = פתיחת דלת.</p>
+      </div>
+
+      <h3>שלב 2 — שאלה שמעוררת עניין (לא מכירה)</h3>
+      <div class="box example">
+        <p><em>"תגיד לי — אם רופא פרטי היה מגיע אליך הביתה הלילה בחינם — זה דבר שהיה עוזר או שזה לא בעניין שלך?"</em></p>
+      </div>
+
+      <h3>שלב 3 — אבחון מצב (בלי למכור)</h3>
+      <div class="box example">
+        <p><em>"יש לך היום איזשהו כיסוי פרטי מעבר לקופה?"</em></p>
+        <p><em>"אם לא — כמה ביקרת אצל רופא פרטי בשנה האחרונה?"</em></p>
+      </div>
+
+      <h3>שלב 4 — יצירת כאב</h3>
+      <div class="box example">
+        <p><em>"תחשוב רגע — 3 ביקורים כאלה בשנה = ₪2,500. בלי ניתוחים, בלי תרופות יקרות. ואם חס וחלילה צריך ניתוח פרטי? ₪30,000+."</em></p>
+      </div>
+
+      <h3>שלב 5 — הצעת הפתרון (פעם ראשונה שמזכירים את המוצר!)</h3>
+      <div class="box example">
+        <p><em>"כתב השירות שלנו עולה ₪248 לחודש. מכסה עד ₪13,000 בשנה. בלי הצהרת בריאות. תוך 72 שעות תביעות. זה הגיוני לך?"</em></p>
+      </div>
+
+      <h3>שלב 6 — סגירה ישירה</h3>
+      <div class="box example">
+        <p><em>"יופי. אני מפיק לך עכשיו — תעודת זהות בבקשה."</em></p>
+      </div>
+
+      <div class="box warn">
+        <h3>כלל הזהב</h3>
+        <p>בליד קר — אל תזכיר מוצר לפני שלב 5. <strong>לא לפני.</strong> אם תזכיר את המילה "ביטוח" או "מוצר" בשלב 1-4, הלקוח ייסגר.</p>
+      </div>
+
+      <div class="box ok">
+        <h3>💎 טכניקת "מותר לי?"</h3>
+        <p>במקום "תהיה לי דקה?" — תגיד "מותר לי דקה?". זה מעביר את השליטה ללקוח, והוא כמעט תמיד יגיד כן (כי אנחנו מותנים לענות "בטח").</p>
+      </div>
+    `,
+    practice:{ scenario:'cold_lead', label:'🥊 תרגל — ליד קר בשיטת מאור' },
+    quiz:[
+      {
+        q:'באיזה שלב מותר להזכיר לראשונה את המוצר "פלטינום"?',
+        opts:[
+          { t:'שלב 1 — פתיחה', ok:false, e:'מוקדם מדי → הלקוח ייסגר.' },
+          { t:'שלב 3 — אבחון', ok:false, e:'עוד מוקדם. אין עדיין כאב.' },
+          { t:'שלב 5 — אחרי שיצרת כאב', ok:true, e:'הלקוח חייב להרגיש את המחיר של "לא לעשות כלום" לפני שהוא שומע את הפתרון.' }
+        ]
+      },
+      {
+        q:'"מותר לי דקה?" עדיף על "תהיה לי דקה?" כי:',
+        opts:[
+          { t:'זה יותר מנומס', ok:false, e:'הסיבה היא פסיכולוגית.' },
+          { t:'מעביר שליטה ללקוח — הוא מרגיש שהוא מחליט', ok:true, e:'כשהלקוח מרגיש שהוא בשליטה, הוא לא נלחץ.' },
+          { t:'זו הוראת חוק', ok:false, e:'לא.' }
+        ]
+      }
+    ]
+  },
+
+  {
+    id:4, num:'04', icon:'🛡️',
+    title:'12 ההתנגדויות הנפוצות',
+    sub:'מה לענות + למה זה עובד',
+    intro:'התנגדות היא לא "לא". זו שאלה נסתרת. תפקידך להבין איזו שאלה נסתרת מאחוריה, ולענות עליה.',
+    body:`
+      <h2>החוק הראשון של התנגדויות</h2>
+      <div class="box rule">
+        <p><strong>"יקר לי" לא אומר "יקר לי".</strong> זה אומר: "לא הצלחת להראות לי שהערך שווה את המחיר."</p>
+        <p>אם תפתח את התשובה עם "זה זול מאוד" — איבדת. הלקוח חייב להרגיש מובן קודם.</p>
+      </div>
+
+      <h2>12 ההתנגדויות + התשובות</h2>
+
+      <h3>1. "יקר לי"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "מבין. תגיד לי — יקר ביחס למה? למחיר אחר שראית, או כי בחודש הזה זה פשוט לא מסתדר?"</p>
+        <p style="font-size:13px;color:var(--muted)"><strong>למה:</strong> מפרק את ההתנגדות ל-2 סוגים שונים — כל אחד עם תשובה שונה.</p>
+      </div>
+
+      <h3>2. "אני צריך לחשוב"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "ברור, החלטה חשובה. תגיד לי — מה ספציפית אתה חושב עליו? יש משהו שלא ברור, או שזה הפיננסי?"</p>
+      </div>
+
+      <h3>3. "יש לי כבר בקופה"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "מצוין שיש לך כיסוי. תגיד לי — הקופה מכסה רופא עד הבית ב-11 בלילה? או ניתוח פרטי ב-30,000? כי זה מה שאנחנו מכסים — לא במקום הקופה, מעליה."</p>
+      </div>
+
+      <h3>4. "יש לי כבר כתב שירות אחר"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "איזה? כמה אתה משלם? כמה הם מכסים בשנה? יש הצהרת בריאות?" (רוב הכתבים פחות כיסויים ב-50%+)</p>
+      </div>
+
+      <h3>5. "אני צריך לדבר עם הבן/בת זוג"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "לגמרי הגיוני. אגב — אם את/ה תבקש/י ממני לסגור, ואז הוא/היא לא יאשר, תוכל/י פשוט להתקשר אליי ונבטל בלי קנס. אני מפיק על שמך, ואם הוא/היא לא מסכים — מורידים. ככה לא מאבדים את המחיר."</p>
+      </div>
+
+      <h3>6. "אני כבר מבוטח בהכל"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "יופי שאתה חכם. ספר לי בפירוט מה יש לך — כיסוי ניתוחים? רופא עד הבית? פיזיותרפיה? מתי עשית בדיקה אחרונה של הפוליסה? לפעמים משלמים על דברים שאין יותר."</p>
+      </div>
+
+      <h3>7. "תשלח לי מייל"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "אשלח. רק לפני — על מה ספציפית תרצה שאני אשים דגש במייל? ככה אתה לא מקבל 10 דפי PDF שלא רלוונטיים."</p>
+        <p style="font-size:13px;color:var(--muted)"><strong>למה:</strong> מכריח שיחה אמיתית על הצורך, במקום בריחה למייל שלא ייפתח.</p>
+      </div>
+
+      <h3>8. "עכשיו לא זמן טוב"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "בסדר גמור. מתי כן? מחר ב-10? או שאתה מעדיף ערב?"</p>
+      </div>
+
+      <h3>9. "לא מעניין אותי"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "מבין. תגיד לי — מה הסיבה שלא מעניין? האם זה שאין לך צורך, או שפשוט מוכרים לך הרבה?"</p>
+      </div>
+
+      <h3>10. "אני זקן/חולה, לא יקבלו אותי"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "דווקא בגלל זה אני רוצה שנדבר — אין אצלנו הצהרת בריאות. כולם מתקבלים. תספר לי את גילך?"</p>
+      </div>
+
+      <h3>11. "פעם פעם התקשר נציג ורימה"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "נוראי לשמוע. מה קרה? (להקשיב) זה בדיוק למה אני אוהב לדבר בשקיפות. תן לי דקה לספר מי אנחנו, ואז תחליט."</p>
+      </div>
+
+      <h3>12. "אני לא סומך על ביטוחים"</h3>
+      <div class="box example">
+        <p><strong>שאל:</strong> "לא אחד מאלה. איזה ניסיון היה לך?" (להקשיב, להזדהות). "אנחנו משלמים תוך 72 שעות — ויש לנו עשרות אלפי לקוחות. אתה יכול גם לבדוק ב-Google."</p>
+      </div>
+
+      <div class="box highlight">
+        <h3>💎 טכניקת הבידוד</h3>
+        <p>לפני שאתה עונה על התנגדות — תבודד אותה:</p>
+        <p><em>"זה הדבר היחיד שמעכב אותך? כי אם זה — אנחנו נמצא פתרון. אבל אם יש עוד משהו, בוא נדבר על הכל ביחד."</em></p>
+        <p>ככה אתה לא מפרק התנגדות אחת בלבד שתוחלף במיד באחרת.</p>
+      </div>
+    `,
+    practice:{ scenario:'objection_collection', label:'🥊 תרגל — 12 ההתנגדויות בסבב אחד' },
+    quiz:[
+      {
+        q:'לקוח אומר "אני צריך לחשוב". מה הצעד הראשון?',
+        opts:[
+          { t:'"על מה ספציפית?"', ok:true, e:'הופך את ההתנגדות הכללית לספציפית — אפשר להתמודד.' },
+          { t:'"אל תחשוב, זה מבצע מוגבל!"', ok:false, e:'לחץ = דחייה.' },
+          { t:'"בסדר, אתקשר מחר"', ok:false, e:'איבדת את השיחה.' }
+        ]
+      },
+      {
+        q:'מה זה "בידוד התנגדות"?',
+        opts:[
+          { t:'לשים את הלקוח בצד עד שיחליט', ok:false, e:'לא.' },
+          { t:'לוודא שההתנגדות הזאת היחידה לפני שעונים', ok:true, e:'אחרת אתה מפרק אחת ומגיעה שנייה. בידוד = מיקוד.' },
+          { t:'להוריד את המחיר', ok:false, e:'לא קשור.' }
+        ]
+      }
+    ]
+  },
+
+  {
+    id:5, num:'05', icon:'⚡',
+    title:'חוק הברזל — סיום בשאלה',
+    sub:'הכלל שמשנה את כל השיחה',
+    intro:'הכלל הכי פשוט בקורס, והכי מופר: כל תשובה חייבת להסתיים בשאלה. אחרת אתה מסיים את השיחה בשבילו.',
+    body:`
+      <h2>הכלל</h2>
+      <div class="box highlight">
+        <h3>⚡ חוק הברזל</h3>
+        <p style="font-size:18px;text-align:center;padding:14px 0">
+          <strong>כל משפט שלך — מסתיים בשאלה.</strong><br/>
+          <span style="color:var(--gold)">בלי יוצא מן הכלל.</span>
+        </p>
+      </div>
+
+      <h2>למה?</h2>
+      <p>כשאתה מסיים ב<strong>הצהרה</strong>, אתה מוסר ללקוח את הרשות להגיב או לא. רוב הלקוחות יבחרו... לשתוק. או לסיים.</p>
+      <p>כשאתה מסיים ב<strong>שאלה</strong>, אתה מכריח את המוח שלו לחשוב ולענות. המוח האנושי לא יכול להתעלם משאלה ישירה.</p>
+
+      <div class="box example">
+        <h3>הצהרה מול שאלה</h3>
+        <div class="dialog">
+          <div class="line"><div class="who rep">❌ הצהרה:</div>"אצלנו הכיסוי הוא עד 13,000 בשנה."<br/><em style="color:var(--muted);font-size:13px">→ הלקוח: "אה, מעניין." וזהו.</em></div>
+          <div class="line"><div class="who rep">✅ שאלה:</div>"אצלנו הכיסוי עד 13,000 בשנה. כמה לדעתך עלה לך ביקור פרטי בשנה שעברה?"<br/><em style="color:var(--muted);font-size:13px">→ הלקוח חייב לחשוב ולענות.</em></div>
+        </div>
+      </div>
+
+      <h2>5 סוגי שאלות סיום</h2>
+
+      <h3>1. שאלת חישוב</h3>
+      <p><em>"...כמה זה עלה לך בשנה שעברה?"</em> (מכריחה לעשות מתמטיקה בראש)</p>
+
+      <h3>2. שאלת העדפה</h3>
+      <p><em>"...מה עדיף לך — לדבר בבוקר או בערב?"</em> (נותנת 2 אופציות — שתיהן מקרבות לסגירה)</p>
+
+      <h3>3. שאלת אימות</h3>
+      <p><em>"...זה נשמע לך הגיוני?"</em> (מכריחה לומר "כן" — Yes-ladder)</p>
+
+      <h3>4. שאלת בירור</h3>
+      <p><em>"...מה הכי חשוב לך בעניין בריאות?"</em> (פותחת שיחה אמיתית)</p>
+
+      <h3>5. שאלת מחויבות</h3>
+      <p><em>"...מוכן שנסגור?"</em> (ישירה — רק בשלב הנכון)</p>
+
+      <div class="box warn">
+        <h3>המילים האסורות בסוף משפט</h3>
+        <ul>
+          <li>"כן?" — סימן של לחץ / חיפוש אישור</li>
+          <li>"אוקיי?" — אותו דבר</li>
+          <li>"נכון?" — מרגיש מתחנן</li>
+          <li>"בסדר?" — מוסר שליטה</li>
+        </ul>
+        <p><strong>במקום:</strong> שאלה אמיתית עם תוכן.</p>
+      </div>
+
+      <div class="box ok">
+        <h3>💎 תרגיל</h3>
+        <p>תקליט את השיחה הבאה שלך. תספור כמה פעמים סיימת משפט בהצהרה לעומת שאלה. המטרה: <strong>100% שאלות.</strong></p>
+      </div>
+    `,
+    practice:{ scenario:'cold_lead', label:'🥊 תרגל — כל משפט מסתיים בשאלה' },
+    quiz:[
+      {
+        q:'איזה סיום משפט הכי חזק?',
+        opts:[
+          { t:'"...זה נשמע הגיוני, כן?"', ok:false, e:'"כן?" = חולשה. חפש אישור.' },
+          { t:'"...זה מכסה עד 13,000 שקל."', ok:false, e:'הצהרה — הלקוח לא צריך להגיב.' },
+          { t:'"...כמה זה עלה לך בשנה האחרונה?"', ok:true, e:'שאלה חישובית → הלקוח חייב לחשוב ולענות.' }
+        ]
+      },
+      {
+        q:'למה "כן?" בסוף משפט הוא סימן שלילי?',
+        opts:[
+          { t:'זה לא תחבירי', ok:false, e:'סיבה פסיכולוגית, לא תחבירית.' },
+          { t:'זה מרגיש כמו חיפוש אישור / חולשה', ok:true, e:'הלקוח קולט את הלחץ לא מודע.' },
+          { t:'זה לא נכון — זה בסדר', ok:false, e:'לא. זה מסמל חולשה.' }
+        ]
+      }
+    ]
+  },
+
+  {
+    id:6, num:'06', icon:'🎪',
+    title:'תחמושת מהלקוח',
+    sub:'השתמש במילים שלו נגד ההתנגדות שלו',
+    intro:'הטכניקה החזקה ביותר במכירות: להקשיב בתחילת השיחה ולאחסן משפטים, ואז להחזיר אותם ללקוח בדיוק כשהוא מתנגד.',
+    body:`
+      <h2>הרעיון</h2>
+      <p>הלקוח לא מאמין לך. הוא מאמין רק לעצמו.</p>
+      <p>אם תגיד לו "זה חשוב" — הוא יתנגד. אבל אם הוא יגיד לך "זה חשוב" בתחילת השיחה — ואתה תחזיר לו את המשפט שלו בעצמו בסוף השיחה — הוא לא יכול להתנגד לעצמו.</p>
+
+      <div class="box highlight">
+        <h3>🎯 הנוסחה</h3>
+        <p style="text-align:center;padding:10px 0;font-size:16px">
+          <strong>הקשב → אחסן → החזר</strong>
+        </p>
+      </div>
+
+      <h2>איך זה עובד בפועל</h2>
+
+      <div class="box example">
+        <h3>דוגמה — "יקר לי" אחרי שיחה ארוכה</h3>
+        <div class="dialog">
+          <div class="line"><div class="who rep">שלב 3 (כאב):</div>"מה הכי מטריד אותך היום בעניין בריאות?"</div>
+          <div class="line"><div class="who cust">לקוח:</div>"אשתי עברה ניתוח פרטי בשנה שעברה, 40,000 שקל מהכיס. כמעט רוסקנו."</div>
+          <div class="line" style="color:var(--gold)"><div class="who">📝 שמור את זה!</div><em>"אישה עברה ניתוח, 40,000 מהכיס, כמעט רוסקנו"</em></div>
+        </div>
+
+        <div class="dialog" style="margin-top:14px">
+          <div class="line"><div class="who cust">שלב 7 (התנגדות):</div>"יקר לי, 248 בחודש זה הרבה"</div>
+          <div class="line"><div class="who rep">נציג:</div>"יקר... רגע. <strong>אתה אמרת לי שאשתך עברה ניתוח ו-40,000 יצאו מהכיס וזה כמעט ריסק אתכם.</strong> נכון? 248 לחודש = 3,000 בשנה. זה 13 פעמים פחות מה-40,000. כל שנה — אתה מגן על כל המשפחה. זה באמת יקר?"</div>
+        </div>
+      </div>
+
+      <div class="box rule">
+        <h3>מה לאחסן — 5 סוגי תחמושת</h3>
+        <ul>
+          <li><strong>כאבים ספציפיים</strong> — "אמא שלי שברה יד, הפרטי עלה 8,000"</li>
+          <li><strong>חלומות / פחדים</strong> — "אני רוצה להיות רגוע בגיל הזהב"</li>
+          <li><strong>זהות</strong> — "אני בן אדם זהיר / שקול / דואג למשפחה"</li>
+          <li><strong>מספרים</strong> — "כל חודש יוצא לי 3,000 על תרופות"</li>
+          <li><strong>אנשים חשובים</strong> — "הבן שלי בחו"ל, אני דואג שלא אטריד אותו"</li>
+        </ul>
+      </div>
+
+      <h2>טכניקת "כמו אמא שלי"</h2>
+      <div class="box example">
+        <p>אחרי שהלקוח חשף כאב — ענה עם סיפור אישי קצר:</p>
+        <p><em>"אני שומע אותך. זה מזכיר לי את אמא שלי — היא גם חשבה שהקופה מספיקה, עד שלא מצאנו רופא ב-11 בלילה והגיעה למיון. חיכינו 7 שעות. אז אתה יודע מה, אני דואג שזה לא יקרה לאנשים שאני מדבר איתם."</em></p>
+        <p style="font-size:13px;color:var(--muted)"><strong>למה זה עובד:</strong> חיבור רגשי + מעביר אותך מ"מוכר" ל"אדם שחווה גם".</p>
+      </div>
+
+      <div class="box warn">
+        <h3>חשוב — לא להשתמש בשקר</h3>
+        <p>אם אין לך "אמא כזו" — אל תמציא. תשתמש במשהו אמיתי: "דוד שלי", "לקוח שסיפר לי", "אני קראתי מחקר...". האותנטיות חשובה מההכנה.</p>
+      </div>
+    `,
+    practice:{ scenario:'price_objection', label:'🥊 תרגל — תחמושת מהלקוח בתשובה' },
+    quiz:[
+      {
+        q:'מה הכי חשוב לעשות בשלב הגילוי (שלב 3)?',
+        opts:[
+          { t:'להציג מוצר', ok:false, e:'זה שלב 5.' },
+          { t:'להקשיב ולאחסן משפטים של הלקוח', ok:true, e:'כל משפט שלו = תחמושת לשלב ההתנגדויות.' },
+          { t:'לסגור מהר', ok:false, e:'אי אפשר לסגור בלי גילוי.' }
+        ]
+      },
+      {
+        q:'למה "תחמושת מהלקוח" חזקה יותר מטיעונים שלך?',
+        opts:[
+          { t:'היא יותר מנומקת', ok:false, e:'לא בהכרח.' },
+          { t:'הלקוח לא יכול להתנגד לדברים שהוא עצמו אמר', ok:true, e:'זו הפסיכולוגיה של עקביות — אנחנו חייבים להיות עקביים עם מה שאמרנו.' },
+          { t:'היא בעברית יותר טובה', ok:false, e:'לא רלוונטי.' }
+        ]
+      }
+    ]
+  },
+
+  {
+    id:7, num:'07', icon:'🏆',
+    title:'אמנות הסגירה',
+    sub:'הרגע שמחליט הכל',
+    intro:'הסגירה היא לא משפט קסם. היא תוצאה ישירה של 6 הפרקים הקודמים. אם עשית אותם נכון — הסגירה טכנית.',
+    body:`
+      <h2>חוק הזהב של הסגירה</h2>
+      <div class="box rule">
+        <p><strong>אל תשאל "אתה מוכן לסגור?"</strong> — זו שאלה שאפשר לענות עליה "לא".</p>
+        <p><strong>תגיד "מעולה, אני מפיק עכשיו" ותעבור לסגירה טכנית.</strong> — זו הנחה שאפשר רק לעצור אותה.</p>
+      </div>
+
+      <h2>משפט הסגירה המאסטר</h2>
+      <div class="box highlight">
+        <p style="font-size:17px;text-align:center;padding:14px 0;line-height:1.6">
+          <em>"מה יותר מסוכן —<br/>10 שקל ביום,<br/>או 8,000 שקל פעם אחת?"</em>
+        </p>
+      </div>
+      <p>המשפט הזה עושה 3 דברים בו-זמנית:</p>
+      <ul>
+        <li><strong>מקצין את המחיר</strong> ("10 שקל ביום" — נשמע פחות מהמחיר האמיתי)</li>
+        <li><strong>מציג את הסיכון של "לא לקנות"</strong> (8,000 פעם אחת)</li>
+        <li><strong>מעביר את הכובד לא לסגור</strong></li>
+      </ul>
+
+      <h2>3 טכניקות סגירה</h2>
+
+      <h3>1. סגירה בהנחה (Assumed Close)</h3>
+      <div class="box example">
+        <p><em>"מצוין. תן לי בבקשה תעודת זהות, ונתחיל את התהליך."</em></p>
+        <p style="font-size:13px;color:var(--muted)">מניח שהוא הסכים. 70% מהלקוחות ימסרו ת"ז בלי להתנגד.</p>
+      </div>
+
+      <h3>2. סגירת אלטרנטיבה</h3>
+      <div class="box example">
+        <p><em>"מה עדיף לך — להתחיל מהראשון לחודש או מהחמישה עשר?"</em></p>
+        <p style="font-size:13px;color:var(--muted)">שתי האפשרויות הן סגירה. אין אופציה לא לסגור.</p>
+      </div>
+
+      <h3>3. סגירת "הצעד הקטן"</h3>
+      <div class="box example">
+        <p><em>"בוא נעשה משהו — אני מפיק לך את הפוליסה עכשיו. יש לך 14 יום לבטל בלי קנס. ככה אתה לא מאבד את המחיר הזה. מה התעודת זהות?"</em></p>
+        <p style="font-size:13px;color:var(--muted)">מוריד את הלחץ של "החלטה לתמיד" — לקוח חושב שזה רק ניסיון.</p>
+      </div>
+
+      <h2>סולם המחיר — איך להציג</h2>
+      <div class="box highlight">
+        <ol>
+          <li><strong>350 ₪</strong> (מחוק) — "זה המחיר הרשמי"</li>
+          <li><strong>248 ₪</strong> — "זה מה שאנחנו נותנים באתר"</li>
+          <li><strong>220 ₪</strong> — "דרך מנהל, אני אבקש ממנו"</li>
+          <li><strong>198 ₪</strong> — "מקרה קיצוני — רק בלחיצה של מנהל"</li>
+        </ol>
+        <p>תמיד <strong>התחל מהגבוה</strong>. הלקוח צריך לראות שהוא "מקבל הנחה". אם תתחיל מ-198 — 198 יראה יקר.</p>
+      </div>
+
+      <h2>מה לעשות כשהוא אומר "בואו נסגור"</h2>
+      <div class="box ok">
+        <h3>רצף הסגירה הטכנית</h3>
+        <ol>
+          <li>שאל: <em>"מעולה. מה התעודת זהות?"</em></li>
+          <li>שאל: <em>"מעולה. אימייל?"</em></li>
+          <li>שאל: <em>"מעולה. כתובת מלאה?"</em></li>
+          <li>שאל: <em>"מעולה. איך נוח לך לשלם — אשראי?"</em></li>
+          <li><strong>אל תחזור לדבר על המוצר.</strong> כל שנייה שאתה מדבר = סיכון שהוא יתנגד.</li>
+        </ol>
+      </div>
+
+      <div class="box warn">
+        <h3>הטעות הגדולה בסגירה</h3>
+        <p>אחרי שהוא אמר "בסדר, בוא נסגור" — נציגים מתחילים להסביר שוב על המוצר. <strong>לא.</strong> תעבור ישר לטכני. כל דיבור נוסף פותח מחדש את הדיון.</p>
+      </div>
+    `,
+    practice:{ scenario:'ready_to_close', label:'🏆 תרגל — סגירה מקצועית' },
+    quiz:[
+      {
+        q:'אחרי שהלקוח אמר "בסדר, בואו נסגור" — מה הצעד הבא?',
+        opts:[
+          { t:'להסביר שוב על המוצר כדי לוודא', ok:false, e:'זה פותח מחדש את הדיון → סיכון גבוה לאבד.' },
+          { t:'לשאול "מה התעודת זהות?"', ok:true, e:'עבר ישר לטכני. כל דיבור נוסף = סיכון.' },
+          { t:'להציע עוד מוצר', ok:false, e:'Upselling בשלב הזה = אובדן ודאי.' }
+        ]
+      },
+      {
+        q:'למה להתחיל להציג מחיר מ-350 ולא מ-248?',
+        opts:[
+          { t:'כי 350 זה המחיר האמיתי', ok:false, e:'248 זה המחיר למכירה.' },
+          { t:'כדי שהלקוח ירגיש "הנחה" מתקדמת', ok:true, e:'עוגן פסיכולוגי. המחיר הגבוה גורם ל-248 להיראות הזדמנות.' },
+          { t:'כי זה יותר רווחי', ok:false, e:'לא עובדים כך.' }
+        ]
+      }
+    ]
+  }
+];
+
+// ════════════════════════════════════
+// STATE
+// ════════════════════════════════════
+let currentChapter = 1;
+let apiKey = localStorage.getItem('anthropic_key') || '';
+
+function loadProgress(){
+  try { return JSON.parse(localStorage.getItem('course_progress')||'{}'); } catch(e){ return {}; }
+}
+function saveProgress(p){ localStorage.setItem('course_progress', JSON.stringify(p)); }
+
+// ════════════════════════════════════
+// RENDER
+// ════════════════════════════════════
+function renderSidebar(){
+  const progress = loadProgress();
+  const html = CHAPTERS.map(ch => `
+    <div class="ch-item ${currentChapter===ch.id?'active':''} ${progress[ch.id]?'done':''}" onclick="selectChapter(${ch.id})">
+      <div class="num"><span class="n">${ch.num}</span></div>
+      <div>
+        <div class="title">${ch.icon} ${ch.title}</div>
+        <div class="sub">${ch.sub}</div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('chapterList').innerHTML = html;
+
+  const done = Object.keys(progress).length;
+  document.getElementById('progressText').textContent = `${done}/7 פרקים`;
+  document.getElementById('progressFill').style.width = (done/7*100)+'%';
+}
+
+function selectChapter(id){
+  currentChapter = id;
+  renderSidebar();
+  renderMain();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function renderMain(){
+  const ch = CHAPTERS.find(c => c.id === currentChapter);
+  if (!ch) return;
+  const progress = loadProgress();
+  const isDone = !!progress[ch.id];
+
+  const quizHtml = ch.quiz.map((q,i) => `
+    <div class="q-item" data-q="${i}">
+      <div class="q-text">${i+1}. ${q.q}</div>
+      ${q.opts.map((o,oi) => `<button class="q-opt" onclick="checkAnswer(${i},${oi})">${o.t}</button>`).join('')}
+      <div class="q-explain" id="expl-${i}"></div>
+    </div>
+  `).join('');
+
+  const html = `
+    <div class="chapter-header">
+      <div class="chapter-num">פרק ${ch.num}</div>
+      <div class="chapter-title">${ch.icon} ${ch.title}</div>
+      <div class="chapter-intro">${ch.intro}</div>
+    </div>
+
+    ${ch.body}
+
+    <div>
+      <button class="ai-btn" onclick="explainDeeper(${ch.id})">✦ בקש מ-AI הסבר עמוק יותר</button>
+      <a class="practice-btn" href="sales-training.html">${ch.practice.label} →</a>
+    </div>
+    <div class="ai-out" id="aiOut"><div class="label">✦ AI מסביר</div><div id="aiOutText"></div></div>
+
+    <div class="quiz">
+      <h3>🧠 בוחן קצר (${ch.quiz.length} שאלות)</h3>
+      ${quizHtml}
+    </div>
+
+    <button class="complete-btn ${isDone?'done':''}" onclick="completeChapter(${ch.id})" ${isDone?'disabled':''}>
+      ${isDone ? '✓ פרק הושלם' : 'סיים פרק והמשך →'}
+    </button>
+
+    <div class="cert ${Object.keys(loadProgress()).length === 7 && ch.id === 7 ? 'visible' : ''}">
+      <h2>🏆 סיימת את הקורס!</h2>
+      <p>ברכות — אתה עכשיו מוכן לשיחות אמת.</p>
+      <div class="name">מנחם רחמימוב</div>
+      <p>קורס מכירות פלטינום — 7 פרקים שהושלמו</p>
+      <p style="color:var(--muted);font-size:13px;margin-top:10px">מומלץ: תרגל לפחות 5 שיחות אימון לפני שיחה אמיתית</p>
+      <a class="practice-btn" href="sales-training.html" style="margin-top:10px;display:inline-block">🥊 התחל תרגול</a>
+    </div>
+  `;
+  document.getElementById('main').innerHTML = html;
+}
+
+function checkAnswer(qi, oi){
+  const ch = CHAPTERS.find(c => c.id === currentChapter);
+  const q = ch.quiz[qi];
+  const container = document.querySelector(`.q-item[data-q="${qi}"]`);
+  const buttons = container.querySelectorAll('.q-opt');
+  buttons.forEach((b,i) => {
+    b.disabled = true;
+    if (q.opts[i].ok) b.classList.add('correct');
+    if (i === oi && !q.opts[i].ok) b.classList.add('wrong');
+  });
+  const expl = document.getElementById(`expl-${qi}`);
+  expl.textContent = (q.opts[oi].ok ? '✅ נכון! ' : '❌ ') + q.opts[oi].e;
+  expl.classList.add('visible');
+}
+
+function completeChapter(id){
+  const progress = loadProgress();
+  progress[id] = { at: new Date().toISOString() };
+  saveProgress(progress);
+  renderSidebar();
+
+  // auto-advance
+  const next = CHAPTERS.find(c => c.id === id+1);
+  if (next) {
+    setTimeout(() => selectChapter(next.id), 500);
+  } else {
+    renderMain(); // re-render to show cert
+  }
+}
+
+// ════════════════════════════════════
+// AI DEEP DIVE
+// ════════════════════════════════════
+async function explainDeeper(chId){
+  if (!apiKey) { document.getElementById('apiModal').classList.add('visible'); return; }
+
+  const ch = CHAPTERS.find(c => c.id === chId);
+  const out = document.getElementById('aiOut');
+  const text = document.getElementById('aiOutText');
+  out.classList.add('visible');
+  text.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({
+        model:'claude-opus-4-7',
+        max_tokens:1200,
+        stream:true,
+        system:`אתה מאמן מכירות בכיר בפלטינום. אתה מלמד נציג שזה עתה קרא פרק בקורס. הסבר בעברית, קולח, עם דוגמאות מעשיות מעולם הביטוח הבריאותי. 400-500 מילים מקסימום. אל תחזור על מה שכתוב בפרק — הוסף עומק, ניואנסים, סיפורים מהשטח.`,
+        messages:[{
+          role:'user',
+          content:`הפרק שקראתי: "${ch.title}"\nתוכן: ${ch.intro}\n\nתן לי הסבר עומק — דוגמאות נוספות מהשטח, טעויות נפוצות שנציגים עושים בנושא הזה, וטיפ מתקדם אחד שלא כתוב בפרק.`
+        }]
+      })
+    });
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let full = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = decoder.decode(value);
+      const lines = chunk.split('\n');
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          try {
+            const data = JSON.parse(line.slice(6));
+            if (data.type === 'content_block_delta' && data.delta?.text) {
+              full += data.delta.text;
+              text.innerHTML = full.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br/>');
+            }
+          } catch {}
+        }
+      }
+    }
+  } catch(e) {
+    text.textContent = 'שגיאה: ' + e.message;
+  }
+}
+
+function saveKey(){
+  const k = document.getElementById('apiKey').value.trim();
+  if (!k) return;
+  localStorage.setItem('anthropic_key', k);
+  apiKey = k;
+  document.getElementById('apiModal').classList.remove('visible');
+}
+
+// ════════════════════════════════════
+// INIT
+// ════════════════════════════════════
+renderSidebar();
+renderMain();
+</script>
+</body>
+</html>
