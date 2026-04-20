@@ -353,6 +353,7 @@ body{
 .speaker-btn:hover{border-color:var(--gold)}
 .speaker-btn.customer.active{background:var(--gold);color:#0a0a0a;border-color:var(--gold);box-shadow:0 0 12px rgba(212,175,55,0.5)}
 .speaker-btn.rep.active{background:#3b82f6;color:#fff;border-color:#3b82f6;box-shadow:0 0 12px rgba(59,130,246,0.5)}
+.speaker-btn.auto.active{background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border-color:#8b5cf6;box-shadow:0 0 12px rgba(139,92,246,0.5)}
 .speaker-hint{font-size:10px;color:var(--muted);text-align:center;padding:4px 0 0}
 @keyframes mic-pulse{
   0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.4)}
@@ -588,8 +589,9 @@ body{
 
 <!-- SPEAKER TOGGLE (visible only when mic on) -->
 <div class="speaker-bar" id="speakerBar">
-  <button class="speaker-btn customer active" id="spkCustomer" onclick="setSpeaker('customer')" title="Alt+L">👤 הלקוח מדבר</button>
-  <button class="speaker-btn rep" id="spkRep" onclick="setSpeaker('rep')" title="Alt+N">🎤 אני מדבר (נציג)</button>
+  <button class="speaker-btn auto active" id="spkAuto" onclick="setSpeaker('auto')" title="Alt+A — AI מזהה לפי התסריטים">🤖 זיהוי אוטומטי</button>
+  <button class="speaker-btn customer" id="spkCustomer" onclick="setSpeaker('customer')" title="Alt+L">👤 לקוח</button>
+  <button class="speaker-btn rep" id="spkRep" onclick="setSpeaker('rep')" title="Alt+N">🎤 אני</button>
 </div>
 
 <!-- INPUT BAR -->
@@ -606,13 +608,35 @@ body{
 <script>
 const SYSTEM_PROMPT = `אתה סוכן מכירות AI מומחה של פלטינום כתב שירות — חברת ביטוח בריאות משלים לגיל השלישי.
 
-## 🎯 זיהוי דוברים בשיחה חיה
-ייתכן שתקבל הודעות עם תגיות:
-- **[לקוח]: ...** — זה מה שהלקוח אמר. **ענה ונתח את זה** — זו ההודעה שעליה אתה מגיב.
-- **[נציג אמר: ...]** — זה ה-context ממה שהנציג אמר קודם לכן (זה לא דברי הלקוח!). השתמש בזה כדי להבין מה הוזכר בשיחה, אבל **ההתייחסות שלך תהיה לדברי הלקוח בלבד**.
-- אם הודעה באה בלי תגית — הנח שזה הלקוח (ברירת מחדל).
+## 🎯 זיהוי דוברים בשיחה חיה — קריטי!
 
-**חשוב:** כשאתה רואה **[נציג אמר: X] [לקוח]: Y**, הבן ש-X זה מה שהנציג כבר אמר ללקוח ו-Y זו תגובת הלקוח. התגובה שלך צריכה להיות הצעד הבא של הנציג, לא לחזור על מה שכבר נאמר.
+### תגיות שתקבל
+- **[לקוח]: ...** — דברי הלקוח (זוהה ידנית). **ענה ונתח את זה**.
+- **[נציג אמר: ...]** — context של מה שהנציג אמר (זוהה ידנית). **אל תגיב על זה** — רק תשתמש להקשר.
+- **[קלט קולי — זהה מי מדבר לפי התוכן]: ...** — מצב אוטומטי! עליך לזהות מי אמר את זה.
+- הודעה ללא תגית — הלקוח (ברירת מחדל).
+
+### איך לזהות דובר אוטומטית (כשמגיע [קלט קולי])
+**זה הנציג (שלנו) אם:**
+- משתמש בביטויים מהתסריטים: "שלום, אני מדבר מפלטינום", "רופא פרטי עולה 500-1000 שקל", "₪248 לחודש", "ללא הצהרת בריאות", "מה חשוב לך ב...", "את זה ראית איפשהו?", "מה יותר מסוכן — 10 שקל ביום או 8000 ש\"ח בחודש"
+- שואל שאלות גילוי: "ספר לי מה מצב הבריאות שלך", "מי עוד מהמשפחה...", "איך אתה מסתדר עם תורים בקופה"
+- שאלות בידוד: "זה הדבר היחיד שעוצר אותך?", "נניח שלא היינו מדברים על זה עכשיו..."
+- מציג פיצ'רים של המוצר או עונה על התנגדויות באופן מקצועי
+- מדבר בטון של נציג (גוף שני, מקצועי, סמכותי)
+
+**זה הלקוח אם:**
+- מתנגד: "יקר לי", "אחשוב על זה", "יש לי כבר בקופה", "אני צריך לדבר עם בן/בת זוג"
+- שואל שאלות על המוצר: "כמה זה עולה?", "מה זה מכסה?", "יש אכשרה?"
+- מדבר על עצמו: "אני בן 65", "יש לי סוכרת", "המצב הכלכלי שלי..."
+- עונה על שאלה שהוצגה לו
+- מתלבט או מהסס: "לא יודע", "תן לי לחשוב", "מה אם..."
+
+### איך להגיב במצב אוטומטי
+- **אם זה הלקוח** → תגיב בתשובת המכירה הרגילה + META JSON עם score/stage/emotion עדכניים
+- **אם זה הנציג** → הכר בקצרה ("הבנתי, הנציג אמר X") ותן טיפ קצר על הצעד הבא, **בלי META JSON מלא** — רק META:{"speaker":"rep","note":"המשך כך"} כדי לא להפריע לניתוח.
+- אם אתה בספק — הנח שזה הלקוח.
+
+**פתח תמיד את התגובה בשורה אחת:** 🤖 זיהיתי: [לקוח/נציג] — ואז תמשיך.
 
 ## המוצר
 - **פלטינום כתב שירות** — ביטוח בריאות משלים
@@ -745,17 +769,19 @@ let voiceTimeout = null;
 let currentScore = 0;
 let leadContext = '';
 let currentCustomerPhone = '';
-let currentSpeaker = 'customer';
+let currentSpeaker = 'auto';
 let repBuffer = '';
 
 function setSpeaker(who){
   currentSpeaker = who;
+  document.getElementById('spkAuto').classList.toggle('active', who==='auto');
   document.getElementById('spkCustomer').classList.toggle('active', who==='customer');
   document.getElementById('spkRep').classList.toggle('active', who==='rep');
 }
 
 document.addEventListener('keydown', (e) => {
   if (!isListening) return;
+  if (e.altKey && (e.key === 'a' || e.key === 'A' || e.code === 'KeyA')) { e.preventDefault(); setSpeaker('auto'); }
   if (e.altKey && (e.key === 'l' || e.key === 'L' || e.code === 'KeyL')) { e.preventDefault(); setSpeaker('customer'); }
   if (e.altKey && (e.key === 'n' || e.key === 'N' || e.code === 'KeyN')) { e.preventDefault(); setSpeaker('rep'); }
 });
@@ -1315,29 +1341,35 @@ function initSpeech() {
       if (e.results[i].isFinal) final += e.results[i][0].transcript;
       else interim += e.results[i][0].transcript;
     }
-    const speakerIcon = currentSpeaker === 'customer' ? '👤' : '🎤';
+    const speakerIcon = currentSpeaker === 'customer' ? '👤' : currentSpeaker === 'rep' ? '🎤' : '🤖';
     document.getElementById('voiceInterim').textContent = interim ? `${speakerIcon} ${interim}` : '';
     if (final.trim()) {
       clearTimeout(voiceTimeout);
+      const inputEl = document.getElementById('userInput');
+      const text = final.trim();
       if (currentSpeaker === 'rep') {
-        // הנציג מדבר — אוגר כ-context ולא שולח ל-AI
-        repBuffer += (repBuffer ? ' ' : '') + final.trim();
-        const inputEl = document.getElementById('userInput');
+        // מצב ידני: הנציג מדבר — אוגר כ-context ולא שולח ל-AI
+        repBuffer += (repBuffer ? ' ' : '') + text;
         inputEl.value = `[נציג אמר: ${repBuffer}]`;
         autoResize(inputEl);
-      } else {
-        // הלקוח מדבר — שולח ל-AI עם ה-context של הנציג (אם יש)
-        const inputEl = document.getElementById('userInput');
-        const customerText = final.trim();
+      } else if (currentSpeaker === 'customer') {
+        // מצב ידני: הלקוח מדבר — שולח ל-AI עם context של הנציג
         inputEl.value = repBuffer
-          ? `[נציג אמר: ${repBuffer}]\n[לקוח]: ${customerText}`
-          : `[לקוח]: ${customerText}`;
+          ? `[נציג אמר: ${repBuffer}]\n[לקוח]: ${text}`
+          : `[לקוח]: ${text}`;
         autoResize(inputEl);
         voiceTimeout = setTimeout(() => {
           if (document.getElementById('userInput').value.trim()) {
             repBuffer = '';
             sendMessage();
           }
+        }, 1200);
+      } else {
+        // מצב AUTO: שולח כ-[קלט קולי] — ה-AI יזהה דובר מהתוכן לפי התסריטים
+        inputEl.value = `[קלט קולי — זהה מי מדבר לפי התוכן]: ${text}`;
+        autoResize(inputEl);
+        voiceTimeout = setTimeout(() => {
+          if (document.getElementById('userInput').value.trim()) sendMessage();
         }, 1200);
       }
     }
@@ -1359,7 +1391,7 @@ function startVoice() {
   document.getElementById('micBtn').textContent = '⏹';
   document.getElementById('voiceStatus').classList.add('active');
   document.getElementById('speakerBar').classList.add('show');
-  setSpeaker('customer');
+  setSpeaker('auto');
   startTimer();
 }
 
