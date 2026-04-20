@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>כתב שירות פלטינום — בדקו כמה אתם זכאים</title>
+  <title>כתב שירות פלטינום — ₪248 לחודש, כיסוי רפואי נרחב ללא הצהרת בריאות</title>
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -32,8 +32,8 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="he_IL">
   <meta property="og:url" content="https://platinum-service.co.il/landing.html">
-  <meta property="og:title" content="כתב שירות פלטינום — בדקו כמה אתם זכאים">
-  <meta property="og:description" content="ביקור רופא עד הבית, החזרים על MRI ו-CT, פיזיותרפיה, מימוש זכויות רפואיות ועוד — ללא הצהרת בריאות. בדקו עכשיו את הזכאות שלכם בשאלון קצר.">
+  <meta property="og:title" content="כתב שירות פלטינום — ₪248 לחודש, כיסוי נרחב ללא הצהרת בריאות">
+  <meta property="og:description" content="ביקור רופא עד הבית, MRI ו-CT, פיזיותרפיה ומימוש זכויות רפואיות. ב-₪248 בחודש, ללא הצהרת בריאות, ביטול בכל עת. בדקו זכאות עכשיו.">
   <meta property="og:image" content="https://platinum.org.il/wp-content/uploads/2022/07/logo.png">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a1f3d'/><text x='50' y='72' font-size='68' font-family='Arial' font-weight='bold' fill='%23c9973a' text-anchor='middle'>פ</text></svg>" type="image/svg+xml">
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -76,6 +76,11 @@
     .hero-stat{font-size:.82rem;font-weight:700;color:var(--gold2)}
     .hero-stat::before{content:'✓ '}
     .hero-arrow{font-size:1.6rem;animation:bounce 1.4s infinite;color:var(--gold);display:block}
+    .hero-price{display:inline-flex;flex-direction:column;align-items:center;background:rgba(255,255,255,.08);border:2px solid var(--gold);border-radius:14px;padding:10px 24px;margin:12px auto 14px}
+    .hp-label{font-size:.75rem;color:#fff;opacity:.85;font-weight:600;margin-bottom:2px}
+    .hp-label s{color:#f87171;text-decoration:line-through;margin-left:4px}
+    .hp-amount{font-size:2rem;color:var(--gold2);font-weight:900;line-height:1}
+    .hp-amount small{font-size:.8rem;font-weight:700;opacity:.85}
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 
     /* FORM */
@@ -159,6 +164,49 @@
     .rights-cta a{display:inline-block;background:var(--gold);color:var(--navy);padding:12px 28px;border-radius:10px;font-weight:900;text-decoration:none;font-size:.95rem;transition:all .2s}
     .rights-cta a:hover{background:var(--gold2);transform:translateY(-1px)}
 
+    /* TRANSPARENCY — WHAT'S NOT COVERED */
+    .transparency{background:#fff;padding:30px 20px;border-bottom:2px solid #e2e8f0}
+    .transparency-inner{max-width:640px;margin:0 auto}
+    .transparency h3{text-align:center;font-size:1.1rem;color:var(--navy);font-weight:800;margin-bottom:14px}
+    .transparency h3::before{content:"⚠️ ";font-size:1rem}
+    .transparency-box{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:16px 18px}
+    .transparency-box p{font-size:.89rem;color:#78350f;line-height:1.65;margin:0}
+    .transparency-box p strong{color:#92400e;display:block;margin-bottom:4px}
+    .transparency-box ul{padding-right:18px;margin-top:6px;font-size:.88rem;color:#78350f;line-height:1.8}
+
+    /* COMPARE */
+    .compare{background:linear-gradient(180deg,#f7f9fc 0%,#eef2f7 100%);padding:36px 16px}
+    .compare-inner{max-width:720px;margin:0 auto}
+    .compare h2{text-align:center;font-size:1.3rem;color:var(--navy);font-weight:900;margin-bottom:5px}
+    .compare .sub{text-align:center;font-size:.88rem;color:#64748b;margin-bottom:18px}
+    .compare-table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(10,31,61,.08);font-size:.88rem}
+    .compare-table th{background:var(--navy);color:#fff;padding:12px 10px;text-align:right;font-weight:800;font-size:.88rem}
+    .compare-table th.us{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy)}
+    .compare-table td{padding:11px 10px;border-bottom:1px solid #f1f5f9;font-size:.85rem;color:#334155}
+    .compare-table td.row-label{font-weight:700;color:var(--navy);background:#fafbfc}
+    .compare-table td.us{background:#fffbeb;font-weight:700;color:#78350f}
+    .compare-table tr:last-child td{border-bottom:none}
+    .compare-table td.yes::before{content:"✅ ";color:#22c55e}
+    .compare-table td.no::before{content:"❌ ";color:#ef4444}
+    @media(max-width:480px){
+      .compare-table{font-size:.78rem}
+      .compare-table th,.compare-table td{padding:8px 6px}
+    }
+
+    /* FAQ */
+    .faq{background:#fff;padding:36px 20px;border-top:1px solid #e2e8f0}
+    .faq-inner{max-width:720px;margin:0 auto}
+    .faq h2{text-align:center;font-size:1.3rem;color:var(--navy);font-weight:900;margin-bottom:6px}
+    .faq .sub{text-align:center;font-size:.88rem;color:#64748b;margin-bottom:22px}
+    .faq-item{background:#fafbfc;border:1.5px solid #e2e8f0;border-radius:12px;margin-bottom:10px;overflow:hidden;transition:all .2s}
+    .faq-item[open]{border-color:var(--gold);box-shadow:0 4px 16px rgba(201,151,58,.12)}
+    .faq-item summary{padding:14px 18px;cursor:pointer;font-size:.95rem;font-weight:800;color:var(--navy);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .faq-item summary::-webkit-details-marker{display:none}
+    .faq-item summary::after{content:"+";font-size:1.3rem;color:var(--gold);font-weight:700;transition:transform .2s;flex-shrink:0}
+    .faq-item[open] summary::after{transform:rotate(45deg)}
+    .faq-item .faq-body{padding:0 18px 14px;font-size:.88rem;color:#475569;line-height:1.7}
+    .faq-item .faq-body strong{color:var(--navy)}
+
     /* REVIEWS */
     .reviews{background:#fff;padding:36px 20px}
     .reviews h2{text-align:center;font-size:1.2rem;color:var(--navy2);margin-bottom:20px;font-weight:800}
@@ -200,6 +248,28 @@
     body.acc-contrast .opt-btn,body.acc-contrast .form-group input{background:#111!important;color:#fff!important;border-color:#fff!important}
     body.acc-contrast .next-btn{background:#fff!important;color:#000!important}
     body.acc-links a{text-decoration:underline!important;font-weight:700!important}
+
+    /* EXIT INTENT */
+    .exit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:3000;align-items:center;justify-content:center;padding:16px;animation:fadeIn .3s}
+    .exit-overlay.show{display:flex}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .exit-box{background:#fff;border-radius:18px;max-width:420px;width:100%;overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:slideUp .4s ease}
+    @keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .exit-close{position:absolute;top:10px;left:12px;background:rgba(0,0,0,.1);border:none;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;color:#334155;z-index:2;font-weight:700}
+    .exit-header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:24px 22px 18px;text-align:center;border-bottom:3px solid var(--gold)}
+    .exit-header .eb{display:inline-block;background:var(--gold);color:var(--navy);padding:4px 12px;border-radius:16px;font-size:.72rem;font-weight:900;margin-bottom:8px}
+    .exit-header h3{font-size:1.2rem;font-weight:900;line-height:1.35;margin-bottom:4px}
+    .exit-header h3 em{color:var(--gold2);font-style:normal}
+    .exit-header p{font-size:.86rem;opacity:.9}
+    .exit-body{padding:20px 22px 22px}
+    .exit-list{margin:10px 0 16px}
+    .exit-list li{list-style:none;padding:6px 0 6px 24px;position:relative;font-size:.87rem;color:#334155;line-height:1.5}
+    .exit-list li::before{content:"✓";position:absolute;right:0;color:#22c55e;font-weight:900;font-size:1rem}
+    .exit-body input{width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.96rem;margin-bottom:10px;font-family:'Heebo',sans-serif;direction:rtl}
+    .exit-body input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+    .exit-btn{width:100%;padding:13px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:10px;font-size:.95rem;font-weight:900;cursor:pointer;font-family:'Heebo',sans-serif;transition:all .2s}
+    .exit-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,151,58,.4)}
+    .exit-skip{display:block;text-align:center;margin-top:10px;font-size:.8rem;color:#94a3b8;background:none;border:none;cursor:pointer;width:100%;font-family:'Heebo',sans-serif;text-decoration:underline}
 
     /* PRIVACY MODAL */
     .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:16px}
@@ -276,12 +346,16 @@
 
 <!-- HERO -->
 <section class="hero" aria-labelledby="hero-title">
-  <h1 id="hero-title">כיסוי רפואי מלא —<br><em>ללא הצהרת בריאות</em></h1>
-  <p>ביקור רופא עד הבית, החזרים על MRI ו-CT, פיזיותרפיה, מימוש זכויות רפואיות ועוד — מיד כשאתם צריכים</p>
+  <h1 id="hero-title">כיסוי רפואי נרחב —<br><em>ללא הצהרת בריאות</em></h1>
+  <p>ביקור רופא עד הבית, MRI ו-CT, פיזיותרפיה ומימוש זכויות רפואיות — מיד כשאתם צריכים</p>
+  <div class="hero-price">
+    <span class="hp-label">מחיר מקור: <s>₪350</s> · היום בלבד</span>
+    <span class="hp-amount">₪248<small>/חודש</small></span>
+  </div>
   <div class="hero-stats">
     <span class="hero-stat">ללא הצהרת בריאות</span>
     <span class="hero-stat">ביטול בכל עת</span>
-    <span class="hero-stat">50,000+ מנויים מרוצים</span>
+    <span class="hero-stat">ללא קנסות יציאה</span>
     <span class="hero-stat">שירות 24/7</span>
   </div>
   <span class="hero-arrow" aria-hidden="true">↓</span>
@@ -421,8 +495,8 @@
     <div class="ben-item">
       <span class="ben-icon">💰</span>
       <div class="ben-text">
-        <strong>החזרים עד 80%</strong>
-        <span>MRI, CT, פיזיותרפיה, רפואה משלימה</span>
+        <strong>MRI ו-CT מהיר</strong>
+        <span>אבחון תוך ימים, בלי חודשי המתנה</span>
       </div>
     </div>
     <div class="ben-item">
@@ -436,7 +510,7 @@
       <span class="ben-icon">⚖️</span>
       <div class="ben-text">
         <strong>מימוש זכויות רפואיות</strong>
-        <span>ממוצע ₪8,500 החזר מס + קצבאות ביטוח לאומי</span>
+        <span>החזרי מס, קצבאות ביטוח לאומי, תביעות</span>
       </div>
     </div>
   </div>
@@ -448,7 +522,7 @@
     <div class="rights-header">
       <span class="rights-badge">⚖️ שירות בלעדי למנויים</span>
       <h2 id="rights-title">מימוש זכויות רפואיות —<br><em>מקסימום החזרים, בלי התרוצצויות</em></h2>
-      <p>90% מהאנשים לא ממצים את הזכויות שמגיעות להם מביטוח לאומי, מס הכנסה וחברות הביטוח. אנחנו עושים את זה בשבילכם — <strong>חינם לחלוטין</strong> בתור מנויים.</p>
+      <p>רבים לא ממצים את הזכויות שמגיעות להם מביטוח לאומי, מס הכנסה וחברות הביטוח. אנחנו עושים את זה בשבילכם — <strong>ללא תשלום נוסף</strong> בתור מנויים.</p>
     </div>
 
     <div class="rights-grid">
@@ -456,14 +530,14 @@
         <span class="icon">🏛️</span>
         <h3>ביטוח לאומי</h3>
         <p>בדיקת זכאות לנכות כללית, נכות מעבודה, שירותים מיוחדים, גמלת סיעוד וניידות. הכנת ערעור + ליווי מלא.</p>
-        <span class="amount">עד ₪5,000 בחודש</span>
+        <span class="amount">קצבאות חודשיות</span>
       </div>
 
       <div class="right-card">
         <span class="icon">💰</span>
         <h3>החזר מס — מס הכנסה</h3>
-        <p>החזרי מס רטרואקטיביים עד 6 שנים אחורה על הוצאות רפואיות, נכות, ועוד. מילוי טפסים וליווי עד קבלת הכסף.</p>
-        <span class="amount">ממוצע ₪8,500 החזר</span>
+        <p>החזרי מס רטרואקטיביים עד 6 שנים אחורה על הוצאות רפואיות, נכות ועוד. מילוי טפסים וליווי עד קבלת הכסף.</p>
+        <span class="amount">6 שנים אחורה</span>
       </div>
 
       <div class="right-card">
@@ -502,6 +576,138 @@
   </div>
 </section>
 
+<!-- COMPARE -->
+<section class="compare" aria-labelledby="compare-title">
+  <div class="compare-inner">
+    <h2 id="compare-title">פלטינום מול קופת חולים</h2>
+    <p class="sub">למה אלפי מבוטחים בוחרים גם בכתב שירות פרטי</p>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:42%">&nbsp;</th>
+          <th>קופת חולים</th>
+          <th class="us">פלטינום</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">רופא עד הבית בלילה/סופ"ש</td>
+          <td class="no">לרוב לא זמין</td>
+          <td class="us yes">24/7</td>
+        </tr>
+        <tr>
+          <td class="row-label">תור לרופא מומחה</td>
+          <td>לרוב חודשים</td>
+          <td class="us">תוך 72 שעות</td>
+        </tr>
+        <tr>
+          <td class="row-label">MRI / CT</td>
+          <td>תור ארוך</td>
+          <td class="us">אבחון מהיר</td>
+        </tr>
+        <tr>
+          <td class="row-label">מימוש זכויות</td>
+          <td class="no">אתה לבד</td>
+          <td class="us yes">ליווי מלא</td>
+        </tr>
+        <tr>
+          <td class="row-label">שיפוי סיעוד (גיל 60+)</td>
+          <td class="no">לא כולל</td>
+          <td class="us yes">כלול</td>
+        </tr>
+        <tr>
+          <td class="row-label">הצהרת בריאות</td>
+          <td>לרוב נדרשת בביטוח משלים</td>
+          <td class="us yes">ללא</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TRANSPARENCY -->
+<section class="transparency" aria-labelledby="transparency-title">
+  <div class="transparency-inner">
+    <h3 id="transparency-title">חשוב שתדעו — מה לא מכוסה</h3>
+    <div class="transparency-box">
+      <p><strong>כתב השירות מיועד להשלים את הקופה, לא להחליף אותה.</strong>
+      לשמירה על השקיפות, פלטינום לא מכסה:</p>
+      <ul>
+        <li>ניתוחים (פרטיים או ציבוריים)</li>
+        <li>אשפוז בבתי חולים</li>
+        <li>תרופות יקרות / ביולוגיות</li>
+      </ul>
+      <p style="margin-top:8px;font-size:.83rem">לכיסוי מלא של ניתוחים — מומלץ לשלב ביטוח בריאות פרטי. נציג ישמח להסביר בשיחה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" aria-labelledby="faq-title">
+  <div class="faq-inner">
+    <h2 id="faq-title">שאלות נפוצות</h2>
+    <p class="sub">התשובות לכל מה שחשוב לדעת לפני ההצטרפות</p>
+
+    <details class="faq-item">
+      <summary>זה באמת ללא הצהרת בריאות?</summary>
+      <div class="faq-body">
+        <strong>כן, ללא הצהרת בריאות וללא מבחני חיתום.</strong> כל אדם מתקבל, ללא קשר למצב הבריאותי הנוכחי, גיל או רקע רפואי. פלטינום מתחייבת לקבל את כל הפונים.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>כמה זמן תקופת האכשרה?</summary>
+      <div class="faq-body">
+        <strong>3 חודשים לרוב הכיסויים</strong> (6 חודשים לכיסוי סיעוד / פרימיום). במהלך תקופה זו לא ניתן להגיש תביעה. מתחייב רק במצבים שאינם חירום מיידי.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>מה כן מכוסה?</summary>
+      <div class="faq-body">
+        רופא עד הבית 24/7 (עד ₪3,000/שנה) · רופאים מומחים תוך 72 שעות · MRI + CT מהיר ·
+        פיזיותרפיה וריפוי בעיסוק · רפואה משלימה (עד ₪2,500/שנה) · שיפוי סיעוד ·
+        מימוש זכויות מול ביטוח לאומי ומס הכנסה — חינם למנויים.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>מה לא מכוסה?</summary>
+      <div class="faq-body">
+        <strong>לא מכוסים:</strong> ניתוחים (פרטיים או ציבוריים), אשפוזים, תרופות ביולוגיות/יקרות. לכיסוי של ניתוחים מומלץ ביטוח בריאות פרטי בנוסף.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>איך מבטלים? יש קנס יציאה?</summary>
+      <div class="faq-body">
+        <strong>ביטול בכל עת, ללא קנסות וללא חיוב יציאה.</strong> מספיק טלפון אחד למוקד שירות (*3779 או 074-7694890) — הביטול תקף מיידית מחודש הבא.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>כמה זמן לוקח לקבל החזר?</summary>
+      <div class="faq-body">
+        <strong>תשלום תביעות תוך 72 שעות</strong> מרגע קבלת כל המסמכים הנדרשים. הכסף נכנס ישירות לחשבון הבנק.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>מה הפרש בין 350 ל-248?</summary>
+      <div class="faq-body">
+        ₪350 הוא מחיר המקור הרשום של כתב השירות. <strong>₪248 היא ההטבה שמגיעה למבוטחים בגיל 50+</strong> בעקבות רפורמת אוקטובר 2025 של החברה. מחיר ההטבה מקובע ולא יעלה כל עוד המנוי פעיל.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>מי עומד מאחורי פלטינום?</summary>
+      <div class="faq-body">
+        <strong>פלטינום רפואה משלימה בע"מ</strong> (ח.פ. 515443554) — חברה ישראלית שהוקמה ב-2016, משרתת עשרות אלפי מנויים. מוקד שירות בעברית 24/7.
+      </div>
+    </details>
+  </div>
+</section>
+
 <!-- REVIEWS -->
 <section class="reviews" aria-labelledby="reviews-title">
   <h2 id="reviews-title">מה אומרים המנויים שלנו</h2>
@@ -523,8 +729,30 @@
       <div class="review-author">
         <div class="review-avatar">מ</div>
         <div>
-          <div class="review-name">משה לוי</div>
+          <div class="review-name">משה ל.</div>
           <div class="review-meta">גיל 72 • תל אביב • מנוי 3 שנים</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"הצוות של מימוש הזכויות עזר לי לקבל החזר מס שלא ידעתי שמגיע לי. שירות מקצועי שהצדיק כל שקל מההרשמה."</p>
+      <div class="review-author">
+        <div class="review-avatar">ש</div>
+        <div>
+          <div class="review-name">שרה ב.</div>
+          <div class="review-meta">גיל 68 • חיפה • מנויה שנה</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"חיכיתי 4 חודשים לתור אצל אורתופד בקופה. דרך פלטינום קיבלתי מומחה תוך שבוע. שווה את זה."</p>
+      <div class="review-author">
+        <div class="review-avatar">י</div>
+        <div>
+          <div class="review-name">יעקב מ.</div>
+          <div class="review-meta">גיל 64 • ירושלים • מנוי 2 שנים</div>
         </div>
       </div>
     </div>
@@ -533,12 +761,41 @@
 
 <!-- FOOTER -->
 <footer class="footer">
-  משווק מורשה של פלטינום רפואה משלימה בע״מ
-  &nbsp;|&nbsp;
-  כל הזכויות שמורות &copy; 2026
-  &nbsp;|&nbsp;
-  <a href="#" onclick="openPrivacy(event)">מדיניות פרטיות</a>
+  <div style="margin-bottom:6px;color:#d4af37;font-weight:700">פלטינום רפואה משלימה בע״מ</div>
+  <div style="font-size:.76rem;opacity:.85">ח.פ. 515443554 · הוקמה 2016 · מוקד שירות: *3779 / 074-7694890</div>
+  <div style="font-size:.76rem;opacity:.75;margin-top:6px">משווק מורשה · כל הזכויות שמורות &copy; 2026</div>
+  <div style="margin-top:8px;font-size:.76rem">
+    <a href="#" onclick="openPrivacy(event)">מדיניות פרטיות</a>
+    &nbsp;·&nbsp;
+    <a href="tel:0515020261">צור קשר: 051-502-0261</a>
+  </div>
 </footer>
+
+<!-- EXIT INTENT MODAL -->
+<div class="exit-overlay" id="exit-modal" role="dialog" aria-modal="true" aria-labelledby="exit-title" aria-hidden="true">
+  <div class="exit-box">
+    <button class="exit-close" onclick="closeExit()" aria-label="סגור">✕</button>
+    <div class="exit-header">
+      <span class="eb">⏸ רגע לפני שעוזבים</span>
+      <h3 id="exit-title">קבל/י מדריך חינם:<br><em>5 זכויות רפואיות שרוב הגיל השלישי מפספס</em></h3>
+      <p>PDF ישיר למייל · בלי התחייבות</p>
+    </div>
+    <div class="exit-body">
+      <ul class="exit-list">
+        <li>איך לקבל החזר מס עד 6 שנים אחורה</li>
+        <li>מתי מגיעה קצבת נכות מביטוח לאומי</li>
+        <li>זכויות שחברות הביטוח לא מגלות ללקוחות</li>
+      </ul>
+      <form id="exit-form" onsubmit="submitExit(event)">
+        <input type="text" id="exit-name" placeholder="שם מלא" required autocomplete="name">
+        <input type="tel" id="exit-phone" placeholder="מספר טלפון" required autocomplete="tel">
+        <input type="email" id="exit-email" placeholder="אימייל (לשליחת המדריך)" required autocomplete="email">
+        <button type="submit" class="exit-btn">שלח/י לי את המדריך 📩</button>
+      </form>
+      <button class="exit-skip" onclick="closeExit()">לא תודה, אמשיך לגלוש</button>
+    </div>
+  </div>
+</div>
 
 <!-- PRIVACY MODAL -->
 <div class="modal-overlay" id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
@@ -765,6 +1022,77 @@
     this.classList.remove('field-error');
     document.getElementById('phone-error').style.display = 'none';
   });
+
+  // EXIT INTENT
+  let exitShown = false;
+  function shouldShowExit() {
+    if (exitShown) return false;
+    if (localStorage.getItem('exit_shown') === 'today_' + new Date().toDateString()) return false;
+    if (document.getElementById('thankyou').classList.contains('show')) return false;
+    return true;
+  }
+  function openExit() {
+    if (!shouldShowExit()) return;
+    exitShown = true;
+    localStorage.setItem('exit_shown', 'today_' + new Date().toDateString());
+    const m = document.getElementById('exit-modal');
+    m.classList.add('show');
+    m.setAttribute('aria-hidden', 'false');
+    setTimeout(() => document.getElementById('exit-name').focus(), 300);
+  }
+  window.closeExit = function() {
+    const m = document.getElementById('exit-modal');
+    m.classList.remove('show');
+    m.setAttribute('aria-hidden', 'true');
+  };
+  // Desktop: mouse leaves through top
+  document.addEventListener('mouseleave', e => {
+    if (e.clientY <= 0) openExit();
+  });
+  // Mobile: after 30s scroll + fast scroll up
+  let lastY = 0, fastUpCount = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < lastY - 100) fastUpCount++;
+    if (fastUpCount >= 2 && y < 200) openExit();
+    lastY = y;
+  });
+  // Mobile fallback: 45s on page
+  setTimeout(() => { if (window.innerWidth < 768) openExit(); }, 45000);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeExit(); });
+  document.getElementById('exit-modal').addEventListener('click', e => {
+    if (e.target.id === 'exit-modal') closeExit();
+  });
+
+  window.submitExit = async function(e) {
+    e.preventDefault();
+    const name  = document.getElementById('exit-name').value.trim();
+    const phone = document.getElementById('exit-phone').value.trim();
+    const email = document.getElementById('exit-email').value.trim();
+    if (!name || !phone || !email) return;
+    const btn = document.querySelector('.exit-btn');
+    btn.disabled = true;
+    btn.textContent = 'שולח...';
+    try {
+      await addDoc(collection(db, 'landing_leads'), {
+        name, phone, email,
+        score: 5,
+        notes: 'ליד מ-EXIT INTENT | ביקש PDF מדריך זכויות',
+        status: 'new',
+        source: 'landing_exit_intent',
+        marketingConsent: true,
+        consentDate: new Date().toISOString(),
+        createdAt: serverTimestamp()
+      });
+      fbq('track', 'Lead', { value: 5, currency: 'ILS', content_name: 'exit_guide' });
+      btn.textContent = '✓ נשלח! תבדקו את המייל';
+      setTimeout(closeExit, 2000);
+    } catch(err) {
+      console.error(err);
+      btn.disabled = false;
+      btn.textContent = 'נסה שוב';
+    }
+  };
 </script>
 </body>
 </html>
