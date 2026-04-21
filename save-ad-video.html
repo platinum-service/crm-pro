@@ -76,12 +76,18 @@
   <div class="steps">
     <h3>📤 איך להעלות ל-Meta Ads Manager</h3>
     <ol>
-      <li>לחץ <b>🎬 הקלט והורד</b> — הסרטון ירד (קובץ <code>.webm</code> או <code>.mp4</code>)</li>
-      <li>אם ירד WebM — לך ל-<a href="https://cloudconvert.com/webm-to-mp4" target="_blank" style="color:#d4af37">CloudConvert</a> ותהפוך ל-MP4 (2 דקות, חינם)</li>
-      <li>ב-Ads Manager → <b>ערוך מודעה</b> → <b>מדיה</b> → <b>הוסף סרטון</b> → העלה</li>
+      <li>לחץ <b>🎬 הקלט והורד</b> — הסרטון ירד כ-<code>.webm</code></li>
+      <li><b>חובה להמיר ל-MP4!</b> לך ל-<a href="https://cloudconvert.com/webm-to-mp4" target="_blank" style="color:#d4af37;font-weight:bold">CloudConvert</a>:
+        <br>א. גרור את קובץ ה-WebM
+        <br>ב. לחץ <b>Convert</b>
+        <br>ג. לחץ <b>Download</b> — הורדת קובץ MP4 תקין</li>
+      <li>ב-Ads Manager → <b>ערוך מודעה</b> → קטע <b>מדיה</b> → <b>הוסף סרטון</b> → העלה את ה-MP4</li>
       <li><b>הוסף מוזיקה:</b> בעורך הקריאייטיב → כפתור "🎵 הוסף מוזיקה" → בחר ממאגר Meta (חינמי)</li>
       <li>שמור ופרסם — Meta תתקין את הסרטון לרייליים ו-Stories אוטומטית</li>
     </ol>
+    <p style="margin-top:12px;padding-top:12px;border-top:1px solid #2a3a5a;font-size:12px;color:#9ca3af">
+      <b style="color:#ef4444">חשוב:</b> אל תנסה להעלות WebM ישירות ל-Meta — ההעלאה תיכשל. תמיד המר ל-MP4 ב-CloudConvert קודם.
+    </p>
   </div>
 </div>
 
@@ -346,21 +352,53 @@ async function record() {
   setStatus('🔴 מקליט... 15 שניות', 'recording');
 
   try {
-    const stream = canvas.captureStream(30); // 30 fps
+    // ═══════════════════════════════════
+    // Video stream from canvas
+    // ═══════════════════════════════════
+    const videoStream = canvas.captureStream(30);
 
-    // Try MP4 first, fallback to WebM
-    let mimeType = 'video/mp4;codecs=avc1';
-    if (!MediaRecorder.isTypeSupported(mimeType)) {
-      mimeType = 'video/webm;codecs=vp9';
-      if (!MediaRecorder.isTypeSupported(mimeType)) {
-        mimeType = 'video/webm;codecs=vp8';
-      }
-    }
+    // ═══════════════════════════════════
+    // Silent audio track — Meta דורשת ערוץ אודיו גם אם שקט
+    // ═══════════════════════════════════
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.value = 0.0001; // כמעט-שקט (לא 0 כדי שהדפדפן לא יסנן)
+    const dest = audioCtx.createMediaStreamDestination();
+    oscillator.connect(gainNode);
+    gainNode.connect(dest);
+    oscillator.frequency.value = 440;
+    oscillator.start();
 
-    const rec = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 5000000 });
+    // שילוב וידאו + אודיו
+    const combined = new MediaStream([
+      ...videoStream.getVideoTracks(),
+      ...dest.stream.getAudioTracks()
+    ]);
+
+    // בחירת פורמט — עדיפות ל-WebM יציב, MP4 נסיוני
+    const mimeOptions = [
+      'video/webm;codecs=vp9,opus',
+      'video/webm;codecs=vp8,opus',
+      'video/webm;codecs=vp9',
+      'video/webm;codecs=vp8',
+      'video/mp4;codecs=avc1,mp4a',
+      'video/webm'
+    ];
+    let mimeType = mimeOptions.find(m => MediaRecorder.isTypeSupported(m));
+    if (!mimeType) { throw new Error('הדפדפן לא תומך בהקלטת וידאו'); }
+
+    const rec = new MediaRecorder(combined, {
+      mimeType,
+      videoBitsPerSecond: 4000000,
+      audioBitsPerSecond: 128000
+    });
+
     const chunks = [];
     rec.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
     rec.onstop = () => {
+      oscillator.stop();
+      audioCtx.close();
       const blob = new Blob(chunks, { type: mimeType });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -372,16 +410,21 @@ async function record() {
       isRecording = false;
       btn.disabled = false;
       document.getElementById('previewBtn').disabled = false;
-      setStatus(`✅ הסרטון הורד (${ext.toUpperCase()}). אם WebM — המר ל-MP4 ב-CloudConvert`, 'ready');
+      const sizeKB = Math.round(blob.size / 1024);
+      setStatus(`✅ הסרטון הורד — ${ext.toUpperCase()}, ${sizeKB}KB. ${ext==='webm' ? 'חובה להמיר ל-MP4 ב-CloudConvert לפני העלאה ל-Meta!' : 'העלה ישירות ל-Meta'}`, 'ready');
     };
 
-    // Start animation + recording in sync
-    rec.start();
+    // אתחול + סנכרון
     startTime = null;
     if (animFrameId) cancelAnimationFrame(animFrameId);
     animFrameId = requestAnimationFrame(animate);
 
-    setTimeout(() => rec.stop(), DURATION + 100);
+    // המתנה מינימלית לוודא שהפריים הראשון צויר, ואז מתחילים הקלטה
+    setTimeout(() => {
+      rec.start(100); // chunks כל 100ms — מבטיח finalization נקי
+      setTimeout(() => rec.stop(), DURATION);
+    }, 150);
+
   } catch(e) {
     setStatus('❌ שגיאה: ' + e.message, '');
     isRecording = false;
