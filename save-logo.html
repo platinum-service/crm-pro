@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>שמור לוגו</title>
+<style>
+  body { background: #888; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 20px; font-family: Arial; }
+  canvas { border-radius: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  button { background: #d4af37; color: #1a2744; border: none; padding: 14px 32px; font-size: 18px; font-weight: bold; border-radius: 10px; cursor: pointer; }
+  button:hover { background: #f0d060; }
+</style>
+</head>
+<body>
+<canvas id="c" width="400" height="400"></canvas>
+<button onclick="download()">⬇️ שמור כ-PNG לפייסבוק</button>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+
+// Background
+ctx.fillStyle = '#1a2744';
+roundRect(ctx, 0, 0, 400, 400, 40);
+ctx.fill();
+
+// Gold outer ring
+ctx.strokeStyle = 'rgba(212,175,55,0.3)';
+ctx.lineWidth = 1;
+ctx.beginPath();
+ctx.arc(200, 175, 120, 0, Math.PI * 2);
+ctx.stroke();
+
+// Gold inner ring
+ctx.strokeStyle = 'rgba(212,175,55,0.5)';
+ctx.lineWidth = 3;
+ctx.beginPath();
+ctx.arc(200, 175, 108, 0, Math.PI * 2);
+ctx.stroke();
+
+// Letter פ
+ctx.fillStyle = '#d4af37';
+ctx.font = 'bold 170px Arial';
+ctx.textAlign = 'center';
+ctx.textBaseline = 'middle';
+ctx.fillText('פ', 200, 185);
+
+// PLATINUM text
+ctx.font = 'bold 28px Arial';
+ctx.letterSpacing = '4px';
+ctx.fillText('PLATINUM', 200, 325);
+
+// Divider line
+ctx.strokeStyle = 'rgba(212,175,55,0.6)';
+ctx.lineWidth = 1.5;
+ctx.beginPath();
+ctx.moveTo(100, 345);
+ctx.lineTo(300, 345);
+ctx.stroke();
+
+// Subtitle
+ctx.font = '16px Arial';
+ctx.fillStyle = 'rgba(212,175,55,0.85)';
+ctx.fillText('כתב שירות', 200, 368);
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function download() {
+  const link = document.createElement('a');
+  link.download = 'platinum-logo.png';
+  link.href = c.toDataURL('image/png');
+  link.click();
+}
+</script>
+</body>
+</html>

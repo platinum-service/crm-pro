@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>תמונות מודעה — 3 גדלים</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    background: #222;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    padding: 30px;
+    margin: 0;
+  }
+  h1 {
+    text-align: center;
+    color: #d4af37;
+    margin-bottom: 10px;
+  }
+  .intro {
+    text-align: center;
+    color: #ccc;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .card {
+    background: #2a2a2a;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+  }
+  .card h2 {
+    color: #d4af37;
+    margin: 0 0 6px;
+    font-size: 18px;
+  }
+  .card .spec {
+    color: #ccc;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .card .use {
+    color: #9fdbff;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 14px;
+  }
+  canvas {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 14px;
+  }
+  button {
+    background: #d4af37;
+    color: #1a2744;
+    border: none;
+    padding: 10px 24px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover { background: #f0d060; }
+  .square canvas { width: 300px; }
+  .vertical canvas { width: 180px; }
+  .horizontal canvas { width: 380px; }
+</style>
+</head>
+<body>
+
+<h1>🎯 3 תמונות מוכנות למודעת פייסבוק</h1>
+<p class="intro">
+  כל תמונה מותאמת למיקום אחר ב-Meta. תכנון מינימלי — פחות מ-20% טקסט (חוק Meta).<br>
+  לחץ על הכפתור לשמירת כל תמונה בנפרד, ואז תעלה אותה לגודל המתאים ב-Ad Manager.
+</p>
+
+<div class="grid">
+
+  <!-- SQUARE 1:1 - 1080x1080 -->
+  <div class="card square">
+    <h2>1️⃣ מרובע 1:1</h2>
+    <div class="spec">1080×1080</div>
+    <div class="use">📱 פיד פייסבוק + אינסטגרם</div>
+    <canvas id="sq" width="1080" height="1080"></canvas>
+    <button onclick="dl('sq','platinum-ad-square.png')">⬇️ שמור מרובע</button>
+  </div>
+
+  <!-- VERTICAL 9:16 - 1080x1920 -->
+  <div class="card vertical">
+    <h2>2️⃣ אנכי 9:16</h2>
+    <div class="spec">1080×1920</div>
+    <div class="use">📱 סטוריז + רילז</div>
+    <canvas id="vr" width="1080" height="1920"></canvas>
+    <button onclick="dl('vr','platinum-ad-vertical.png')">⬇️ שמור אנכי</button>
+  </div>
+
+  <!-- HORIZONTAL 1.91:1 - 1200x628 -->
+  <div class="card horizontal">
+    <h2>3️⃣ אופקי 1.91:1</h2>
+    <div class="spec">1200×628</div>
+    <div class="use">🖥️ פיד דסקטופ + Audience Network</div>
+    <canvas id="hz" width="1200" height="628"></canvas>
+    <button onclick="dl('hz','platinum-ad-horizontal.png')">⬇️ שמור אופקי</button>
+  </div>
+
+</div>
+
+<script>
+function dl(id, filename) {
+  const c = document.getElementById(id);
+  const a = document.createElement('a');
+  a.download = filename;
+  a.href = c.toDataURL('image/png');
+  a.click();
+}
+
+// ═══════════════════════════════════════════
+// דוקטור מצויר (צללית פשוטה)
+// ═══════════════════════════════════════════
+function drawDoctor(ctx, x, y, scale) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(scale, scale);
+
+  // גוף
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.moveTo(-90, 40);
+  ctx.lineTo(-90, 180);
+  ctx.lineTo(90, 180);
+  ctx.lineTo(90, 40);
+  ctx.lineTo(45, 40);
+  ctx.lineTo(30, 10);
+  ctx.lineTo(-30, 10);
+  ctx.lineTo(-45, 40);
+  ctx.closePath();
+  ctx.fill();
+
+  // קו סטטסקופ
+  ctx.strokeStyle = '#1a2744';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(-20, 70);
+  ctx.bezierCurveTo(-20, 120, 30, 120, 30, 80);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(30, 90, 10, 0, Math.PI * 2);
+  ctx.fillStyle = '#1a2744';
+  ctx.fill();
+
+  // ראש
+  ctx.fillStyle = '#f4d4a6';
+  ctx.beginPath();
+  ctx.arc(0, -30, 40, 0, Math.PI * 2);
+  ctx.fill();
+
+  // שיער
+  ctx.fillStyle = '#3d2914';
+  ctx.beginPath();
+  ctx.arc(0, -40, 38, Math.PI, 0);
+  ctx.fill();
+
+  // מסכה/שפם קטן (אופציונלי)
+  ctx.fillStyle = '#1a2744';
+  ctx.fillRect(-8, -22, 16, 3);
+
+  // צלב רפואי קטן על הכיס
+  ctx.fillStyle = '#d4af37';
+  ctx.fillRect(60, 70, 16, 5);
+  ctx.fillRect(65, 65, 5, 16);
+
+  ctx.restore();
+}
+
+// ═══════════════════════════════════════════
+// רקע גרדיאנט + אלמנטים דקורטיביים
+// ═══════════════════════════════════════════
+function drawBackground(ctx, w, h) {
+  // גרדיאנט נייבי
+  const g = ctx.createLinearGradient(0, 0, w, h);
+  g.addColorStop(0, '#0d1628');
+  g.addColorStop(0.5, '#1a2744');
+  g.addColorStop(1, '#1e2f52');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, w, h);
+
+  // עיגולים דקורטיביים בפינה אחת
+  for (let r = 60; r <= 300; r += 40) {
+    ctx.strokeStyle = `rgba(212,175,55,${0.1 - r*0.00025})`;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(w * 0.85, h * 0.15, r, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+}
+
+// ═══════════════════════════════════════════
+// לוגו פלטינום (אות פ זהב בעיגול)
+// ═══════════════════════════════════════════
+function drawLogo(ctx, cx, cy, size) {
+  ctx.save();
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = size * 0.04;
+  ctx.beginPath();
+  ctx.arc(cx, cy, size, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.fillStyle = '#d4af37';
+  ctx.font = `bold ${size * 1.2}px Arial`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('פ', cx, cy + size * 0.08);
+  ctx.restore();
+}
+
+// ═══════════════════════════════════════════
+// תמונה 1 — מרובע 1080x1080
+// ═══════════════════════════════════════════
+function drawSquare() {
+  const c = document.getElementById('sq');
+  const ctx = c.getContext('2d');
+  const w = 1080, h = 1080;
+
+  drawBackground(ctx, w, h);
+  drawDoctor(ctx, 540, 420, 1.8);
+
+  // כותרת
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 68px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('רפואה פרטית', 540, 780);
+  ctx.fillText('בהישג יד', 540, 860);
+
+  // קו זהב מפריד
+  ctx.fillStyle = '#d4af37';
+  ctx.fillRect(440, 900, 200, 4);
+
+  // לוגו קטן
+  drawLogo(ctx, 540, 970, 35);
+  ctx.fillStyle = '#d4af37';
+  ctx.font = 'bold 24px Arial';
+  ctx.fillText('פלטינום כתב שירות', 540, 1030);
+}
+
+// ═══════════════════════════════════════════
+// תמונה 2 — אנכי 1080x1920
+// ═══════════════════════════════════════════
+function drawVertical() {
+  const c = document.getElementById('vr');
+  const ctx = c.getContext('2d');
+  const w = 1080, h = 1920;
+
+  drawBackground(ctx, w, h);
+  drawDoctor(ctx, 540, 780, 2.5);
+
+  // כותרת
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 90px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('רפואה פרטית', 540, 1280);
+  ctx.fillText('בהישג יד', 540, 1390);
+
+  // קו זהב
+  ctx.fillStyle = '#d4af37';
+  ctx.fillRect(390, 1450, 300, 5);
+
+  // לוגו
+  drawLogo(ctx, 540, 1570, 50);
+  ctx.fillStyle = '#d4af37';
+  ctx.font = 'bold 32px Arial';
+  ctx.fillText('פלטינום כתב שירות', 540, 1670);
+
+  ctx.font = '24px Arial';
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('מגיל 50 ומעלה', 540, 1740);
+}
+
+// ═══════════════════════════════════════════
+// תמונה 3 — אופקי 1200x628
+// ═══════════════════════════════════════════
+function drawHorizontal() {
+  const c = document.getElementById('hz');
+  const ctx = c.getContext('2d');
+  const w = 1200, h = 628;
+
+  drawBackground(ctx, w, h);
+
+  // דוקטור בצד שמאל
+  drawDoctor(ctx, 260, 320, 1.5);
+
+  // טקסט בצד ימין
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 52px Arial';
+  ctx.textAlign = 'right';
+  ctx.fillText('רפואה פרטית', 1100, 240);
+  ctx.fillText('בהישג יד', 1100, 310);
+
+  // קו זהב
+  ctx.fillStyle = '#d4af37';
+  ctx.fillRect(900, 340, 200, 4);
+
+  // לוגו + שם
+  drawLogo(ctx, 1050, 430, 30);
+  ctx.fillStyle = '#d4af37';
+  ctx.font = 'bold 24px Arial';
+  ctx.textAlign = 'right';
+  ctx.fillText('פלטינום כתב שירות', 1000, 438);
+
+  ctx.font = '20px Arial';
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('מגיל 50 ומעלה · ללא הצהרת בריאות', 1100, 500);
+}
+
+// ═══════════════════════════════════════════
+// הפעלה
+// ═══════════════════════════════════════════
+drawSquare();
+drawVertical();
+drawHorizontal();
+</script>
+
+</body>
+</html>
