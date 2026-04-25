@@ -124,6 +124,25 @@
     .send-btn:hover{background:#4f46e5}
     .send-btn:disabled{background:#334155;cursor:not-allowed}
 
+    /* New lead banner (real-time alert) */
+    .new-lead-banner{position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;padding:14px 20px;z-index:10000;display:flex;align-items:center;gap:14px;box-shadow:0 6px 20px rgba(0,0,0,.4);transform:translateY(-100%);transition:transform .35s cubic-bezier(.22,1.36,.64,1);font-weight:600}
+    .new-lead-banner.show{transform:translateY(0)}
+    .new-lead-banner-icon{font-size:1.6rem;animation:bounce 1s infinite}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    .new-lead-banner-text{flex:1;font-size:.95rem;line-height:1.4}
+    .new-lead-banner-text b{font-size:1.05rem}
+    .new-lead-banner-actions{display:flex;gap:8px}
+    .new-lead-banner-btn{background:#fff;color:#15803d;border:none;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:.88rem;transition:all .15s}
+    .new-lead-banner-btn:hover{background:#f0fdf4;transform:translateY(-1px)}
+    .new-lead-banner-btn.skip{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5)}
+    .new-lead-banner-btn.skip:hover{background:rgba(255,255,255,.15)}
+
+    /* Notif button in topbar */
+    .notif-btn{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:7px 11px;color:#94a3b8;font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+    .notif-btn:hover{border-color:#6366f1;color:#a5b4fc}
+    .notif-btn.granted{border-color:#16a34a;color:#6ee7b7}
+    .notif-btn.denied{border-color:#dc2626;color:#fca5a5}
+
     /* Table in chat */
     .chat-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:6px 0}
     .chat-table th{background:#0f172a;color:#94a3b8;padding:6px 10px;text-align:right;font-weight:600;border-bottom:1px solid #334155}
@@ -158,11 +177,22 @@
       <div class="db-dot loading" id="db-dot"></div>
       <span id="db-label">טוען נתונים...</span>
     </div>
+    <button class="notif-btn" id="notif-btn" onclick="enableNotifications()" title="הפעלת התראות לידים חדשים">🔔 התראות</button>
     <div class="key-wrap">
       <input type="password" class="key-input" id="api-key" placeholder="מפתח Anthropic API">
       <button class="key-btn" onclick="setKey()">אמת</button>
       <span class="key-status" id="key-status" style="display:none"></span>
     </div>
+  </div>
+</div>
+
+<!-- New lead banner (in-page alert) -->
+<div class="new-lead-banner" id="new-lead-banner">
+  <div class="new-lead-banner-icon">🎯</div>
+  <div class="new-lead-banner-text" id="new-lead-banner-text"></div>
+  <div class="new-lead-banner-actions">
+    <button class="new-lead-banner-btn" id="new-lead-banner-wa">💬 פתח WhatsApp</button>
+    <button class="new-lead-banner-btn skip" onclick="closeNewLeadBanner()">סגור</button>
   </div>
 </div>
 
@@ -277,6 +307,8 @@
   };
 
   let _customers = [], _leads = [], _activeTab = 'new';
+  let _firstLeadsSnap = true;
+  const _seenLeadIds = new Set();
 
   function startListeners() {
     document.getElementById('db-dot').className = 'db-dot loading';
@@ -305,6 +337,27 @@
     });
 
     onSnapshot(query(collection(db, 'landing_leads'), orderBy('createdAt', 'desc')), (snap) => {
+      // Detect newly added leads after first snapshot
+      if (!_firstLeadsSnap) {
+        snap.docChanges().forEach(change => {
+          if (change.type === 'added' && !_seenLeadIds.has(change.doc.id)) {
+            const r = change.doc.data();
+            if ((r.status || 'new') === 'new') {
+              notifyNewLead({
+                id: change.doc.id,
+                name: r.name || 'ללא שם',
+                phone: r.phone || '',
+                score: r.score || 0,
+                age: r.age || '',
+                medical: r.medical || ''
+              });
+            }
+          }
+        });
+      }
+      snap.docs.forEach(d => _seenLeadIds.add(d.id));
+      _firstLeadsSnap = false;
+
       _leads = snap.docs.map(d => {
         const r = d.data();
         const dateObj = r.createdAt?.toDate?.();
@@ -328,6 +381,145 @@
       console.warn('leads error:', err.message);
     });
   }
+
+  function notifyNewLead(lead) {
+    playDing();
+
+    const wa = phoneToWA(lead.phone);
+    const waMsg = encodeURIComponent(`היי ${lead.name}, מנחם מפלטינום כתב שירות. ראיתי שמילאת פרטים בדף שלנו, רציתי לברר אם זה זמן טוב לכמה דקות שיחה?`);
+    const waUrl = wa ? `https://wa.me/${wa}?text=${waMsg}` : '';
+
+    // Browser notification (works even when tab is in background)
+    if ('Notification' in window && Notification.permission === 'granted') {
+      try {
+        const n = new Notification(`🎯 ליד חדש: ${lead.name}`, {
+          body: `ניקוד ${lead.score}/10 · ${lead.phone}\nלחץ לפתיחת WhatsApp`,
+          tag: 'lead-' + lead.id,
+          requireInteraction: true,
+          dir: 'rtl',
+          lang: 'he'
+        });
+        n.onclick = () => {
+          window.focus();
+          if (waUrl) window.open(waUrl, '_blank');
+          n.close();
+        };
+      } catch(e) { console.warn('notification error', e); }
+    }
+
+    // In-page banner (visible when tab is active)
+    const banner = document.getElementById('new-lead-banner');
+    const txt = document.getElementById('new-lead-banner-text');
+    const btn = document.getElementById('new-lead-banner-wa');
+    txt.innerHTML = `<b>ליד חדש: ${escHtmlSafe(lead.name)}</b><br>📞 ${escHtmlSafe(lead.phone)} · ניקוד ${lead.score}/10${lead.medical?` · ${escHtmlSafe(MEDICAL_HE[lead.medical]||lead.medical)}`:''}`;
+    if (waUrl) {
+      btn.style.display = '';
+      btn.onclick = () => { window.open(waUrl, '_blank'); closeNewLeadBanner(); };
+    } else {
+      btn.style.display = 'none';
+    }
+    banner.classList.add('show');
+    clearTimeout(window._bannerTimer);
+    window._bannerTimer = setTimeout(closeNewLeadBanner, 30000);
+
+    // Update tab title
+    flashTitle(`🎯 ליד חדש: ${lead.name}`);
+  }
+
+  function closeNewLeadBanner() {
+    document.getElementById('new-lead-banner').classList.remove('show');
+  }
+  window.closeNewLeadBanner = closeNewLeadBanner;
+
+  function playDing() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const t = ctx.currentTime;
+      [880, 1320].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0, t + i*0.15);
+        gain.gain.linearRampToValueAtTime(0.25, t + i*0.15 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + i*0.15 + 0.4);
+        osc.start(t + i*0.15);
+        osc.stop(t + i*0.15 + 0.4);
+      });
+    } catch(e) {}
+  }
+
+  let _origTitle = '';
+  let _flashInterval = null;
+  function flashTitle(msg) {
+    if (!_origTitle) _origTitle = document.title;
+    let toggle = false;
+    clearInterval(_flashInterval);
+    _flashInterval = setInterval(() => {
+      document.title = toggle ? _origTitle : msg;
+      toggle = !toggle;
+    }, 1000);
+    // Stop when window is focused
+    window.addEventListener('focus', () => {
+      clearInterval(_flashInterval);
+      document.title = _origTitle;
+    }, { once: true });
+  }
+
+  function enableNotifications() {
+    if (!('Notification' in window)) {
+      alert('הדפדפן הזה לא תומך בהתראות');
+      return;
+    }
+    if (Notification.permission === 'granted') {
+      // Test notification
+      playDing();
+      try {
+        new Notification('🔔 התראות פעילות', { body: 'תקבל התראה כשנכנס ליד חדש', dir: 'rtl', lang: 'he' });
+      } catch(e) {}
+      updateNotifBtn();
+      return;
+    }
+    if (Notification.permission === 'denied') {
+      alert('ההתראות חסומות בדפדפן. כדי להפעיל: לחץ על סמל המנעול ליד הכתובת → אפשר התראות');
+      updateNotifBtn();
+      return;
+    }
+    Notification.requestPermission().then(perm => {
+      updateNotifBtn();
+      if (perm === 'granted') {
+        playDing();
+        try {
+          new Notification('✅ התראות הופעלו', { body: 'תקבל התראה כשנכנס ליד חדש', dir: 'rtl', lang: 'he' });
+        } catch(e) {}
+      }
+    });
+  }
+  window.enableNotifications = enableNotifications;
+
+  function updateNotifBtn() {
+    const btn = document.getElementById('notif-btn');
+    if (!btn) return;
+    if (!('Notification' in window)) {
+      btn.textContent = '🔕 לא נתמך';
+      btn.disabled = true;
+      return;
+    }
+    if (Notification.permission === 'granted') {
+      btn.textContent = '🔔 התראות פעילות';
+      btn.className = 'notif-btn granted';
+    } else if (Notification.permission === 'denied') {
+      btn.textContent = '🔕 התראות חסומות';
+      btn.className = 'notif-btn denied';
+    } else {
+      btn.textContent = '🔔 הפעל התראות';
+      btn.className = 'notif-btn';
+    }
+  }
+
+  // Init notif button state on load
+  setTimeout(updateNotifBtn, 100);
 
   function updateUI() {
     const customers = _customers, leads = _leads;
