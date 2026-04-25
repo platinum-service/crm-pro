@@ -48,20 +48,42 @@
     .quick-btn:hover{border-color:#6366f1;color:#a5b4fc;background:#1e1b4b}
 
     /* LEADS PANEL */
-    .leads-panel{background:#0f172a;border:1px solid #f59e0b;border-radius:10px;overflow:hidden}
-    .leads-panel-header{background:#78350f;padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
-    .leads-panel-title{font-size:.82rem;font-weight:700;color:#fde68a}
-    .leads-badge{background:#f59e0b;color:#000;border-radius:10px;padding:1px 8px;font-size:.75rem;font-weight:800}
-    .lead-card{padding:10px 12px;border-bottom:1px solid #1e293b;cursor:pointer;transition:background .15s}
+    .leads-tabs{display:flex;gap:4px;margin-bottom:6px}
+    .leads-tab{flex:1;background:#0f172a;border:1px solid #334155;border-radius:7px;padding:6px 10px;color:#94a3b8;font-size:.78rem;cursor:pointer;font-weight:600;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px}
+    .leads-tab.active{background:#78350f;border-color:#f59e0b;color:#fde68a}
+    .leads-tab:hover:not(.active){background:#1e293b;color:#e2e8f0}
+    .leads-panel{background:#0f172a;border:1px solid #334155;border-radius:10px;overflow:hidden}
+    .leads-badge{background:#f59e0b;color:#000;border-radius:10px;padding:1px 7px;font-size:.7rem;font-weight:800;min-width:20px;text-align:center}
+    .lead-card{padding:10px 12px;border-bottom:1px solid #1e293b;transition:background .15s}
     .lead-card:last-child{border-bottom:none}
     .lead-card:hover{background:#1e293b}
-    .lead-card-name{font-size:.88rem;font-weight:700;color:#e2e8f0;margin-bottom:3px}
-    .lead-card-phone{font-size:.8rem;color:#94a3b8;direction:ltr;text-align:right}
-    .lead-card-meta{display:flex;justify-content:space-between;margin-top:4px}
-    .lead-score{font-size:.75rem;font-weight:700;padding:2px 7px;border-radius:8px}
+    .lead-card-name{font-size:.88rem;font-weight:700;color:#e2e8f0;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;gap:6px}
+    .lead-card-phone{display:block;font-size:.8rem;color:#60a5fa;direction:ltr;text-align:right;text-decoration:none;margin-bottom:3px}
+    .lead-card-phone:hover{color:#93c5fd;text-decoration:underline}
+    .lead-card-phone.bad{color:#f87171;text-decoration:line-through}
+    .lead-card-info{font-size:.74rem;color:#94a3b8;margin-bottom:4px;line-height:1.4}
+    .lead-card-meta{display:flex;justify-content:space-between;margin-top:4px;align-items:center}
+    .lead-score{font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:8px;flex-shrink:0}
     .lead-score.high{background:#064e3b;color:#6ee7b7}
     .lead-score.med{background:#1c1917;color:#fbbf24}
-    .lead-date{font-size:.72rem;color:#475569}
+    .lead-score.low{background:#450a0a;color:#fca5a5}
+    .lead-date{font-size:.7rem;color:#475569}
+    .lead-actions{display:flex;gap:5px;margin-top:8px;justify-content:flex-end}
+    .lead-act{background:#1e293b;border:1px solid #334155;border-radius:7px;padding:5px 9px;font-size:.95rem;cursor:pointer;transition:all .15s;line-height:1}
+    .lead-act:hover{transform:translateY(-1px)}
+    .lead-act.wa{background:#064e3b;border-color:#10b981;color:#6ee7b7}
+    .lead-act.wa:hover{background:#10b981;color:#fff}
+    .lead-act.sales{background:#1e1b4b;border-color:#6366f1;color:#a5b4fc}
+    .lead-act.sales:hover{background:#6366f1;color:#fff}
+    .lead-act.ai{background:#0f172a;border-color:#475569;color:#cbd5e1}
+    .lead-act.ai:hover{background:#475569;color:#fff}
+    .lead-act.done{background:#172554;border-color:#3b82f6;color:#93c5fd}
+    .lead-act.done:hover{background:#22c55e;border-color:#22c55e;color:#fff}
+    .lead-act.undo{background:#1e1b4b;border-color:#6366f1;color:#a5b4fc}
+    .lead-act.undo:hover{background:#6366f1;color:#fff}
+    .lead-card.handled{opacity:.7}
+    .lead-card.handled:hover{opacity:1}
+    .lead-handled-tag{font-size:.65rem;background:#064e3b;color:#6ee7b7;padding:2px 6px;border-radius:6px;font-weight:700}
 
     /* CHAT */
     .chat-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
@@ -109,8 +131,16 @@
     .chat-table tr:last-child td{border-bottom:none}
 
     @media(max-width:700px){
-      .sidebar{display:none}
-      .key-input{width:150px}
+      .topbar{flex-wrap:wrap;padding:10px 12px;gap:8px}
+      .topbar-info h1{font-size:.92rem}
+      .topbar-info p{display:none}
+      .topbar-actions{margin-right:0;flex-wrap:wrap;width:100%;gap:8px}
+      .key-input{width:100%;flex:1}
+      .layout{flex-direction:column}
+      .sidebar{width:100%;max-height:50vh;border-left:none;border-bottom:1px solid #334155}
+      .stat-mini{padding:7px 10px;margin-bottom:5px}
+      .stat-mini-val{font-size:1.05rem}
+      .messages{padding:14px}
     }
   </style>
 </head>
@@ -154,24 +184,31 @@
     </div>
 
     <div>
-      <h2>🎯 לידים חדשים מדף נחיתה</h2>
+      <h2>🎯 לידים מדף נחיתה</h2>
+      <div class="leads-tabs">
+        <button class="leads-tab active" id="tab-new" onclick="window.switchLeadTab('new')">חדשים <span class="leads-badge" id="leads-badge">0</span></button>
+        <button class="leads-tab" id="tab-handled" onclick="window.switchLeadTab('handled')">טופלו</button>
+      </div>
       <div class="leads-panel" id="leads-panel">
-        <div class="leads-panel-header">
-          <span class="leads-panel-title">ממתינים לטיפול</span>
-          <span class="leads-badge" id="leads-badge">0</span>
-        </div>
         <div id="leads-list"><div style="padding:12px;font-size:.82rem;color:#475569;text-align:center">טוען...</div></div>
       </div>
     </div>
 
     <div>
       <h2>💬 שאלות מהירות</h2>
-      <button class="quick-btn" onclick="quickAsk('כמה לקוחות סגרנו החודש? מי הנציג הטוב ביותר?')">📈 סגרים החודש</button>
+      <button class="quick-btn" onclick="quickAsk('עבור על כל הלידים החדשים שממתינים לטיפול ודרג אותם לפי עדיפות — למי להתקשר קודם ולמה')">🎯 דרג לידים לטיפול</button>
       <button class="quick-btn" onclick="quickAsk('הצג לי סיכום של כל הנציגים — כמה סגרו, כמה בוטלו, אחוז הצלחה')">👥 ביצועי נציגים</button>
+      <button class="quick-btn" onclick="quickAsk('כמה לקוחות סגרנו החודש? מי הנציג הטוב ביותר?')">📈 סגרים החודש</button>
       <button class="quick-btn" onclick="quickAsk('מי הלקוחות עם בעיות גבייה? כמה יש?')">⚠️ בעיות גבייה</button>
-      <button class="quick-btn" onclick="quickAsk('כמה לידים חדשים נכנסו מדף הנחיתה?')">🎯 לידים מדף נחיתה</button>
       <button class="quick-btn" onclick="quickAsk('מה אחוז הסגירה הכולל של המערכת?')">📊 אחוז סגירה</button>
-      <button class="quick-btn" onclick="quickAsk('אילו לקוחות נכנסו השבוע?')">🗓️ לקוחות שנכנסו השבוע</button>
+      <button class="quick-btn" onclick="quickAsk('אילו לקוחות נכנסו השבוע?')">🗓️ נכנסו השבוע</button>
+    </div>
+
+    <div>
+      <h2>🔗 ניווט</h2>
+      <a class="quick-btn" href="crm.html" target="_blank" style="text-decoration:none">🏠 ה-CRM המלא</a>
+      <a class="quick-btn" href="sales-dashboard.html" target="_blank" style="text-decoration:none">📊 דשבורד מכירות</a>
+      <a class="quick-btn" href="sales-agent-v2.html" target="_blank" style="text-decoration:none">💼 סוכן מכירות חי</a>
     </div>
   </div>
 
@@ -181,7 +218,8 @@
       <div class="welcome">
         <div class="welcome-icon">📊</div>
         <h2>סוכן ניתוח CRM</h2>
-        <p>שאל אותי כל שאלה על הנתונים — סגרים, נציגים, לידים, בעיות גבייה, דוחות ועוד.</p>
+        <p>שאל אותי על הלידים, סגרים, נציגים, בעיות גבייה ודוחות.<br>
+        בצד שמאל תראה את הלידים החיים — לחץ 💬 ל-WhatsApp, ▶️ לפתיחה בסוכן מכירות, או ✅ לסימון כטופל.</p>
       </div>
     </div>
 
@@ -202,7 +240,7 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const FB_CFG = {
     apiKey: "AIzaSyBqDua2LUZqhOlixdb0wCXC5K-dP_tt1j8",
@@ -223,23 +261,29 @@
     open: 'פתוח ⏳',
     cancelled: 'בוטל ❌',
     collection_issue: 'בעיית גבייה ⚠️',
-    new: 'חדש 🆕'
+    new: 'חדש 🆕',
+    handled: 'טופל ✓'
   };
 
-  async function loadData() {
-    try {
-      console.log('טוען נתונים מ-Firebase...');
-      let custSnap, leadsSnap;
-      try {
-        custSnap = await getDocs(collection(db, 'customers'));
-        console.log('customers:', custSnap.docs.length);
-      } catch(e) { console.warn('customers error:', e.message); custSnap = { docs: [] }; }
-      try {
-        leadsSnap = await getDocs(collection(db, 'landing_leads'));
-        console.log('landing_leads:', leadsSnap.docs.length);
-      } catch(e) { console.warn('landing_leads error:', e.message); leadsSnap = { docs: [] }; }
+  const MEDICAL_HE = {
+    dental: 'שיניים', mri: 'MRI/CT', doctor: 'רופא פרטי',
+    home: 'רופא בבית', physio: 'פיזיותרפיה', alternative: 'רפואה משלימה',
+    none: 'כללי'
+  };
 
-      const customers = custSnap.docs.map(d => {
+  const PRIORITY_HE = {
+    full: 'כיסוי מלא', cost: 'מחיר נוח', home: 'שירות בבית',
+    speed: 'מהירות', dental: 'שיניים', senior: 'סיעוד'
+  };
+
+  let _customers = [], _leads = [], _activeTab = 'new';
+
+  function startListeners() {
+    document.getElementById('db-dot').className = 'db-dot loading';
+    document.getElementById('db-label').textContent = 'מתחבר...';
+
+    onSnapshot(collection(db, 'customers'), (snap) => {
+      _customers = snap.docs.map(d => {
         const r = d.data();
         return {
           id: d.id,
@@ -253,68 +297,171 @@
           createdAt: r.createdAt?.toDate?.()?.toLocaleDateString('he-IL') || 'לא ידוע'
         };
       });
+      updateUI();
+    }, (err) => {
+      console.warn('customers error:', err.message);
+      document.getElementById('db-dot').className = 'db-dot err';
+      document.getElementById('db-label').textContent = 'שגיאה בלקוחות';
+    });
 
-      const leads = leadsSnap.docs.map(d => {
+    onSnapshot(query(collection(db, 'landing_leads'), orderBy('createdAt', 'desc')), (snap) => {
+      _leads = snap.docs.map(d => {
         const r = d.data();
+        const dateObj = r.createdAt?.toDate?.();
         return {
           id: d.id,
           name: r.name || '',
           phone: r.phone || '',
           age: r.age || '',
           insurance: r.insurance || '',
+          medical: r.medical || '',
+          priority: r.priority || '',
+          notes: r.notes || '',
           score: r.score || 0,
           status: r.status || 'new',
-          createdAt: r.createdAt?.toDate?.()?.toLocaleDateString('he-IL') || 'לא ידוע'
+          createdAt: dateObj?.toLocaleDateString('he-IL') || 'לא ידוע',
+          createdAtTime: dateObj?.getTime() || 0
         };
       });
+      updateUI();
+    }, (err) => {
+      console.warn('leads error:', err.message);
+    });
+  }
 
-      window._dbData = { customers, leads, loaded: true };
+  function updateUI() {
+    const customers = _customers, leads = _leads;
+    window._dbData = { customers, leads, loaded: true };
 
-      // Update sidebar stats
-      const byStatus = s => customers.filter(c => c.status === s).length;
-      // הצגת לידים חדשים
-      console.log('סה"כ לידים:', leads.length, leads);
-      const newLeads = leads.filter(l => l.status === 'new');
-      document.getElementById('leads-badge').textContent = newLeads.length;
-      const leadsListEl = document.getElementById('leads-list');
-      if (newLeads.length === 0) {
-        leadsListEl.innerHTML = '<div style="padding:12px;font-size:.82rem;color:#475569;text-align:center">אין לידים חדשים</div>';
-      } else {
-        leadsListEl.innerHTML = newLeads.map(l => `
-          <div class="lead-card" onclick="quickAsk('ספר לי על הליד: שם ${l.name}, טלפון ${l.phone}, גיל ${l.age||'לא ידוע'}, ניקוד ${l.score}/10')">
-            <div class="lead-card-name">👤 ${l.name}</div>
-            <div class="lead-card-phone">${l.phone}</div>
-            <div class="lead-card-meta">
-              <span class="lead-score ${(l.score||0)>=7?'high':'med'}">ניקוד: ${l.score||'?'}/10</span>
-              <span class="lead-date">${l.createdAt}</span>
-            </div>
-          </div>`).join('');
-      }
+    const byStatus = s => customers.filter(c => c.status === s).length;
+    const newLeads = leads.filter(l => l.status === 'new' || !l.status);
 
-      document.getElementById('s-total').textContent     = customers.length;
-      document.getElementById('s-closed').textContent    = byStatus('closed');
-      document.getElementById('s-open').textContent      = byStatus('open');
-      document.getElementById('s-cancelled').textContent = byStatus('cancelled');
-      document.getElementById('s-collection').textContent= byStatus('collection_issue');
-      document.getElementById('s-leads').textContent     = leads.length;
+    document.getElementById('s-total').textContent     = customers.length;
+    document.getElementById('s-closed').textContent    = byStatus('closed');
+    document.getElementById('s-open').textContent      = byStatus('open');
+    document.getElementById('s-cancelled').textContent = byStatus('cancelled');
+    document.getElementById('s-collection').textContent= byStatus('collection_issue');
+    document.getElementById('s-leads').textContent     = newLeads.length;
 
-      document.getElementById('db-dot').className   = 'db-dot ok';
-      document.getElementById('db-label').textContent = `${customers.length} לקוחות נטענו`;
-    } catch(e) {
-      document.getElementById('db-dot').className    = 'db-dot err';
-      document.getElementById('db-label').textContent = 'שגיאה בטעינה';
-      console.error(e);
+    document.getElementById('leads-badge').textContent = newLeads.length;
+    renderLeadsList();
+
+    document.getElementById('db-dot').className   = 'db-dot ok';
+    document.getElementById('db-label').textContent = `${customers.length} לקוחות · ${newLeads.length} לידים חדשים`;
+  }
+
+  function renderLeadsList() {
+    const leadsListEl = document.getElementById('leads-list');
+    const list = _activeTab === 'handled'
+      ? _leads.filter(l => l.status === 'handled')
+      : _leads.filter(l => l.status === 'new' || !l.status);
+
+    if (list.length === 0) {
+      const empty = _activeTab === 'handled' ? 'אין לידים שטופלו' : 'אין לידים חדשים 🎉';
+      leadsListEl.innerHTML = `<div style="padding:12px;font-size:.82rem;color:#475569;text-align:center">${empty}</div>`;
+    } else {
+      leadsListEl.innerHTML = list.map(renderLeadCard).join('');
     }
   }
 
-  loadData();
+  function switchLeadTab(tab) {
+    _activeTab = tab;
+    document.getElementById('tab-new').classList.toggle('active', tab === 'new');
+    document.getElementById('tab-handled').classList.toggle('active', tab === 'handled');
+    renderLeadsList();
+  }
+  window.switchLeadTab = switchLeadTab;
 
-  // Expose reload
-  window.reloadData = loadData;
+  function renderLeadCard(l) {
+    const wa = phoneToWA(l.phone);
+    const waMsg = encodeURIComponent(`היי ${l.name}, מנחם מפלטינום כתב שירות. ראיתי שמילאת פרטים בדף שלנו, רציתי לברר אם זה זמן טוב לכמה דקות שיחה?`);
+    const salesNotes = `ליד מדף נחיתה | ניקוד: ${l.score}/10 | גיל: ${l.age||'?'} | ביטוח: ${l.insurance||'?'} | ${MEDICAL_HE[l.medical]||l.medical||''} | ${PRIORITY_HE[l.priority]||l.priority||''}`;
+    const salesUrl = `sales-agent-v2.html?name=${encodeURIComponent(l.name)}&phone=${encodeURIComponent(l.phone)}&notes=${encodeURIComponent(salesNotes)}`;
+    const phoneTel = phoneToTel(l.phone);
+
+    const medicalLabel = MEDICAL_HE[l.medical] || l.medical || '';
+    const priorityLabel = PRIORITY_HE[l.priority] || l.priority || '';
+    const infoParts = [
+      l.age ? `גיל ${escHtmlSafe(l.age)}` : '',
+      medicalLabel ? escHtmlSafe(medicalLabel) : '',
+      priorityLabel ? escHtmlSafe(priorityLabel) : ''
+    ].filter(Boolean).join(' · ');
+
+    const scoreClass = (l.score||0)>=8?'high':((l.score||0)>=6?'med':'low');
+    const isHandled = l.status === 'handled';
+
+    const lastBtn = isHandled
+      ? `<button class="lead-act undo" onclick="setLeadStatus('${escAttr(l.id)}','new','${escAttr(l.name)}')" title="החזר לחדשים">↩️</button>`
+      : `<button class="lead-act done" onclick="setLeadStatus('${escAttr(l.id)}','handled','${escAttr(l.name)}')" title="סמן כטופל">✅</button>`;
+
+    return `
+      <div class="lead-card${isHandled?' handled':''}">
+        <div class="lead-card-name">👤 ${escHtmlSafe(l.name||'ללא שם')}
+          <span class="lead-score ${scoreClass}">${l.score||'?'}/10</span>
+        </div>
+        ${phoneTel ? `<a class="lead-card-phone" href="tel:${escAttr(phoneTel)}">${escHtmlSafe(l.phone)}</a>` : `<div class="lead-card-phone bad">${escHtmlSafe(l.phone||'אין טלפון')}</div>`}
+        ${infoParts ? `<div class="lead-card-info">${infoParts}</div>` : ''}
+        <div class="lead-card-meta">
+          <span class="lead-date">📅 ${l.createdAt}</span>
+          ${isHandled?'<span class="lead-handled-tag">✓ טופל</span>':''}
+        </div>
+        <div class="lead-actions">
+          ${wa ? `<button class="lead-act wa" onclick="window.open('https://wa.me/${wa}?text=${waMsg}','_blank')" title="WhatsApp">💬</button>` : ''}
+          <button class="lead-act sales" onclick="window.open('${salesUrl}','_blank')" title="פתח בסוכן מכירות">▶️</button>
+          <button class="lead-act ai" onclick="askAboutLead('${escAttr(l.id)}')" title="שאל את ה-AI">🤖</button>
+          ${lastBtn}
+        </div>
+      </div>`;
+  }
+
+  function phoneToWA(phone) {
+    if (!phone) return '';
+    let p = String(phone).replace(/[^\d+]/g, '');
+    if (p.startsWith('+972')) p = p.slice(1);
+    else if (p.startsWith('972')) { /* keep */ }
+    else if (p.startsWith('0')) p = '972' + p.slice(1);
+    if (p.length < 11 || p.length > 13) return '';
+    return p;
+  }
+
+  function phoneToTel(phone) {
+    if (!phone) return '';
+    const p = String(phone).replace(/[^\d+]/g, '');
+    return p.length >= 7 ? p : '';
+  }
+
+  function escHtmlSafe(t) {
+    return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function escAttr(t) {
+    return String(t==null?'':t).replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  }
+
+  async function setLeadStatus(docId, newStatus, name) {
+    const verb = newStatus === 'handled' ? 'לסמן כטופל' : 'להחזיר לחדשים';
+    if (!confirm(`${verb} את ${name||'הליד'}?`)) return;
+    try {
+      await updateDoc(doc(db, 'landing_leads', docId), { status: newStatus });
+    } catch (e) {
+      alert('שגיאה: ' + e.message);
+    }
+  }
+
+  function askAboutLead(docId) {
+    const l = _leads.find(x => x.id === docId);
+    if (!l) return;
+    const q = `ספר לי על הליד "${l.name}" (טלפון ${l.phone}, גיל ${l.age||'?'}, ניקוד ${l.score}/10, רפואי: ${MEDICAL_HE[l.medical]||l.medical||'-'}, עדיפות: ${PRIORITY_HE[l.priority]||l.priority||'-'}). תן לי 3 משפטי פתיחה ב-WhatsApp בהתאם לפרופיל.`;
+    if (window.quickAsk) window.quickAsk(q);
+  }
+
+  window.setLeadStatus = setLeadStatus;
+  window.askAboutLead = askAboutLead;
+
+  startListeners();
 
   function buildDataContext() {
     const { customers, leads } = window._dbData;
-    if (!customers.length) return 'אין נתונים זמינים כרגע.';
+    if (!customers.length && !leads.length) return 'אין נתונים זמינים כרגע.';
 
     const byStatus = s => customers.filter(c => c.status === s);
     const closed    = byStatus('closed');
@@ -339,35 +486,43 @@
       .map(([name, d]) => `  ${name}: סגר=${d.closed}, פתוח=${d.open}, בוטל=${d.cancelled}, גבייה=${d.collection}, סה"כ=${d.total}`)
       .join('\n');
 
-    // Recent customers (last 10)
-    const recent = [...customers].slice(-10).reverse()
-      .map(c => `  ${c.name} | ${STATUS_HE[c.status] || c.status} | נציג: ${c.agentName} | ${c.createdAt}`)
+    // Recent customers (last 20)
+    const recent = [...customers].slice(-20).reverse()
+      .map(c => `  ${c.name} | ${STATUS_HE[c.status] || c.status} | נציג: ${c.agentName} | ${c.createdAt}${c.leadScore?` | ניקוד: ${c.leadScore}`:''}`)
       .join('\n');
 
-    // Leads
-    const leadLines = leads.slice(-5).map(l =>
-      `  ${l.name} | ניקוד: ${l.score}/10 | גיל: ${l.age} | ביטוח: ${l.insurance} | ${l.createdAt}`
-    ).join('\n');
+    // Leads — ALL of them, sorted by date desc
+    const newLeads = leads.filter(l => l.status === 'new' || !l.status);
+    const handledLeads = leads.filter(l => l.status === 'handled');
+
+    const leadLine = l =>
+      `  ${l.name} | טל: ${l.phone} | ניקוד: ${l.score}/10 | גיל: ${l.age||'?'} | רפואי: ${MEDICAL_HE[l.medical]||l.medical||'-'} | עדיפות: ${PRIORITY_HE[l.priority]||l.priority||'-'} | ביטוח: ${l.insurance||'?'} | ${l.createdAt}`;
+
+    const newLeadLines = newLeads.map(leadLine).join('\n');
+    const handledLeadLines = handledLeads.slice(0, 10).map(leadLine).join('\n');
 
     return `=== נתוני CRM — הראשונים בבריאות וסיעוד ===
 תאריך: ${new Date().toLocaleDateString('he-IL')}
 
 סטטיסטיקה כללית:
   סה"כ לקוחות: ${customers.length}
-  סגרים: ${closed.length} (${Math.round(closed.length/customers.length*100)}%)
+  סגרים: ${closed.length}${customers.length?` (${Math.round(closed.length/customers.length*100)}%)`:''}
   פתוחים: ${open.length}
   בוטלו: ${cancelled.length}
   בעיות גבייה: ${collection.length}
-  לידים מדף נחיתה: ${leads.length}
+  לידים מדף נחיתה (סה"כ): ${leads.length} | חדשים: ${newLeads.length} | טופלו: ${handledLeads.length}
 
 ביצועי נציגים:
 ${agentLines || '  אין נתוני נציגים'}
 
-לקוחות אחרונים (10 האחרונים):
+לקוחות אחרונים (20 האחרונים):
 ${recent || '  אין לקוחות'}
 
-לידים אחרונים מדף נחיתה:
-${leadLines || '  אין לידים'}
+🎯 לידים חדשים שממתינים לטיפול (${newLeads.length}):
+${newLeadLines || '  אין לידים חדשים'}
+
+לידים שטופלו (10 אחרונים):
+${handledLeadLines || '  אין לידים שטופלו'}
 
 לקוחות עם בעיות גבייה:
 ${collection.map(c => `  ${c.name} | נציג: ${c.agentName}`).join('\n') || '  אין בעיות גבייה'}
@@ -378,9 +533,18 @@ ${collection.map(c => `  ${c.name} | נציג: ${c.agentName}`).join('\n') || ' 
 </script>
 
 <script>
-let apiKey = '';
+let apiKey = localStorage.getItem('anthropic_key') || '';
 let messages = [];
 let streaming = false;
+
+// Pre-fill saved key on load
+window.addEventListener('DOMContentLoaded', () => {
+  if (apiKey) {
+    const inp = document.getElementById('api-key');
+    if (inp) inp.value = apiKey;
+    showKeyStatus('✓ מפתח טעון', true);
+  }
+});
 
 const SYSTEM_BASE = `אתה סוכן ניתוח נתוני CRM של "הראשונים בבריאות וסיעוד" — חברה שמשווקת כתב שירות פלטינום.
 תפקידך: לענות על שאלות לגבי הנתונים, לייצר דוחות, ולעזור בקבלת החלטות עסקיות.
@@ -400,7 +564,8 @@ function setKey() {
     return;
   }
   apiKey = k;
-  showKeyStatus('✓ מפתח הוגדר', true);
+  localStorage.setItem('anthropic_key', k);
+  showKeyStatus('✓ מפתח נשמר', true);
 }
 
 function showKeyStatus(msg, ok) {
@@ -479,7 +644,7 @@ async function sendMsg() {
         'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({
-        model: 'claude-opus-4-6',
+        model: 'claude-opus-4-7',
         max_tokens: 2048,
         system: systemPrompt,
         messages: messages,
